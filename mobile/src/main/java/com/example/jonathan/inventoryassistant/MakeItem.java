@@ -39,6 +39,11 @@ public class MakeItem extends Activity {
         }
     }
 
+    public void deleteAllItems(View view) {
+        Log.d("ClICK", "DELETE ALL ITEMS IN TEST GROUP");
+        itemReaderDbHelper.deleteItemsInGroup("Test Group");
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

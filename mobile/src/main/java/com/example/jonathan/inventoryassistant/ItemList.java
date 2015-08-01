@@ -18,6 +18,7 @@ public class ItemList extends Activity {
         setContentView(R.layout.activity_item_list);
 
         itemReaderDbHelper = new ItemReaderDbHelper(this);
+        makeItemList();
     }
 
     @Override
