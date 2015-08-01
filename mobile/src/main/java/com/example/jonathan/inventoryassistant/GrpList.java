@@ -4,10 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class GrpList extends Activity {
 
@@ -48,20 +56,32 @@ public class GrpList extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    ArrayList<String> groupArray;
+
     private void makeGroupList() {
         Cursor cursor = groupReaderDbHelper.getAllGroups();
         cursor.moveToPosition(-1);
 
+        ListView groupList = (ListView) findViewById(R.id.groupList);
+        groupArray = new ArrayList<>();
+
         while (cursor.moveToNext()) {
             String groupName = cursor.getString(cursor.getColumnIndexOrThrow(GroupReaderContract.GroupEntry.GROUP_NAME));
-            TextView text = new TextView(this);
-            text.setText(groupName);
-            RelativeLayout topLayout = (RelativeLayout) findViewById(R.id.topLayout);
-            topLayout.addView(text);
+            groupArray.add(groupName);
+            Log.d("GrpLst", "Trying to print out all the items in the GroupList");
         }
-
-        
-
+        ArrayAdapter<String> arrayAdapter =
+                new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, groupArray);
+        groupList.setAdapter(arrayAdapter);
         cursor.close();
+
+        // register onClickListener to handle click events on each item
+        groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            // argument position gives the index of item which is clicked
+            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+                String selectedGroup = groupArray.get(position);
+                Toast.makeText(getApplicationContext(), "Group Selected : " + selectedGroup, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
