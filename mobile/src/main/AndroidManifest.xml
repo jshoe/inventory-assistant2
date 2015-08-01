@@ -44,6 +44,14 @@
             android:name=".MakeNewGrp"
             android:label="@string/title_activity_make_new_grp" >
         </activity>
+        <activity
+            android:name=".NfcReadTest"
+            android:label="@string/title_activity_nfc_read_test" >
+        </activity>
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test" >
+        </activity>
     </application>
 
 </manifest>
