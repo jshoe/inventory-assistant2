@@ -10,13 +10,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-            <meta-data
-                android:name="android.nfc.action.TECH_DISCOVERED"
-                android:resource="@xml/nfc_tech_filter" />
-        </activity>
-        <activity
             android:name=".NfcWriteTest"
             android:label="@string/title_activity_nfc_write_test" >
         </activity>
@@ -43,6 +36,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
             <!--
             android:parentActivityName=".MainActivity" >
             <meta-data
