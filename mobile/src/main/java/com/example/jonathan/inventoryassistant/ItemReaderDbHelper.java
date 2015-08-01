@@ -93,8 +93,8 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
     public void deleteItemsInGroup(String groupName) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String selection = ItemEntry.GROUP_NAME + " = '" + groupName;
-        String[] selectionArgs = {ItemEntry.GROUP_NAME};
+        String selection = ItemEntry.GROUP_NAME + " = '" + groupName + "'";
+        String[] selectionArgs = {};
         db.delete(ItemEntry.TABLE_NAME, selection, selectionArgs);
     }
 }

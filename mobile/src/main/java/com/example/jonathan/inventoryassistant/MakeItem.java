@@ -30,13 +30,18 @@ public class MakeItem extends Activity {
 
     public void makeNewItem(View view) {
         String itemName = ((EditText) findViewById(R.id.itemName)).getText().toString();
-        String groupName = "Test Group";
+        String groupName = "TestGroup";
         Log.d("CLICK", "MAKE NEW ITEM");
         if (itemName.compareTo("") != 0) {
             itemReaderDbHelper.insertItem(groupName, itemName);
             Intent intent = new Intent(this, ItemList.class);
             startActivity(intent);
         }
+    }
+
+    public void deleteAllItems(View view) {
+        Log.d("ClICK", "DELETE ALL ITEMS IN TEST GROUP");
+        itemReaderDbHelper.deleteItemsInGroup("TestGroup");
     }
 
     @Override

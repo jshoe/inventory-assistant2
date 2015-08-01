@@ -1,6 +1,7 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +20,10 @@ public class GrpList extends Activity {
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         makeGroupList();
+        Intent i = new Intent();
+        i.setClass(this, MakeItem.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     @Override

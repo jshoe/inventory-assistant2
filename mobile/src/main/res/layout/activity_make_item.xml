@@ -34,7 +34,6 @@
         android:layout_alignEnd="@+id/itemName"
         android:onClick="makeNewItem" />
 
-    <!--
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,9 +41,9 @@
         android:id="@+id/deleteAllButton"
         android:background="#ff807c10"
         android:layout_marginTop="25dp"
-        android:layout_below="@+id/groupName"
+        android:layout_below="@+id/itemName"
         android:layout_toLeftOf="@+id/makeButton"
         android:onClick="deleteAllItems"
-        android:layout_marginRight="20dp" />-->
+        android:layout_marginRight="20dp" />
 
 </RelativeLayout>
