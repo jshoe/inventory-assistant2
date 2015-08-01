@@ -45,12 +45,18 @@ public class GrpList extends Activity {
 
     private void makeGroupList() {
         Cursor cursor = groupReaderDbHelper.getAllGroups();
-        cursor.moveToFirst();
+        cursor.moveToPosition(-1);
 
-        String groupName = cursor.getString(cursor.getColumnIndexOrThrow(GroupReaderContract.GroupEntry.GROUP_NAME));
-        TextView text = new TextView(this);
-        text.setText(groupName);
-        RelativeLayout topLayout = (RelativeLayout) findViewById(R.id.topLayout);
-        topLayout.addView(text);
+        while (cursor.moveToNext()) {
+            String groupName = cursor.getString(cursor.getColumnIndexOrThrow(GroupReaderContract.GroupEntry.GROUP_NAME));
+            TextView text = new TextView(this);
+            text.setText(groupName);
+            RelativeLayout topLayout = (RelativeLayout) findViewById(R.id.topLayout);
+            topLayout.addView(text);
+        }
+
+        
+
+        cursor.close();
     }
 }
