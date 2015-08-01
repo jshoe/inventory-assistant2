@@ -60,6 +60,10 @@
             android:name=".ItemList"
             android:label="@string/title_activity_item_list" >
         </activity>
+        <activity
+            android:name=".ScanInItem"
+            android:label="@string/title_activity_scan_in_item" >
+        </activity>
     </application>
 
 </manifest>

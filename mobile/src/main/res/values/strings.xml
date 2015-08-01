@@ -12,4 +12,12 @@
     <string name="title_activity_make_item">MakeItem</string>
     <string name="all_group">All groups:</string>
     <string name="title_activity_item_list">ItemList</string>
+    <string name="title_activity_scan_in_item">ScanInItem</string>
+    <string name="grp_name_here">Group name here</string>
+    <string name="item_name">Item Name:</string>
+    <string name="scan_tag">Scan Tag</string>
+    <string name="done">Done</string>
+    <string name="next">Next</string>
+    <string name="add_item">+ Add Item</string>
+    <string name="add_group">+ Add Group</string>
 </resources>
