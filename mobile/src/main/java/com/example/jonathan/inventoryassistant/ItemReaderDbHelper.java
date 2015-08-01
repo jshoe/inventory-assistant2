@@ -52,7 +52,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     public Cursor getAllItems() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        return db.rawQuery("select * from table", null);
+        return db.rawQuery("select * from " + ItemEntry.TABLE_NAME, null);
     }
 
     public void deleteItem(String groupName, String itemName) {

@@ -17,9 +17,9 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/groupName"
         android:textSize="25sp"
-        android:text="enter group name here"
+        android:hint="enter group name here"
         android:layout_below="@+id/new_group"
         android:layout_centerHorizontal="true" />
 
@@ -27,10 +27,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Next"
-        android:id="@+id/button"
+        android:id="@+id/makeButton"
         android:background="#008000"
         android:layout_marginTop="25dp"
-        android:layout_below="@+id/editText"
-        android:layout_alignEnd="@+id/editText" />
+        android:layout_below="@+id/groupName"
+        android:layout_alignEnd="@+id/groupName"
+        android:onClick="makeNewGroup" />
 
 </RelativeLayout>

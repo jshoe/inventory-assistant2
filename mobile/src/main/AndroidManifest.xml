@@ -45,8 +45,12 @@
             android:label="@string/title_activity_make_new_grp" >
         </activity>
         <activity
-            android:name=".GrpList"
-            android:label="@string/title_activity_grp_list" >
+            android:name="com.example.jonathan.inventoryassistant.GrpList"
+            android:label="@string/title_activity_grp_list"
+            android:parentActivityName="com.example.jonathan.inventoryassistant.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.jonathan.inventoryassistant.MainActivity" />
         </activity>
     </application>
 

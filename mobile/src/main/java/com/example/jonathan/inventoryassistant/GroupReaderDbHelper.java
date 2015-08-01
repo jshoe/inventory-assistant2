@@ -50,7 +50,7 @@ public class GroupReaderDbHelper extends SQLiteOpenHelper {
     public Cursor getAllGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        return db.rawQuery("select * from table", null);
+        return db.rawQuery("select * from " + GroupEntry.TABLE_NAME, null);
 
     }
 
