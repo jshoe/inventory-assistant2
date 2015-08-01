@@ -52,11 +52,11 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     public Cursor getAllItems() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        return db.rawQuery("select * from table", null);
+        return db.rawQuery("select * from " + ItemEntry.TABLE_NAME, null);
     }
 
     public void deleteItem(String groupName, String itemName) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         String selection = ItemEntry.GROUP_NAME + " = '" + groupName + "' " +
                 ItemEntry.ITEM_NAME + " = '" + itemName + "'";
@@ -66,7 +66,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     }
 
     public void deleteItemsInGroup(String groupName) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         String selection = ItemEntry.GROUP_NAME + " = '" + groupName;
         String[] selectionArgs = {ItemEntry.GROUP_NAME};
         db.delete(ItemEntry.TABLE_NAME, selection, selectionArgs);

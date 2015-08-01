@@ -1,16 +1,24 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class GrpList extends Activity {
+
+    GroupReaderDbHelper groupReaderDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grp_list);
+
+        groupReaderDbHelper = new GroupReaderDbHelper(this);
+        makeGroupList();
     }
 
     @Override
@@ -33,5 +41,16 @@ public class GrpList extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void makeGroupList() {
+        Cursor cursor = groupReaderDbHelper.getAllGroups();
+        cursor.moveToFirst();
+
+        String groupName = cursor.getString(cursor.getColumnIndexOrThrow(GroupReaderContract.GroupEntry.GROUP_NAME));
+        TextView text = new TextView(this);
+        text.setText(groupName);
+        RelativeLayout topLayout = (RelativeLayout) findViewById(R.id.topLayout);
+        topLayout.addView(text);
     }
 }

@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.security.acl.Group;
+
 import static com.example.jonathan.inventoryassistant.GroupReaderContract.GroupEntry;
 
 /**
@@ -50,16 +52,21 @@ public class GroupReaderDbHelper extends SQLiteOpenHelper {
     public Cursor getAllGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        return db.rawQuery("select * from table", null);
+        return db.rawQuery("select * from " + GroupEntry.TABLE_NAME, null);
 
     }
 
     public void deleteGroup(String groupName, String itemName) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         String selection = GroupEntry.GROUP_NAME + " = '" + groupName + "'";
 
         String[] selectionArgs = {GroupEntry.GROUP_NAME};
         db.delete(GroupEntry.TABLE_NAME, selection, selectionArgs);
+    }
+
+    public void deleteAllGroups() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from " + GroupEntry.TABLE_NAME);
     }
 }
