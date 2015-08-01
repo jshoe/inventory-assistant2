@@ -20,7 +20,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_make_new_grp);
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
-
     }
 
     @Override
@@ -41,7 +40,6 @@ public class MainActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

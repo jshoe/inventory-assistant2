@@ -5,8 +5,10 @@
     <string name="action_settings">Settings</string>
     <string name="explanation">NFC is enabled.</string>
     <string name="new_group">Make new group:</string>
+    <string name="new_item">Make new item:</string>
     <string name="title_activity_nfc_write_test">NfcWriteTest</string>
     <string name="title_activity_make_new_grp">MakeNewGrp</string>
     <string name="title_activity_grp_list">GrpList</string>
+    <string name="title_activity_make_item">MakeItem</string>
 
 </resources>

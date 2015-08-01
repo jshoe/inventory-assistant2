@@ -6,9 +6,9 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.jonathan.inventoryassistant.MakeNewGrp">
 
-    <TextView android:text="@string/new_item" android:layout_width="wrap_content"
+    <TextView android:text="@string/new_group" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/new_item"
+        android:id="@+id/new_group"
         android:textSize="25sp"
         android:layout_marginTop="52dp"
         android:layout_alignParentTop="true"
@@ -17,34 +17,33 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemName"
+        android:id="@+id/groupName"
         android:textSize="25sp"
-        android:hint="enter item name here"
-        android:layout_below="@+id/new_item"
+        android:hint="enter group name here"
+        android:layout_below="@+id/new_group"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Done"
+        android:text="Next"
         android:id="@+id/makeButton"
         android:background="#008000"
         android:layout_marginTop="25dp"
-        android:layout_below="@+id/itemName"
-        android:layout_alignEnd="@+id/itemName"
-        android:onClick="makeNewItem" />
+        android:layout_below="@+id/groupName"
+        android:layout_alignEnd="@+id/groupName"
+        android:onClick="makeNewGroup" />
 
-    <!--
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete All Items"
+        android:text="Delete All Groups"
         android:id="@+id/deleteAllButton"
         android:background="#ff807c10"
         android:layout_marginTop="25dp"
         android:layout_below="@+id/groupName"
         android:layout_toLeftOf="@+id/makeButton"
-        android:onClick="deleteAllItems"
-        android:layout_marginRight="20dp" />-->
+        android:onClick="deleteAllGroups"
+        android:layout_marginRight="20dp" />
 
 </RelativeLayout>
