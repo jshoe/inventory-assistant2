@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import static com.example.jonathan.inventoryassistant.ItemReaderContract.ItemEntry;
 
@@ -92,6 +93,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     }
 
     public void deleteItemsInGroup(String groupName) {
+        Log.d("ItemReaderDbHelper", "Trying to deleteItemsInGroup");
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = ItemEntry.GROUP_NAME + " = ?";
         String[] selectionArgs = {groupName};
