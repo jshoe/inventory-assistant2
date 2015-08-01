@@ -11,4 +11,5 @@
     <string name="title_activity_grp_list">GrpList</string>
     <string name="title_activity_make_item">MakeItem</string>
     <string name="all_group">All groups:</string>
+    <string name="title_activity_item_list">ItemList</string>
 </resources>

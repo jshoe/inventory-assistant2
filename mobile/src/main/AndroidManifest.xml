@@ -56,6 +56,10 @@
             android:name=".MakeItem"
             android:label="@string/title_activity_make_item" >
         </activity>
+        <activity
+            android:name=".ItemList"
+            android:label="@string/title_activity_item_list" >
+        </activity>
     </application>
 
 </manifest>

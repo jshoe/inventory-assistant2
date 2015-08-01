@@ -1,22 +1,21 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-public class MakeItem extends Activity {
+public class ItemList extends Activity {
 
     ItemReaderDbHelper itemReaderDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_item);
+        setContentView(R.layout.activity_item_list);
 
         itemReaderDbHelper = new ItemReaderDbHelper(this);
     }
@@ -24,19 +23,8 @@ public class MakeItem extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_make_item, menu);
+        getMenuInflater().inflate(R.menu.menu_item_list, menu);
         return true;
-    }
-
-    public void makeNewItem(View view) {
-        String itemName = ((EditText) findViewById(R.id.itemName)).getText().toString();
-        String groupName = "Test Group";
-        Log.d("CLICK", "MAKE NEW ITEM");
-        if (itemName.compareTo("") != 0) {
-            itemReaderDbHelper.insertItem(groupName, itemName);
-            Intent intent = new Intent(this, ItemList.class);
-            startActivity(intent);
-        }
     }
 
     @Override
@@ -52,5 +40,16 @@ public class MakeItem extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void makeItemList() {
+        Cursor cursor = itemReaderDbHelper.getAllItems();
+        cursor.moveToFirst();
+
+        String itemName = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
+        TextView text = new TextView(this);
+        text.setText(itemName);
+        RelativeLayout topLayout = (RelativeLayout) findViewById(R.id.topLayout);
+        topLayout.addView(text);
     }
 }
