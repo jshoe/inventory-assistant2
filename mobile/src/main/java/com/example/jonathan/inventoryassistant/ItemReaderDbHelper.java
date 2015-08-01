@@ -55,6 +55,32 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + ItemEntry.TABLE_NAME, null);
     }
 
+    public Cursor getAllItemsInGroup(String groupName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                ItemEntry._ID,
+                ItemEntry.GROUP_NAME,
+                ItemEntry.ITEM_NAME
+        };
+
+        String sortOrder = ItemEntry.ITEM_NAME + "ASC";
+
+        String selection = ItemEntry.GROUP_NAME + " = '" + groupName + "'";
+        String[] selectionArgs = {ItemEntry.ITEM_NAME};
+
+        return db.query(
+                ItemEntry.TABLE_NAME,                     // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+    }
+
     public void deleteItem(String groupName, String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
 
