@@ -48,12 +48,15 @@ public class MainActivity extends Activity {
     public void makeNewGroup(View view) {
         String groupName = ((EditText) findViewById(R.id.groupName)).getText().toString();
         Log.d("CLICK", "MAKE NEW GROUP");
-        Log.d("GROUP NAME", groupName);
         if (groupName.compareTo("") != 0) {
-            Log.d("GROUP NAME", "");
             groupReaderDbHelper.insertGroup(groupName);
             Intent intent = new Intent(this, GrpList.class);
             startActivity(intent);
         }
+    }
+
+    public void deleteAllGroups(View view) {
+        Log.d("ClICK", "DELETE ALL GROUPS");
+        groupReaderDbHelper.deleteAllGroups();
     }
 }
