@@ -65,10 +65,10 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
                 ItemEntry.ITEM_NAME
         };
 
-        String sortOrder = ItemEntry.ITEM_NAME + "ASC";
+        String sortOrder = ItemEntry.ITEM_NAME;
 
-        String selection = ItemEntry.GROUP_NAME + " = '" + groupName + "'";
-        String[] selectionArgs = {ItemEntry.ITEM_NAME};
+        String selection = ItemEntry.GROUP_NAME + " = ?";
+        String[] selectionArgs = {groupName};
 
         return db.query(
                 ItemEntry.TABLE_NAME,                     // The table to query
@@ -95,10 +95,8 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     public void deleteItemsInGroup(String groupName) {
         Log.d("ItemReaderDbHelper", "Trying to deleteItemsInGroup");
         SQLiteDatabase db = this.getWritableDatabase();
-        String selection = ItemEntry.GROUP_NAME + " = ?";
-        String[] selectionArgs = {groupName};
         db.execSQL("delete from " + ItemEntry.TABLE_NAME +
-                "where " + ItemEntry.GROUP_NAME + " = " + groupName
+                        " where " + ItemEntry.GROUP_NAME + " = '" + groupName + "'"
         );
     }
 }

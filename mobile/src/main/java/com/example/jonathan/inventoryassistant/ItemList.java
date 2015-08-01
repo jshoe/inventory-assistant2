@@ -44,7 +44,7 @@ public class ItemList extends Activity {
     }
 
     private void makeItemList() {
-        Cursor cursor = itemReaderDbHelper.getAllItems();
+        Cursor cursor = itemReaderDbHelper.getAllItemsInGroup("TestGroup");
         cursor.moveToFirst();
 
         String itemName = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
