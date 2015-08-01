@@ -44,6 +44,10 @@
             android:name=".MakeNewGrp"
             android:label="@string/title_activity_make_new_grp" >
         </activity>
+        <activity
+            android:name=".GrpList"
+            android:label="@string/title_activity_grp_list" >
+        </activity>
     </application>
 
 </manifest>

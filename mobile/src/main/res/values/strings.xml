@@ -7,5 +7,6 @@
     <string name="new_group">Make new group:</string>
     <string name="title_activity_nfc_write_test">NfcWriteTest</string>
     <string name="title_activity_make_new_grp">MakeNewGrp</string>
+    <string name="title_activity_grp_list">GrpList</string>
 
 </resources>
