@@ -28,10 +28,6 @@ public class GrpList extends Activity {
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         makeGroupList();
-        Intent i = new Intent();
-        i.setClass(this, MakeItem.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
     }
 
     @Override
@@ -39,6 +35,21 @@ public class GrpList extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_grp_list, menu);
         return true;
+    }
+
+    public void makeNewGroup(View view) {
+        Intent i = new Intent();
+        i.setClass(this, MakeNewGrp.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    public void showItemList(String groupName) {
+        Intent i = new Intent();
+        i.putExtra("groupName", groupName);
+        i.setClass(this, ItemList.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     @Override
@@ -80,7 +91,9 @@ public class GrpList extends Activity {
             // argument position gives the index of item which is clicked
             public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                 String selectedGroup = groupArray.get(position);
+                showItemList(selectedGroup);
                 Toast.makeText(getApplicationContext(), "Group Selected : " + selectedGroup, Toast.LENGTH_SHORT).show();
+
             }
         });
     }

@@ -7,7 +7,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.jonathan.inventoryassistant.ItemList">
 
-    <TextView android:text="All Items:" android:layout_width="wrap_content"
+    <TextView android:text="Items in this group:" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:id="@+id/make_new"
@@ -15,12 +15,13 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="10sp"
         android:layout_height="wrap_content"
         android:text="@string/add_item"
         android:id="@+id/button"
         android:background="#008000"
-        android:layout_marginTop="25dp"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/make_new" />
@@ -29,6 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/itemList"
+        android:layout_marginTop="15dp"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/button"
         android:layout_alignParentEnd="true"

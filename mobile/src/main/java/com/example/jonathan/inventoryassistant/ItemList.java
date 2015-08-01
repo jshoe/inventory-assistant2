@@ -54,7 +54,9 @@ public class ItemList extends Activity {
     ArrayList<String> itemArray;
 
     private void makeItemList() {
-        Cursor cursor = itemReaderDbHelper.getAllItemsInGroup("TestGroup");
+        String groupName = getIntent().getStringExtra("groupName");
+        setTitle(groupName);
+        Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
         cursor.moveToPosition(-1);
 
         ListView itemList = (ListView) findViewById(R.id.itemList);

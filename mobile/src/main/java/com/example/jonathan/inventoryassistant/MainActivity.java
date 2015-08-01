@@ -17,9 +17,14 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_new_grp);
+        setContentView(R.layout.activity_main);
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
+
+        Intent i = new Intent();
+        i.setClass(this, GrpList.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     @Override
