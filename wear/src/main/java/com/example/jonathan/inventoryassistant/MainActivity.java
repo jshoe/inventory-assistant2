@@ -1,6 +1,7 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.TextView;
@@ -20,5 +21,8 @@ public class MainActivity extends Activity {
                 mTextView = (TextView) stub.findViewById(R.id.text);
             }
         });
+
+        Intent intent = new Intent(this, DataLayerListenerService.class);
+        startService(intent);
     }
 }
