@@ -15,6 +15,7 @@ import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -216,10 +218,7 @@ public class GroupCheckScanMode extends Activity {
     }
 
     public int getArrayPositionFromTitle(String title){
-        Log.d("getArray", "itemArray size: " + itemArray.size());
-        Log.d("getArray", "title: " + title);
         for (int i = 0; i < itemArray.size(); i++) {
-            Log.d("showScanStartMessage", "Array values: " + itemArray.get(i));
             if (itemArray.get(i).equals(title)) {
                 return i;
             }
@@ -227,15 +226,58 @@ public class GroupCheckScanMode extends Activity {
         return -1;
     }
 
+    public void finishScan(View view) {
+        SparseBooleanArray items = itemList.getCheckedItemPositions();
+        ArrayList unchecked = new ArrayList();
+        for (int i = 0; i < itemArray.size(); i++) {
+            if (!items.get(i)) {
+                unchecked.add(itemArray.get(i));
+            }
+        }
+        showFinishDialog(unchecked);
+    }
+
+    public void showFinishDialog(ArrayList unchecked) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String msg;
+        if (unchecked.size() == 0) {
+            msg = "All items checked off!";
+            builder.setPositiveButton("OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+        } else {
+            msg = "Exit scan mode?\n\nItems missing:\n";
+            for (Object str : unchecked) {
+                msg += str.toString() + "\n";
+            }
+            builder.setPositiveButton("Ignore Missing",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+            builder.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+        }
+        builder.setMessage(msg);
+        builder.setCancelable(true);
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     public void checkOffItem(String NfcTag) {
-        Log.d("checkOffItem", "Trying to process " + NfcTag);
         if (NfcTag.contains(" --- ")) {
             String[] parts = NfcTag.split(" --- ");
             NfcTag = parts[1];
         }
-        Log.d("checkOffItem", "Trying to process " + NfcTag);
         int p = getArrayPositionFromTitle(NfcTag);
-        Log.d("checkOffItem", "Trying to check off " + p);
         if (p != -1) {
             itemList.setItemChecked(p, true);
         }
