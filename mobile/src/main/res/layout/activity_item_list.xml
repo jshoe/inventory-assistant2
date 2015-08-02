@@ -14,6 +14,16 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemList"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/button"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/make_new" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,16 +34,19 @@
         android:textSize="15sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:onClick="makeNewItem"
-        android:layout_alignEnd="@+id/make_new" />
+        android:layout_alignParentLeft="true"
+        android:onClick="makeNewItem" />
 
-    <ListView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemList"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/button"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/make_new" />
+        android:text="Initiate Scan"
+        android:id="@+id/initiate_scan"
+        android:background="#fffc00"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/button"
+        android:onClick="makeNewItem" />
 </RelativeLayout>
