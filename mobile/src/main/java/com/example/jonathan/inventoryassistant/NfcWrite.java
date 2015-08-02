@@ -45,6 +45,7 @@ public class NfcWrite extends Activity {
                 getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP), 0);
         IntentFilter discovery=new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
         mWriteTagFilters = new IntentFilter[] { discovery };
+        setTitle("Write Data to Tag");
     }
 
     @Override
