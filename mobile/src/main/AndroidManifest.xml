@@ -25,6 +25,10 @@
             android:label="@string/title_activity_make_new_grp" >
         </activity>
         <activity
+            android:name=".GroupCheckScanMode"
+            android:label="@string/title_activity_group_check_scan_mode" >
+        </activity>
+        <activity
             android:name=".GrpList"
             android:label="@string/title_activity_grp_list" >
             <intent-filter>

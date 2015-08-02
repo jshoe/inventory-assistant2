@@ -1,6 +1,8 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -41,6 +43,14 @@ public class ItemList extends Activity {
     public void makeNewItem(View view) {
         Intent i = new Intent();
         i.setClass(this, MakeItem.class);
+        i.putExtra("groupName", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    public void startScan(View view) {
+        Intent i = new Intent();
+        i.setClass(this, GroupCheckScanMode.class);
         i.putExtra("groupName", groupName);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
