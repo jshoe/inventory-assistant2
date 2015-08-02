@@ -12,9 +12,9 @@ public class ItemReaderContract {
 
     /* Inner class that defines the table contents */
     public static abstract class ItemEntry implements BaseColumns {
-        public static final String TABLE_NAME = "items";
-        public static final String GROUP_NAME = "group";
-        public static final String ITEM_NAME = "item";
+        public static final String TABLE_NAME = "Items";
+        public static final String GROUP_NAME = "groupName";
+        public static final String ITEM_NAME = "itemName";
 
         private static final String TEXT_TYPE = " TEXT";
         private static final String COMMA_SEP = ",";
@@ -22,7 +22,7 @@ public class ItemReaderContract {
                 "CREATE TABLE " + ItemEntry.TABLE_NAME + " (" +
                         ItemEntry._ID + " INTEGER PRIMARY KEY," +
                         ItemEntry.GROUP_NAME + TEXT_TYPE + COMMA_SEP +
-                        ItemEntry.ITEM_NAME + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.ITEM_NAME + TEXT_TYPE +
                 " )";
 
         protected static final String SQL_DELETE_ENTRIES =

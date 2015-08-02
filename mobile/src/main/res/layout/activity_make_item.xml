@@ -37,7 +37,7 @@
         android:layout_marginTop="25dp"
         android:layout_below="@+id/itemName"
         android:layout_toLeftOf="@+id/makeButton"
-        android:onClick="deleteAllItems"
+        android:onClick="deleteAllItemsInGroup"
         android:layout_marginRight="20dp" />
 
 </RelativeLayout>

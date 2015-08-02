@@ -19,13 +19,24 @@ public class WearListenerService extends WearableListenerService {
 
     private static final String PATH = "/database-action";
     private static final String ACTION_KEY = "action-key";
-    private static final String MAKE_GROUP_KEY = "com.example.jonathan.inventoryassistant.make_group_key";
-    private static final String DELETE_ALL_GROUPS_KEY = "com.example.jonathan.inventoryassistant.delete_all_groups_key";
-    private static final String GROUP_NAME = "group-name";
+    private static final String MAKE_GROUP_KEY = "make-group-key";
+    private static final String DELETE_GROUP_KEY = "delete-group-key";
+    private static final String DELETE_ALL_GROUPS_KEY = "delete-all-groups-key";
+    private static final String MAKE_ITEM_KEY = "make-item-key";
+    private static final String DELETE_ITEM_KEY = "delete-item-key";
+    private static final String DELETE_ALL_ITEMS_IN_GROUP_KEY = "delete-all-items-in-group-key";
+    private static final String ITEM_NAME_KEY = "item-name";
+    private static final String GROUP_NAME_KEY = "group-name";
+
+    ItemReaderDbHelper itemReaderDbHelper;
+    GroupReaderDbHelper groupReaderDbHelper;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        itemReaderDbHelper = new ItemReaderDbHelper(this);
+        groupReaderDbHelper = new GroupReaderDbHelper(this);
     }
 
     @Override
@@ -36,15 +47,46 @@ public class WearListenerService extends WearableListenerService {
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        Log.d("DATA", "DATA CHANGED");
         for (DataEvent event : dataEvents) {
             DataItem item = event.getDataItem();
-            Log.d("DATA", "EVENT IS THERE");
             if (item.getUri().getPath().compareTo(PATH) == 0) {
-                Log.d("DATA", "PATH IS CORRECT");
                 DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
-                if (dataMap.getString(ACTION_KEY).compareTo(MAKE_GROUP_KEY) == 0) {
-                    Log.d("DATA", "MAKE_GROUP_KEY RECEIVED");
+                String key = dataMap.getString(ACTION_KEY);
+                String groupName, itemName;
+                switch (key) {
+                    case MAKE_GROUP_KEY:
+                        Log.d("DATA", "MAKE_GROUP_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        groupReaderDbHelper.insertGroup(groupName);
+                        break;
+                    case DELETE_GROUP_KEY:
+                        Log.d("DATA", "DELETE_GROUP_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        groupReaderDbHelper.deleteGroup(groupName);
+                        itemReaderDbHelper.deleteItemsInGroup(groupName);
+                        break;
+                    case DELETE_ALL_GROUPS_KEY:
+                        Log.d("DATA", "DELETE_ALL_GROUPS_KEY RECEIVED");
+                        groupReaderDbHelper.deleteAllGroups();
+                        itemReaderDbHelper.deleteAllItems();
+                        break;
+                    case MAKE_ITEM_KEY:
+                        Log.d("DATA", "MAKE_ITEM_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        itemName = dataMap.getString(ITEM_NAME_KEY);
+                        itemReaderDbHelper.insertItem(groupName, itemName);
+                        break;
+                    case DELETE_ITEM_KEY:
+                        Log.d("DATA", "DELETE_ITEM_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        itemName = dataMap.getString(ITEM_NAME_KEY);
+                        itemReaderDbHelper.deleteItem(groupName, itemName);
+                        break;
+                    case DELETE_ALL_ITEMS_IN_GROUP_KEY:
+                        Log.d("DATA", "DELETE_ALL_ITEMS_IN_GROUP_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        itemReaderDbHelper.deleteItemsInGroup(groupName);
+                        break;
                 }
             }
         }

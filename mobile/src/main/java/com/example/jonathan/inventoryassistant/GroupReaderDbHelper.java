@@ -56,13 +56,10 @@ public class GroupReaderDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public void deleteGroup(String groupName, String itemName) {
+    public void deleteGroup(String groupName) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selection = GroupEntry.GROUP_NAME + " = '" + groupName + "'";
-
-        String[] selectionArgs = {GroupEntry.GROUP_NAME};
-        db.delete(GroupEntry.TABLE_NAME, selection, selectionArgs);
+        db.execSQL("delete from " + GroupEntry.TABLE_NAME + " where " + GroupEntry.GROUP_NAME + "='" + groupName + "'");
     }
 
     public void deleteAllGroups() {

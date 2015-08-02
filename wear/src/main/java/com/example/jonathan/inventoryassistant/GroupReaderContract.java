@@ -10,15 +10,15 @@ public class GroupReaderContract {
 
     /* Inner class that defines the table contents */
     public static abstract class GroupEntry implements BaseColumns {
-        public static final String TABLE_NAME = "groups";
-        public static final String GROUP_NAME = "group";
+        public static final String TABLE_NAME = "Groups";
+        public static final String GROUP_NAME = "groupName";
 
         private static final String TEXT_TYPE = " TEXT";
         private static final String COMMA_SEP = ",";
         protected static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + GroupEntry.TABLE_NAME + " (" +
-                        GroupEntry._ID + " INTEGER PRIMARY KEY," +
-                        GroupEntry.GROUP_NAME + TEXT_TYPE + COMMA_SEP +
+                        GroupEntry._ID + " INTEGER PRIMARY KEY, " +
+                        GroupEntry.GROUP_NAME + TEXT_TYPE +
                         " )";
 
         protected static final String SQL_DELETE_ENTRIES =
