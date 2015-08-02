@@ -98,7 +98,7 @@ public class NfcWrite extends Activity {
             if(supportedTechs(detectedTag.getTechList())) {
                 if(writableTag(detectedTag)) {
                     WriteResponse wr = writeTag(getTagAsNdef(textToWrite), detectedTag);
-                    String message = (wr.getStatus() == 1? "Success: " : "Failed: ") + wr.getMessage();
+                    String message = (wr.getStatus() == 1? "" : "") + wr.getMessage();
                     Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context,"This tag is not writable",Toast.LENGTH_SHORT).show();
@@ -147,7 +147,7 @@ public class NfcWrite extends Activity {
 
                 ndef.writeNdefMessage(message);
                 if(writeProtect)  ndef.makeReadOnly();
-                mess = "Wrote message to pre-formatted tag.";
+                mess = "Tag written successfully!";
                 return new WriteResponse(1,mess);
             } else {
                 NdefFormatable format = NdefFormatable.get(tag);
@@ -167,7 +167,7 @@ public class NfcWrite extends Activity {
                 }
             }
         } catch (Exception e) {
-            mess = "Failed to write tag";
+            mess = "Failed to write tag!";
             return new WriteResponse(0,mess);
         }
     }
