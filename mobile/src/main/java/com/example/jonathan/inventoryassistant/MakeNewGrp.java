@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
@@ -19,9 +20,11 @@ import com.google.android.gms.wearable.Wearable;
 
 public class MakeNewGrp extends Activity {
 
+    private static final String PATH = "/database-action";
+    private static final String ACTION_KEY = "action-key";
     private static final String MAKE_GROUP_KEY = "com.example.jonathan.inventoryassistant.make_group_key";
     private static final String DELETE_ALL_GROUPS_KEY = "com.example.jonathan.inventoryassistant.delete_all_groups_key";
-    private static final String GROUP_NAME = "groupName";
+    private static final String GROUP_NAME = "group-name";
 
     GroupReaderDbHelper groupReaderDbHelper;
     GoogleApiClient mGoogleApiClient;
@@ -81,11 +84,20 @@ public class MakeNewGrp extends Activity {
         String groupName = ((EditText) findViewById(R.id.groupName)).getText().toString();
         if (groupName.compareTo("") != 0) {
             groupReaderDbHelper.insertGroup(groupName);
-            PutDataMapRequest putDataMapReq = PutDataMapRequest.create(MAKE_GROUP_KEY);
+            PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+            putDataMapReq.getDataMap().putString(ACTION_KEY, MAKE_GROUP_KEY);
             putDataMapReq.getDataMap().putString(GROUP_NAME, groupName);
             PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
             PendingResult<DataApi.DataItemResult> pendingResult =
                     Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
+            pendingResult.setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
+                @Override
+                public void onResult(final DataApi.DataItemResult result) {
+                    if(result.getStatus().isSuccess()) {
+                        Log.d("DATA", "Data item set: " + result.getDataItem().getUri());
+                    }
+                }
+            });
             Intent intent = new Intent(this, GrpList.class);
             startActivity(intent);
         }
