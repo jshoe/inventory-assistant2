@@ -29,13 +29,17 @@
             android:label="@string/title_activity_grp_list" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
+
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
@@ -43,7 +47,8 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.jonathan.inventoryassistant.MainActivity" />-->
+                android:value="com.example.jonathan.inventoryassistant.MainActivity" />
+            -->
         </activity>
         <activity
             android:name=".MakeItem"
@@ -56,6 +61,10 @@
         <activity
             android:name=".ScanInItem"
             android:label="@string/title_activity_scan_in_item" >
+        </activity>
+        <activity
+            android:name=".Welcome1"
+            android:label="@string/title_activity_welcome1" >
         </activity>
     </application>
 
