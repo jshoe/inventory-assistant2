@@ -6,7 +6,17 @@
 
     <TextView android:text="Hold your tag against the back of your phone!" android:layout_width="wrap_content"
         android:textSize="25sp"
-        android:layout_marginTop="52dp"
+        android:id="@+id/help_msg"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/nfc_pic"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/help_msg"
+        android:src="@drawable/nfc_pic" />
 
 </RelativeLayout>
