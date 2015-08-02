@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import static com.example.jonathan.inventoryassistant.ItemReaderContract.ItemEntry;
 
@@ -27,6 +28,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         db.execSQL(ItemEntry.SQL_DELETE_ENTRIES);
         onCreate(db);
     }
+
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
@@ -51,11 +53,37 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     public Cursor getAllItems() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        return db.rawQuery("select * from table", null);
+        return db.rawQuery("select * from " + ItemEntry.TABLE_NAME, null);
+    }
+
+    public Cursor getAllItemsInGroup(String groupName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                ItemEntry._ID,
+                ItemEntry.GROUP_NAME,
+                ItemEntry.ITEM_NAME
+        };
+
+        String sortOrder = ItemEntry.ITEM_NAME;
+
+        String selection = ItemEntry.GROUP_NAME + " = ?";
+        String[] selectionArgs = {groupName};
+
+        return db.query(
+                ItemEntry.TABLE_NAME,                     // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
     }
 
     public void deleteItem(String groupName, String itemName) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         String selection = ItemEntry.GROUP_NAME + " = '" + groupName + "' " +
                 ItemEntry.ITEM_NAME + " = '" + itemName + "'";
@@ -65,9 +93,15 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     }
 
     public void deleteItemsInGroup(String groupName) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String selection = ItemEntry.GROUP_NAME + " = '" + groupName;
-        String[] selectionArgs = {ItemEntry.GROUP_NAME};
-        db.delete(ItemEntry.TABLE_NAME, selection, selectionArgs);
+        Log.d("ItemReaderDbHelper", "Trying to deleteItemsInGroup");
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from " + ItemEntry.TABLE_NAME +
+                        " where " + ItemEntry.GROUP_NAME + " = '" + groupName + "'"
+        );
+    }
+
+    public void deleteAllItems() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from " + ItemEntry.TABLE_NAME);
     }
 }

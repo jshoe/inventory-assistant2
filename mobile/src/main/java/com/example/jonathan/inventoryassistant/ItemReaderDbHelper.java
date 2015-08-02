@@ -1,5 +1,6 @@
 package com.example.jonathan.inventoryassistant;
 
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -98,5 +99,10 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         db.execSQL("delete from " + ItemEntry.TABLE_NAME +
                         " where " + ItemEntry.GROUP_NAME + " = '" + groupName + "'"
         );
+    }
+
+    public void deleteAllItems() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from " + ItemEntry.TABLE_NAME);
     }
 }

@@ -22,11 +22,12 @@ public class MakeNewGrp extends Activity {
 
     private static final String PATH = "/database-action";
     private static final String ACTION_KEY = "action-key";
-    private static final String MAKE_GROUP_KEY = "com.example.jonathan.inventoryassistant.make_group_key";
-    private static final String DELETE_ALL_GROUPS_KEY = "com.example.jonathan.inventoryassistant.delete_all_groups_key";
-    private static final String GROUP_NAME = "group-name";
+    private static final String MAKE_GROUP_KEY = "make-group-key";
+    private static final String DELETE_ALL_GROUPS_KEY = "delete-all-groups-key";
+    private static final String GROUP_NAME_KEY = "group-name";
 
     GroupReaderDbHelper groupReaderDbHelper;
+    ItemReaderDbHelper itemReaderDbHelper;
     GoogleApiClient mGoogleApiClient;
 
 
@@ -35,7 +36,10 @@ public class MakeNewGrp extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_new_grp);
         setTitle("New Group");
+
         groupReaderDbHelper = new GroupReaderDbHelper(this);
+        itemReaderDbHelper = new ItemReaderDbHelper(this);
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
@@ -86,18 +90,10 @@ public class MakeNewGrp extends Activity {
             groupReaderDbHelper.insertGroup(groupName);
             PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
             putDataMapReq.getDataMap().putString(ACTION_KEY, MAKE_GROUP_KEY);
-            putDataMapReq.getDataMap().putString(GROUP_NAME, groupName);
+            putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
             PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
             PendingResult<DataApi.DataItemResult> pendingResult =
                     Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
-            pendingResult.setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
-                @Override
-                public void onResult(final DataApi.DataItemResult result) {
-                    if(result.getStatus().isSuccess()) {
-                        Log.d("DATA", "Data item set: " + result.getDataItem().getUri());
-                    }
-                }
-            });
             Intent intent = new Intent(this, GrpList.class);
             startActivity(intent);
         }
@@ -105,9 +101,12 @@ public class MakeNewGrp extends Activity {
 
     public void deleteAllGroups(View view) {
         groupReaderDbHelper.deleteAllGroups();
+        itemReaderDbHelper.deleteAllItems();
         PutDataMapRequest putDataMapReq = PutDataMapRequest.create(DELETE_ALL_GROUPS_KEY);
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult =
                 Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
+
+
 }

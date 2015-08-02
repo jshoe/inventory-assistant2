@@ -50,16 +50,18 @@ public class GroupReaderDbHelper extends SQLiteOpenHelper {
     public Cursor getAllGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        return db.rawQuery("select * from table", null);
+        return db.rawQuery("select * from " + GroupEntry.TABLE_NAME, null);
 
     }
 
-    public void deleteGroup(String groupName, String itemName) {
-        SQLiteDatabase db = this.getReadableDatabase();
+    public void deleteGroup(String groupName) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        String selection = GroupEntry.GROUP_NAME + " = '" + groupName + "'";
+        db.execSQL("delete from " + GroupEntry.TABLE_NAME + " where " + GroupEntry.GROUP_NAME + "='" + groupName + "'");
+    }
 
-        String[] selectionArgs = {GroupEntry.GROUP_NAME};
-        db.delete(GroupEntry.TABLE_NAME, selection, selectionArgs);
+    public void deleteAllGroups() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from " + GroupEntry.TABLE_NAME);
     }
 }
