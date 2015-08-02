@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        Intent intent = new Intent(this, DataLayerListenerService.class);
+        Intent intent = new Intent(this, WearListenerService.class);
         startService(intent);
     }
 }
