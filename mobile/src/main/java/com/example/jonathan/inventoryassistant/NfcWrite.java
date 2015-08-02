@@ -38,7 +38,7 @@ public class NfcWrite extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nfc_write_test);
+        setContentView(R.layout.activity_nfc_write);
         context = getApplicationContext();
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mNfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
@@ -60,7 +60,7 @@ public class NfcWrite extends Activity {
         if(mNfcAdapter != null) {
             if (!mNfcAdapter.isEnabled()){
                 LayoutInflater inflater = getLayoutInflater();
-                View dialoglayout = inflater.inflate(R.layout.activity_nfc_write_test,(ViewGroup) findViewById(R.id.settings));
+                View dialoglayout = inflater.inflate(R.layout.activity_nfc_write,(ViewGroup) findViewById(R.id.settings));
                 new AlertDialog.Builder(this).setView(dialoglayout)
                         .setPositiveButton("Update Settings", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
@@ -89,12 +89,14 @@ public class NfcWrite extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        String textToWrite = getIntent().getStringExtra("textToWrite");
+        String groupName = getIntent().getStringExtra("groupName");
         if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             // validate that this tag can be written
             Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if(supportedTechs(detectedTag.getTechList())) {
                 if(writableTag(detectedTag)) {
-                    WriteResponse wr = writeTag(getTagAsNdef(new String ("hot dogs")), detectedTag);
+                    WriteResponse wr = writeTag(getTagAsNdef(textToWrite), detectedTag);
                     String message = (wr.getStatus() == 1? "Success: " : "Failed: ") + wr.getMessage();
                     Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
                 } else {
@@ -104,6 +106,9 @@ public class NfcWrite extends Activity {
                 Toast.makeText(context,"This tag type is not supported",Toast.LENGTH_SHORT).show();
             }
         }
+        Intent i = new Intent(this, ItemList.class);
+        i.putExtra("groupName", groupName);
+        startActivity(i);
     }
 
     @Override

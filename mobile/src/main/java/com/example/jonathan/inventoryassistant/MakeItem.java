@@ -35,8 +35,10 @@ public class MakeItem extends Activity {
         Log.d("CLICK", "MAKE NEW ITEM");
         if (itemName.compareTo("") != 0) {
             itemReaderDbHelper.insertItem(groupName, itemName);
-            Intent i = new Intent(this, ItemList.class);
+            Intent i = new Intent(this, NfcWrite.class);
             i.putExtra("groupName", groupName);
+            String textToWrite = groupName + " --- " + itemName;
+            i.putExtra("textToWrite", textToWrite);
             startActivity(i);
         }
     }
