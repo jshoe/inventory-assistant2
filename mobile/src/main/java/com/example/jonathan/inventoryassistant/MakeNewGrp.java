@@ -31,7 +31,7 @@ public class MakeNewGrp extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_new_grp);
-
+        setTitle("New Group");
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {

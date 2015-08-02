@@ -28,7 +28,7 @@ import android.widget.Toast;
  *  http://tapintonfc.blogspot.com/2012/07/the-above-footage-from-our-nfc-workshop.html
  */
 
-public class NfcReadTest extends Activity {
+public class NfcRead extends Activity {
     private NfcAdapter mNfcAdapter;
     private IntentFilter[] mWriteTagFilters;
     private PendingIntent mNfcPendingIntent;

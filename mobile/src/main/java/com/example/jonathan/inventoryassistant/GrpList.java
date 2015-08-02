@@ -81,6 +81,9 @@ public class GrpList extends Activity {
             groupArray.add(groupName);
             Log.d("GrpLst", "Trying to print out all the items in the GroupList");
         }
+        if (groupArray.size() == 0) {
+            groupArray.add("(no groups)");
+        }
         ArrayAdapter<String> arrayAdapter =
                 new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, groupArray);
         groupList.setAdapter(arrayAdapter);

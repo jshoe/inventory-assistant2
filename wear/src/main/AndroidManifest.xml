@@ -24,12 +24,23 @@
             android:enabled="true"
             android:exported="true" >
         </service>
-        <service
-            android:name=".DataLayerListenerService" >
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-            </intent-filter>
-        </service>
+
+        <activity
+            android:name=".SelectGrp"
+            android:label="@string/title_activity_select_grp" >
+        </activity>
+        <activity
+            android:name=".ScanInItems"
+            android:label="@string/title_activity_scan_in_items" >
+        </activity>
+        <activity
+            android:name=".ItemScanConfirm"
+            android:label="@string/title_activity_item_scan_confirm" >
+        </activity>
+        <activity
+            android:name=".Welcome"
+            android:label="@string/title_activity_welcome" >
+        </activity>
     </application>
 
 </manifest>

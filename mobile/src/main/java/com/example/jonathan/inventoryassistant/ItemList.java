@@ -1,6 +1,7 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class ItemList extends Activity {
 
     ItemReaderDbHelper itemReaderDbHelper;
+    String groupName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,14 @@ public class ItemList extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_item_list, menu);
         return true;
+    }
+
+    public void makeNewItem(View view) {
+        Intent i = new Intent();
+        i.setClass(this, MakeItem.class);
+        i.putExtra("groupName", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     @Override
@@ -54,11 +64,10 @@ public class ItemList extends Activity {
     ArrayList<String> itemArray;
 
     private void makeItemList() {
-        String groupName = getIntent().getStringExtra("groupName");
-        setTitle(groupName);
+        groupName = getIntent().getStringExtra("groupName");
+        setTitle("Group: " + groupName);
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
         cursor.moveToPosition(-1);
-
         ListView itemList = (ListView) findViewById(R.id.itemList);
         itemArray = new ArrayList<>();
 
@@ -66,6 +75,9 @@ public class ItemList extends Activity {
             String itemName = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
             itemArray.add(itemName);
             Log.d("ItemList", "Trying to print out all the items in the ItemList");
+        }
+        if (itemArray.size() == 0) {
+            itemArray.add("(no items)");
         }
         cursor.close();
 

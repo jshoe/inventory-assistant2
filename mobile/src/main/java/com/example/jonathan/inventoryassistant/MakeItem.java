@@ -18,6 +18,7 @@ public class MakeItem extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_item);
 
+        setTitle("New Item");
         itemReaderDbHelper = new ItemReaderDbHelper(this);
     }
 
@@ -30,12 +31,13 @@ public class MakeItem extends Activity {
 
     public void makeNewItem(View view) {
         String itemName = ((EditText) findViewById(R.id.itemName)).getText().toString();
-        String groupName = "TestGroup";
+        String groupName = getIntent().getStringExtra("groupName");
         Log.d("CLICK", "MAKE NEW ITEM");
         if (itemName.compareTo("") != 0) {
             itemReaderDbHelper.insertItem(groupName, itemName);
-            Intent intent = new Intent(this, ItemList.class);
-            startActivity(intent);
+            Intent i = new Intent(this, ItemList.class);
+            i.putExtra("groupName", groupName);
+            startActivity(i);
         }
     }
 
