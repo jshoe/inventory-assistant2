@@ -38,7 +38,7 @@ public class NfcRead extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nfc_write_test);
+        setContentView(R.layout.activity_nfc_write);
         context = getApplicationContext();
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mNfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
@@ -60,7 +60,7 @@ public class NfcRead extends Activity {
         if(mNfcAdapter != null) {
             if (!mNfcAdapter.isEnabled()){
                 LayoutInflater inflater = getLayoutInflater();
-                View dialoglayout = inflater.inflate(R.layout.activity_nfc_write_test,(ViewGroup) findViewById(R.id.settings));
+                View dialoglayout = inflater.inflate(R.layout.activity_nfc_write,(ViewGroup) findViewById(R.id.settings));
                 new AlertDialog.Builder(this).setView(dialoglayout)
                         .setPositiveButton("Update Settings", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
