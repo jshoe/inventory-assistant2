@@ -29,25 +29,23 @@
         android:layout_height="wrap_content"
         android:text="@string/add_item"
         android:id="@+id/button"
-        android:background="#008000"
+        android:background="@drawable/round_button_green"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
+        android:onClick="makeNewItem"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:onClick="makeNewItem" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Initiate Scan"
+        android:text="Start Scan"
         android:id="@+id/initiate_scan"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
-        android:background="@drawable/round_button"
+        android:background="@drawable/round_button_yellow"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:onClick="makeNewItem"
         android:layout_toEndOf="@+id/make_new" />
-    <!--android:background="#ddd833"-->
 </RelativeLayout>
