@@ -42,11 +42,12 @@
         android:layout_height="wrap_content"
         android:text="Initiate Scan"
         android:id="@+id/initiate_scan"
-        android:background="#ddd833"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
+        android:background="@drawable/round_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:onClick="makeNewItem"
         android:layout_toEndOf="@+id/make_new" />
+    <!--android:background="#ddd833"-->
 </RelativeLayout>
