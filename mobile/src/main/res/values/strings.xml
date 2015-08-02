@@ -20,4 +20,10 @@
     <string name="next">Next</string>
     <string name="add_item">+ Add Item</string>
     <string name="add_group">+ Add Group</string>
+    <string name="title_activity_welcome1">Welcome1</string>
+    <string name="welcome">Welcome to the Inventory Assistant!</string>
+    <string name="welcome1">A more organized life is just a few steps away. Let's start scanning in items to track.</string>
+    <string name="start">Start</string>
+    <string name="done">Done</string>
 </resources>
+

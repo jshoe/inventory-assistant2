@@ -37,6 +37,10 @@
             android:name=".ItemScanConfirm"
             android:label="@string/title_activity_item_scan_confirm" >
         </activity>
+        <activity
+            android:name=".Welcome"
+            android:label="@string/title_activity_welcome" >
+        </activity>
     </application>
 
 </manifest>
