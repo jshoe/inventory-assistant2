@@ -30,7 +30,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/** Source attribution: Lots of NFC help from this tutorial:
+/** Source attribution: Some NFC reading code from this tutorial:
  *  http://code.tutsplus.com/tutorials/reading-nfc-tags-with-android--mobile-17278
  */
 
@@ -41,7 +41,6 @@ public class GroupCheckScanMode extends Activity {
 
     public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "NfcDemo";
-    private TextView mTextView;
     private NfcAdapter mNfcAdapter;
 
     @Override
@@ -148,22 +147,42 @@ public class GroupCheckScanMode extends Activity {
     }
 
     public void showScanStartMessage() {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage("Start scanning items in any order!");
-        builder1.setCancelable(true);
-        builder1.setPositiveButton("OK",
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Start scanning items in any order!");
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         Log.d("showScanStartMessage", "User clicked OK");
                     }
                 });
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
+        AlertDialog alert = builder.create();
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(20);
     }
 
     public void cancelScan(View view) {
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to cancel the scan process?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(20);
     }
 
     @Override
@@ -249,9 +268,9 @@ public class GroupCheckScanMode extends Activity {
                         }
                     });
         } else {
-            msg = "Exit scan mode?\n\nItems missing:\n";
+            msg = "Are you sure you want to exit scan mode? You're missing some things!\n\n";
             for (Object str : unchecked) {
-                msg += str.toString() + "\n";
+                msg += "- " + str.toString() + "\n";
             }
             builder.setPositiveButton("Ignore Missing",
                     new DialogInterface.OnClickListener() {
@@ -270,6 +289,8 @@ public class GroupCheckScanMode extends Activity {
         builder.setCancelable(true);
         AlertDialog alert = builder.create();
         alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(20);
     }
 
     public void checkOffItem(String NfcTag) {
