@@ -16,7 +16,7 @@ import static com.example.jonathan.inventoryassistant.ItemReaderContract.ItemEnt
  * Created by randyramadhana on 7/31/15.
  */
 public class ItemReaderDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "ItemReader.db";
 
     public ItemReaderDbHelper(Context context) {
