@@ -66,7 +66,9 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         String[] projection = {
                 ItemEntry._ID,
                 ItemEntry.GROUP_NAME,
-                ItemEntry.ITEM_NAME
+                ItemEntry.ITEM_NAME,
+                ItemEntry.CHECKED,
+                ItemEntry.DATE_CHECKED
         };
 
         String sortOrder = ItemEntry.ITEM_NAME;
@@ -89,18 +91,17 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     public void deleteItem(String groupName, String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selection = ItemEntry.GROUP_NAME + " = '" + groupName + "' " +
-                ItemEntry.ITEM_NAME + " = '" + itemName + "'";
-
-        String[] selectionArgs = {ItemEntry.GROUP_NAME};
-        db.delete(ItemEntry.TABLE_NAME, selection, selectionArgs);
+        db.execSQL("delete from " + ItemEntry.TABLE_NAME +
+                        " where " + ItemEntry.GROUP_NAME + "='" + groupName + "'" +
+                        " and " +ItemEntry.ITEM_NAME + "='" + itemName + "'"
+        );
     }
 
     public void deleteItemsInGroup(String groupName) {
         Log.d("ItemReaderDbHelper", "Trying to deleteItemsInGroup");
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from " + ItemEntry.TABLE_NAME +
-                        " where " + ItemEntry.GROUP_NAME + " = '" + groupName + "'"
+                        " where " + ItemEntry.GROUP_NAME + "='" + groupName + "'"
         );
     }
 
@@ -111,7 +112,6 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
     public void checkItem(String groupName, String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         db.execSQL("update " + ItemEntry.TABLE_NAME +
                 " set " + ItemEntry.CHECKED + "=" + 1 +
                 " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +

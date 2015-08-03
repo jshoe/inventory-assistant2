@@ -67,7 +67,9 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         String[] projection = {
                 ItemEntry._ID,
                 ItemEntry.GROUP_NAME,
-                ItemEntry.ITEM_NAME
+                ItemEntry.ITEM_NAME,
+                ItemEntry.CHECKED,
+                ItemEntry.DATE_CHECKED
         };
 
         String sortOrder = ItemEntry.ITEM_NAME;
