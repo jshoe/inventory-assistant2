@@ -111,7 +111,6 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
     public void checkItem(String groupName, String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         db.execSQL("update " + ItemEntry.TABLE_NAME +
                 " set " + ItemEntry.CHECKED + "=" + 1 +
                 " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
