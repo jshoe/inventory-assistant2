@@ -25,10 +25,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.Wearable;
+
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 /** Source attribution: Some NFC reading code from this tutorial:
  *  http://code.tutsplus.com/tutorials/reading-nfc-tags-with-android--mobile-17278
@@ -36,12 +45,21 @@ import java.util.Arrays;
 
 public class GroupCheckScanMode extends Activity {
 
+    private static final String PATH = "/database-action";
+    private static final String ACTION_KEY = "action-key";
+    private static final String CHECK_KEY = "check-key";
+    private static final String DATE_KEY = "date-key";
+    private static final String GROUP_NAME_KEY = "group-name";
+    private static final String ITEM_NAME_KEY = "item-name";
+
     ItemReaderDbHelper itemReaderDbHelper;
     String groupName = "";
 
     public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "NfcDemo";
     private NfcAdapter mNfcAdapter;
+
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +72,27 @@ public class GroupCheckScanMode extends Activity {
         initiateNfcComponents();
         makeItemList();
         showScanStartMessage();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle connectionHint) {
+                        // Now you can use the Data Layer API
+                    }
+                    @Override
+                    public void onConnectionSuspended(int cause) {
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult result) {
+                    }
+                })
+                        // Request access only to the Wearable API
+                .addApi(Wearable.API)
+                .build();
+
+        mGoogleApiClient.connect();
     }
 
     public void initiateNfcComponents() {
@@ -342,5 +381,56 @@ public class GroupCheckScanMode extends Activity {
                 checkOffItem(result);
             }
         }
+    }
+
+    private void SendCheckToWear(String groupName, String itemName) {
+        String[] argsKey = new String[3];
+        String[] argsValue = new String[3];
+
+        argsKey[0] = GROUP_NAME_KEY;
+        argsKey[1] = ITEM_NAME_KEY;
+        argsKey[2] = CHECK_KEY;
+
+        argsValue[0] = groupName;
+        argsValue[1] = itemName;
+        argsValue[2] = "1";
+
+    }
+
+    private void sendUncheckToWear(String groupName, String itemName) {
+        String[] argsKey = new String[3];
+        String[] argsValue = new String[3];
+
+        argsKey[0] = GROUP_NAME_KEY;
+        argsKey[1] = ITEM_NAME_KEY;
+        argsKey[2] = CHECK_KEY;
+
+        argsValue[0] = groupName;
+        argsValue[1] = itemName;
+        argsValue[2] = "0";
+    }
+
+    private void sendUpdateDateToWear(String groupName, String itemName, Date date) {
+        String[] argsKey = new String[3];
+        String[] argsValue = new String[3];
+
+        argsKey[0] = GROUP_NAME_KEY;
+        argsKey[1] = ITEM_NAME_KEY;
+        argsKey[2] = DATE_KEY;
+
+        argsValue[0] = groupName;
+        argsValue[1] = itemName;
+        argsValue[2] = date.toString();
+    }
+
+    private void sendDataMapRequest(String actionKey, String[] argsKey, String[] argsValue) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, actionKey);
+        for (int i = 0; i < argsKey.length; i++) {
+            putDataMapReq.getDataMap().putString(argsKey[i], argsValue[i]);
+        }
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 }

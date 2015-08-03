@@ -13,6 +13,9 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 // Service to run on the Wear to listen for messages coming from the Mobile.
 
 public class WearListenerService extends WearableListenerService {
@@ -27,6 +30,8 @@ public class WearListenerService extends WearableListenerService {
     private static final String DELETE_ALL_ITEMS_IN_GROUP_KEY = "delete-all-items-in-group-key";
     private static final String ITEM_NAME_KEY = "item-name";
     private static final String GROUP_NAME_KEY = "group-name";
+    private static final String CHECK_KEY = "check-key";
+    private static final String DATE_KEY = "date-key";
 
     private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
     private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
@@ -56,7 +61,7 @@ public class WearListenerService extends WearableListenerService {
             if (item.getUri().getPath().compareTo(PATH) == 0) {
                 DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
                 String key = dataMap.getString(ACTION_KEY);
-                String groupName, itemName;
+                String groupName, itemName, checkString, dateString;
                 switch (key) {
                     case MAKE_GROUP_KEY:
                         Log.d("DATA", "MAKE_GROUP_KEY RECEIVED");
@@ -96,6 +101,38 @@ public class WearListenerService extends WearableListenerService {
                         groupName = dataMap.getString(GROUP_NAME_KEY);
                         itemReaderDbHelper.deleteItemsInGroup(groupName);
                         updateItemList();
+                        break;
+                    case CHECK_KEY:
+                        Log.d("DATA", "CHECK_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        itemName = dataMap.getString(ITEM_NAME_KEY);
+                        checkString = dataMap.getString(CHECK_KEY);
+                        switch (checkString) {
+                            case "0":
+                                itemReaderDbHelper.uncheckItem(groupName, itemName);
+                                updateItemList();
+                                break;
+                            case "1":
+                                itemReaderDbHelper.checkItem(groupName, itemName);
+                                updateItemList();
+                                break;
+                        }
+
+
+                        break;
+                    case DATE_KEY:
+                        Log.d("DATA", "DATE_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        itemName = dataMap.getString(ITEM_NAME_KEY);
+                        dateString = dataMap.getString(DATE_KEY);
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+                        try {
+                            Date date = sdf.parse(dateString);
+                            itemReaderDbHelper.updateDateCheckedItem(groupName, itemName, date);
+                            updateItemList();
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
                         break;
                 }
             }
