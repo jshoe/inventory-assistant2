@@ -270,7 +270,7 @@ public class GroupCheckScanMode extends Activity {
         } else {
             msg = "Are you sure you want to exit scan mode? You're missing some things!\n\n";
             for (Object str : unchecked) {
-                msg += "- " + str.toString() + "\n";
+                msg += "  * " + str.toString() + "\n";
             }
             builder.setPositiveButton("Ignore Missing",
                     new DialogInterface.OnClickListener() {
@@ -278,7 +278,7 @@ public class GroupCheckScanMode extends Activity {
                             finish();
                         }
                     });
-            builder.setNegativeButton("Cancel",
+            builder.setNegativeButton("Keep Scanning",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
@@ -337,7 +337,7 @@ public class GroupCheckScanMode extends Activity {
         @Override
         protected void onPostExecute(String result) {
             if (result != null) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                 checkOffItem(result);
             }
         }

@@ -102,7 +102,7 @@ public class ItemList extends Activity {
             public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3)
             {
                 String selectedItem = itemArray.get(position);
-                Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
             }
         });
     }
