@@ -316,6 +316,7 @@ public class GroupCheckScanMode extends Activity {
             builder.setPositiveButton("OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            checkOffItemsInDb(checkedOff);
                             finish();
                         }
                     });
@@ -350,6 +351,13 @@ public class GroupCheckScanMode extends Activity {
         for (Object i: checkedOff) {
             Log.d("checkOffItemsInDb", "Trying to check off: " + i.toString());
             itemReaderDbHelper.checkItem(groupName, i.toString());
+        }
+        Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
+        cursor.moveToPosition(-1);
+        while (cursor.moveToNext()) {
+            String itemName = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
+            String status = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.CHECKED));
+            Log.d("checkOffItemsInDb", "Status of " + itemName + " is " + status);
         }
     }
 
