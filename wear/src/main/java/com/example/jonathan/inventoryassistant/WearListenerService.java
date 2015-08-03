@@ -28,8 +28,12 @@ public class WearListenerService extends WearableListenerService {
     private static final String ITEM_NAME_KEY = "item-name";
     private static final String GROUP_NAME_KEY = "group-name";
 
+    private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
+    private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
+
     ItemReaderDbHelper itemReaderDbHelper;
     GroupReaderDbHelper groupReaderDbHelper;
+
 
     @Override
     public void onCreate() {
@@ -58,37 +62,53 @@ public class WearListenerService extends WearableListenerService {
                         Log.d("DATA", "MAKE_GROUP_KEY RECEIVED");
                         groupName = dataMap.getString(GROUP_NAME_KEY);
                         groupReaderDbHelper.insertGroup(groupName);
+                        updateGroupList();
                         break;
                     case DELETE_GROUP_KEY:
                         Log.d("DATA", "DELETE_GROUP_KEY RECEIVED");
                         groupName = dataMap.getString(GROUP_NAME_KEY);
                         groupReaderDbHelper.deleteGroup(groupName);
                         itemReaderDbHelper.deleteItemsInGroup(groupName);
+                        updateGroupList();
                         break;
                     case DELETE_ALL_GROUPS_KEY:
                         Log.d("DATA", "DELETE_ALL_GROUPS_KEY RECEIVED");
                         groupReaderDbHelper.deleteAllGroups();
                         itemReaderDbHelper.deleteAllItems();
+                        updateGroupList();
                         break;
                     case MAKE_ITEM_KEY:
                         Log.d("DATA", "MAKE_ITEM_KEY RECEIVED");
                         groupName = dataMap.getString(GROUP_NAME_KEY);
                         itemName = dataMap.getString(ITEM_NAME_KEY);
                         itemReaderDbHelper.insertItem(groupName, itemName);
+                        updateItemList();
                         break;
                     case DELETE_ITEM_KEY:
                         Log.d("DATA", "DELETE_ITEM_KEY RECEIVED");
                         groupName = dataMap.getString(GROUP_NAME_KEY);
                         itemName = dataMap.getString(ITEM_NAME_KEY);
                         itemReaderDbHelper.deleteItem(groupName, itemName);
+                        updateItemList();
                         break;
                     case DELETE_ALL_ITEMS_IN_GROUP_KEY:
                         Log.d("DATA", "DELETE_ALL_ITEMS_IN_GROUP_KEY RECEIVED");
                         groupName = dataMap.getString(GROUP_NAME_KEY);
                         itemReaderDbHelper.deleteItemsInGroup(groupName);
+                        updateItemList();
                         break;
                 }
             }
         }
+    }
+
+    public void updateGroupList() {
+        Intent i = new Intent(UPDATE_GROUP_LIST);
+        sendBroadcast(i);
+    }
+
+    public void updateItemList() {
+        Intent i = new Intent(UPDATE_ITEM_LIST);
+        sendBroadcast(i);
     }
 }

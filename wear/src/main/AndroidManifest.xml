@@ -25,6 +25,11 @@
         <activity
             android:name=".SelectGrp"
             android:label="@string/title_activity_select_grp" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ScanInItems"
@@ -37,11 +42,6 @@
         <activity
             android:name=".Welcome"
             android:label="@string/title_activity_welcome" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

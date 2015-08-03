@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.Date;
+
 import static com.example.jonathan.inventoryassistant.ItemReaderContract.ItemEntry;
 
 /**
@@ -41,6 +43,8 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(ItemEntry.GROUP_NAME, groupName);
         values.put(ItemEntry.ITEM_NAME, itemName);
+        values.put(ItemEntry.CHECKED, 0);
+        values.put(ItemEntry.DATE_CHECKED, "NULL");
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId;
@@ -103,5 +107,36 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     public void deleteAllItems() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from " + ItemEntry.TABLE_NAME);
+    }
+
+    public void checkItem(String groupName, String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("update " + ItemEntry.TABLE_NAME +
+                " set " + ItemEntry.CHECKED + "=" + 1 +
+                " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+        );
+    }
+
+    public void uncheckItem(String groupName, String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("update " + ItemEntry.TABLE_NAME +
+                        " set " + ItemEntry.CHECKED + "=" + 0 +
+                        " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                        " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+        );
+    }
+
+    public void updateDateCheckedItem(String groupName, String itemName, Date utilDateChecked) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        java.sql.Date date = new java.sql.Date(utilDateChecked.getTime());
+
+        db.execSQL("update " + ItemEntry.TABLE_NAME +
+                        " set " + ItemEntry.DATE_CHECKED + "=" + date +
+                        " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                        " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+        );
     }
 }

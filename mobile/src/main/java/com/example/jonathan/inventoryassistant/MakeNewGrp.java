@@ -102,7 +102,8 @@ public class MakeNewGrp extends Activity {
     public void deleteAllGroups(View view) {
         groupReaderDbHelper.deleteAllGroups();
         itemReaderDbHelper.deleteAllItems();
-        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(DELETE_ALL_GROUPS_KEY);
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, DELETE_ALL_GROUPS_KEY);
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult =
                 Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
