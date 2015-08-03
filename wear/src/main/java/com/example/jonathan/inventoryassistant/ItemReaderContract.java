@@ -16,7 +16,7 @@ public class ItemReaderContract {
         public static final String GROUP_NAME = "groupName";
         public static final String ITEM_NAME = "itemName";
         public static final String CHECKED = "checked";
-        public static final String DATE_CHECKED = "date-checked";
+        public static final String DATE_CHECKED = "date_checked";
 
         private static final String TEXT_TYPE = " TEXT";
         private static final String INT_TYPE = " INTEGER";

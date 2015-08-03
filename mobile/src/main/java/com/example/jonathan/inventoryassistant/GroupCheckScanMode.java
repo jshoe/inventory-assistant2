@@ -55,6 +55,8 @@ public class GroupCheckScanMode extends Activity {
 
     ItemReaderDbHelper itemReaderDbHelper;
     String groupName = "";
+    ArrayList<String> itemArray;
+    ListView itemList;
 
     public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "NfcDemo";
@@ -244,9 +246,6 @@ public class GroupCheckScanMode extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    ArrayList<String> itemArray;
-    ListView itemList;
-
     private void makeItemList() {
         setTitle("Group: " + groupName);
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
@@ -358,6 +357,7 @@ public class GroupCheckScanMode extends Activity {
         if (p != -1) {
             itemList.setItemChecked(p, true);
         }
+        sendCheckToWear(groupName, NfcTag);
     }
 
     private class NdefReaderTask extends AsyncTask<Tag, Void, String> {
@@ -399,7 +399,18 @@ public class GroupCheckScanMode extends Activity {
         }
     }
 
-    private void SendCheckToWear(String groupName, String itemName) {
+    private void sendCheckToWear(String groupName, String itemName) {
+        Log.d("sendCheckToWear", "Trying to check off: " + groupName + ", " + itemName);
+
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, CHECK_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
+        putDataMapReq.getDataMap().putString(CHECK_KEY, "1");
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
+
         String[] argsKey = new String[3];
         String[] argsValue = new String[3];
 
@@ -410,7 +421,6 @@ public class GroupCheckScanMode extends Activity {
         argsValue[0] = groupName;
         argsValue[1] = itemName;
         argsValue[2] = "1";
-
     }
 
     private void sendUncheckToWear(String groupName, String itemName) {
@@ -440,6 +450,7 @@ public class GroupCheckScanMode extends Activity {
     }
 
     private void sendDataMapRequest(String actionKey, String[] argsKey, String[] argsValue) {
+        Log.d("sendDataMapRequest", "Trying to send data");
         PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
         putDataMapReq.getDataMap().putString(ACTION_KEY, actionKey);
         for (int i = 0; i < argsKey.length; i++) {

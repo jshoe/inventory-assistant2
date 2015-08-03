@@ -100,16 +100,22 @@ public class SelectGrp extends Activity {
         groupList.setAdapter(arrayAdapter);
         cursor.close();
 
-        // register onClickListener to handle click events on each item
-        /*groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // argument position gives the index of item which is clicked
             public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                 String selectedGroup = groupArray.get(position);
-                // showItemList(selectedGroup);
+                showItemList(selectedGroup);
                 Toast.makeText(getApplicationContext(), "Group Selected : " + selectedGroup, Toast.LENGTH_SHORT).show();
-
             }
-        });*/
+        });
+    }
+
+    public void showItemList(String groupName) {
+        Intent i = new Intent();
+        i.putExtra("groupName", groupName);
+        i.setClass(this, ScanInItems.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     public class ReceiveMessages extends BroadcastReceiver {

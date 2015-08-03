@@ -38,7 +38,8 @@ public class WearListenerService extends WearableListenerService {
 
     ItemReaderDbHelper itemReaderDbHelper;
     GroupReaderDbHelper groupReaderDbHelper;
-
+    String groupName;
+    String itemName;
 
     @Override
     public void onCreate() {
@@ -56,12 +57,13 @@ public class WearListenerService extends WearableListenerService {
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
+        Log.d("onDataChanged", "Received a data change");
         for (DataEvent event : dataEvents) {
             DataItem item = event.getDataItem();
             if (item.getUri().getPath().compareTo(PATH) == 0) {
                 DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
                 String key = dataMap.getString(ACTION_KEY);
-                String groupName, itemName, checkString, dateString;
+                String checkString, dateString;
                 switch (key) {
                     case MAKE_GROUP_KEY:
                         Log.d("DATA", "MAKE_GROUP_KEY RECEIVED");
@@ -114,11 +116,16 @@ public class WearListenerService extends WearableListenerService {
                                 break;
                             case "1":
                                 itemReaderDbHelper.checkItem(groupName, itemName);
-                                updateItemList();
+                                Log.d("case CHECK_KEY", "Going to try to check off");
+                                Intent i = new Intent();
+                                i.putExtra("groupName", groupName);
+                                i.putExtra("itemName", itemName);
+                                i.setClass(this, ScanInItems.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(i);
+                                //updateItemList();
                                 break;
                         }
-
-
                         break;
                     case DATE_KEY:
                         Log.d("DATA", "DATE_KEY RECEIVED");
@@ -147,5 +154,15 @@ public class WearListenerService extends WearableListenerService {
     public void updateItemList() {
         Intent i = new Intent(UPDATE_ITEM_LIST);
         sendBroadcast(i);
+        showItemList(groupName);
+    }
+
+    public void showItemList(String groupName) {
+        Log.d("showItemList", "Refreshing the view with the change");
+        Intent i = new Intent();
+        i.putExtra("groupName", groupName);
+        i.setClass(this, ScanInItems.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 }
