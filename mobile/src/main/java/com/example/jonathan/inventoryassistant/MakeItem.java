@@ -36,7 +36,7 @@ public class MakeItem extends Activity {
         setContentView(R.layout.activity_make_item);
 
         setTitle("New Item");
-        Toast.makeText(getApplicationContext(), "Enter a name for an item to track!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Enter a name for your item!", Toast.LENGTH_LONG).show();
         itemReaderDbHelper = new ItemReaderDbHelper(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)

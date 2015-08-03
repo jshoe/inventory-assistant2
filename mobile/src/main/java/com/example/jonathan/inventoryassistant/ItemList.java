@@ -71,6 +71,30 @@ public class ItemList extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void deleteEntryDialog(final String itemName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String msg = "Delete item " + itemName + "?";
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        itemReaderDbHelper.deleteItem(groupName, itemName);
+                        makeItemList();
+                    }
+                });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        builder.setMessage(msg);
+        builder.setCancelable(true);
+        AlertDialog alert = builder.create();
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(20);
+    }
+
     ArrayList<String> itemArray;
 
     private void makeItemList() {
@@ -96,13 +120,19 @@ public class ItemList extends Activity {
         itemList.setAdapter(arrayAdapter);
 
         // register onClickListener to handle click events on each item
-        itemList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        itemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // argument position gives the index of item which is clicked
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3)
-            {
+            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                 String selectedItem = itemArray.get(position);
                 //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        itemList.setLongClickable(true);
+        itemList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                deleteEntryDialog(itemArray.get(pos));
+                return true;
             }
         });
     }

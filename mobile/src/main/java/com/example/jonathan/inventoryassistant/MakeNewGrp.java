@@ -37,7 +37,7 @@ public class MakeNewGrp extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_new_grp);
         setTitle("New Group");
-        Toast.makeText(getApplicationContext(), "Enter a name for your group of items!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Enter a name for your group!", Toast.LENGTH_LONG).show();
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         itemReaderDbHelper = new ItemReaderDbHelper(this);

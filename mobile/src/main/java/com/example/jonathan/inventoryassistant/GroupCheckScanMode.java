@@ -165,7 +165,7 @@ public class GroupCheckScanMode extends Activity {
 
     public void cancelScan(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to cancel the scan process?");
+        builder.setMessage("Are you sure you want to end the scan process?");
         builder.setCancelable(true);
         builder.setPositiveButton("Confirm",
                 new DialogInterface.OnClickListener() {
@@ -298,6 +298,7 @@ public class GroupCheckScanMode extends Activity {
             String[] parts = NfcTag.split(" --- ");
             NfcTag = parts[1];
         }
+        Toast.makeText(getApplicationContext(), "Checked off " + NfcTag + "!", Toast.LENGTH_SHORT).show();
         int p = getArrayPositionFromTitle(NfcTag);
         if (p != -1) {
             itemList.setItemChecked(p, true);
