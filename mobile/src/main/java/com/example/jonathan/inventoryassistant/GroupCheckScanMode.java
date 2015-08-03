@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -147,8 +148,11 @@ public class GroupCheckScanMode extends Activity {
     }
 
     public void showScanStartMessage() {
+        ImageView image = new ImageView(this);
+        image.setImageResource(R.drawable.nfc_pic);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Start scanning items in any order!");
+        builder.setMessage("Start scanning items in any order! Nearby items have been auto-detected.\n");
         builder.setCancelable(true);
         builder.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
@@ -157,10 +161,11 @@ public class GroupCheckScanMode extends Activity {
                         Log.d("showScanStartMessage", "User clicked OK");
                     }
                 });
+        builder.setView(image);
         AlertDialog alert = builder.create();
         alert.show();
         TextView textView = (TextView) alert.findViewById(android.R.id.message);
-        textView.setTextSize(20);
+        textView.setTextSize(18);
     }
 
     public void cancelScan(View view) {
