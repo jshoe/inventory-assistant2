@@ -95,7 +95,7 @@ public class GroupListWear extends Activity {
             groupArray.add("(no groups)");
         }
         ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, groupArray);
+                new ArrayAdapter<>(this, R.layout.black_text_listview, groupArray);
         groupList.setAdapter(arrayAdapter);
         cursor.close();
 
@@ -104,7 +104,7 @@ public class GroupListWear extends Activity {
             public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                 String selectedGroup = groupArray.get(position);
                 showItemList(selectedGroup);
-                Toast.makeText(getApplicationContext(), "Group Selected : " + selectedGroup, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Group Selected : " + selectedGroup, Toast.LENGTH_SHORT).show();
             }
         });
     }
