@@ -1,15 +1,19 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -70,6 +74,58 @@ public class ScanInItems extends Activity {
         if (p != -1) {
             itemList.setItemChecked(p, true);
         }
+    }
+
+    public void finishScan(View view) {
+        SparseBooleanArray items = itemList.getCheckedItemPositions();
+        ArrayList unchecked = new ArrayList();
+        ArrayList checkedOff = new ArrayList();
+        for (int i = 0; i < itemArray.size(); i++) {
+            if (!items.get(i)) {
+                unchecked.add(itemArray.get(i));
+            } else {
+                checkedOff.add(itemArray.get(i));
+            }
+        }
+        showFinishDialog(unchecked, checkedOff);
+    }
+
+    public void showFinishDialog(ArrayList unchecked, final ArrayList checkedOff) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String msg;
+        if (unchecked.size() == 0) {
+            msg = "All items checked off!";
+            builder.setPositiveButton("OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+        } else {
+            msg = "Missing items!\n\n";
+            for (Object str : unchecked) {
+                msg += " * " + str.toString() + "\n";
+            }
+            builder.setPositiveButton("Ignore",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //checkOffItemsInDb(checkedOff);
+                            finish();
+                        }
+                    });
+            builder.setNegativeButton("Back to Scan",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+        }
+        builder.setMessage(msg);
+        builder.setCancelable(true);
+        AlertDialog alert = builder.create();
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(15);
     }
 
     private void makeItemList() {
