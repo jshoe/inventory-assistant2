@@ -13,20 +13,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class GrpList extends Activity {
+public class GroupList extends Activity {
 
     GroupReaderDbHelper groupReaderDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grp_list);
+        setContentView(R.layout.activity_group_list);
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         makeGroupList();

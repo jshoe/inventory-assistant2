@@ -29,7 +29,7 @@
             android:label="@string/title_activity_group_check_scan_mode" >
         </activity>
         <activity
-            android:name=".GrpList"
+            android:name=".GroupList"
             android:label="@string/title_activity_grp_list" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

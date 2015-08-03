@@ -18,9 +18,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class SelectGrp extends Activity {
+public class GroupListWear extends Activity {
 
     GroupReaderDbHelper groupReaderDbHelper;
+    ArrayList<String> groupArray;
 
     ReceiveMessages myReceiver = null;
     Boolean myReceiverIsRegistered = false;
@@ -30,7 +31,7 @@ public class SelectGrp extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_grp);
+        setContentView(R.layout.activity_group_list);
 
         myReceiver = new ReceiveMessages();
 
@@ -77,8 +78,6 @@ public class SelectGrp extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    ArrayList<String> groupArray;
 
     private void makeGroupList() {
         Cursor cursor = groupReaderDbHelper.getAllGroups();

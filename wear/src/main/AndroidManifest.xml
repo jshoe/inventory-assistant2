@@ -21,7 +21,7 @@
         </service>
 
         <activity
-            android:name=".SelectGrp"
+            android:name=".GroupListWear"
             android:label="@string/title_activity_select_grp" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
