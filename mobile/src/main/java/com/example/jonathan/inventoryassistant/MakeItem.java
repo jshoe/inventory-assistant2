@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -35,6 +36,7 @@ public class MakeItem extends Activity {
         setContentView(R.layout.activity_make_item);
 
         setTitle("New Item");
+        Toast.makeText(getApplicationContext(), "Enter a name for your item!", Toast.LENGTH_LONG).show();
         itemReaderDbHelper = new ItemReaderDbHelper(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,13 +30,14 @@ public class MakeNewGrp extends Activity {
     GroupReaderDbHelper groupReaderDbHelper;
     ItemReaderDbHelper itemReaderDbHelper;
     GoogleApiClient mGoogleApiClient;
-
+    String groupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_new_grp);
         setTitle("New Group");
+        Toast.makeText(getApplicationContext(), "Enter a name for your group!", Toast.LENGTH_LONG).show();
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         itemReaderDbHelper = new ItemReaderDbHelper(this);
@@ -85,7 +87,7 @@ public class MakeNewGrp extends Activity {
     }
 
     public void makeNewGroup(View view) {
-        String groupName = ((EditText) findViewById(R.id.groupName)).getText().toString();
+        groupName = ((EditText) findViewById(R.id.groupName)).getText().toString();
         if (groupName.compareTo("") != 0) {
             groupReaderDbHelper.insertGroup(groupName);
             PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
@@ -94,9 +96,16 @@ public class MakeNewGrp extends Activity {
             PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
             PendingResult<DataApi.DataItemResult> pendingResult =
                     Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
-            Intent intent = new Intent(this, GrpList.class);
-            startActivity(intent);
+            startAddingItems();
         }
+    }
+
+    public void startAddingItems() {
+        Intent i = new Intent();
+        i.setClass(this, MakeItem.class);
+        i.putExtra("groupName", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     public void deleteAllGroups(View view) {

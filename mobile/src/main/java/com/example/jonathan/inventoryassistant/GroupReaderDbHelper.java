@@ -13,6 +13,7 @@ import static com.example.jonathan.inventoryassistant.GroupReaderContract.GroupE
 /**
  * Created by randyramadhana on 7/31/15.
  */
+
 public class GroupReaderDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "GroupReader.db";

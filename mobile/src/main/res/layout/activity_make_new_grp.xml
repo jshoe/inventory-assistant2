@@ -28,6 +28,7 @@
         android:layout_alignEnd="@+id/groupName"
         android:onClick="makeNewGroup" />
 
+    <!--
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,5 +40,6 @@
         android:layout_toLeftOf="@+id/makeButton"
         android:onClick="deleteAllGroups"
         android:layout_marginRight="20dp" />
+    -->
 
 </RelativeLayout>
