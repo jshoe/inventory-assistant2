@@ -34,12 +34,14 @@ public class NfcWrite extends Activity {
     private PendingIntent mNfcPendingIntent;
     private boolean writeProtect = false;
     private Context context;
+    String groupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc_write);
         context = getApplicationContext();
+        groupName = getIntent().getStringExtra("groupName");
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mNfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
                 getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP), 0);
@@ -91,7 +93,7 @@ public class NfcWrite extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         String textToWrite = getIntent().getStringExtra("textToWrite");
-        String groupName = getIntent().getStringExtra("groupName");
+        groupName = getIntent().getStringExtra("groupName");
         if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             // validate that this tag can be written
             Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
@@ -125,6 +127,12 @@ public class NfcWrite extends Activity {
         } */
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void skipScan(View view) {
+        Intent i = new Intent(this, ItemList.class);
+        i.putExtra("groupName", groupName);
+        startActivity(i);
     }
 
     public WriteResponse writeTag(NdefMessage message, Tag tag) {

@@ -19,4 +19,17 @@
         android:layout_below="@+id/help_msg"
         android:src="@drawable/nfc_pic" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skip"
+        android:id="@+id/skipScan"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:background="@drawable/round_button_yellow"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="skipScan"
+        android:layout_toEndOf="@+id/make_new" />
+
 </RelativeLayout>

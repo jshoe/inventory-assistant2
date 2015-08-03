@@ -103,13 +103,12 @@ public class GroupCheckScanMode extends Activity {
 
         if (mNfcAdapter == null) {
             Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-        if (!mNfcAdapter.isEnabled()) {
-            //mTextView.setText("NFC is disabled.");
         } else {
-            //mTextView.setText(R.string.explanation);
+            if (!mNfcAdapter.isEnabled()) {
+                //mTextView.setText("NFC is disabled.");
+            } else {
+                //mTextView.setText(R.string.explanation);
+            }
         }
         handleIntent(getIntent());
     }
@@ -124,12 +123,16 @@ public class GroupCheckScanMode extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        setupForegroundDispatch(this, mNfcAdapter);
+        if (mNfcAdapter != null) {
+            setupForegroundDispatch(this, mNfcAdapter);
+        }
     }
 
     @Override
     protected void onPause() {
-        stopForegroundDispatch(this, mNfcAdapter);
+        if (mNfcAdapter != null) {
+            stopForegroundDispatch(this, mNfcAdapter);
+        }
         super.onPause();
     }
 
@@ -140,6 +143,9 @@ public class GroupCheckScanMode extends Activity {
 
     private void handleIntent(Intent intent) { // For NFC
         String action = intent.getAction();
+        if (mNfcAdapter == null) {
+            return;
+        }
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
             String type = intent.getType();
             if (MIME_TEXT_PLAIN.equals(type)) {
