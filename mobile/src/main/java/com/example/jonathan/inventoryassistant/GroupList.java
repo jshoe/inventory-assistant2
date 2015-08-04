@@ -39,7 +39,7 @@ public class GroupList extends Activity {
 
     public void makeNewGroup(View view) {
         Intent i = new Intent();
-        i.setClass(this, MakeNewGrp.class);
+        i.setClass(this, MakeNewGroup.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }

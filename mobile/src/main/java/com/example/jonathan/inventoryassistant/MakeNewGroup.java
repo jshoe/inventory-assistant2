@@ -3,7 +3,6 @@ package com.example.jonathan.inventoryassistant;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,13 +12,12 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
-public class MakeNewGrp extends Activity {
+public class MakeNewGroup extends Activity {
 
     private static final String PATH = "/database-action";
     private static final String ACTION_KEY = "action-key";
@@ -35,7 +33,7 @@ public class MakeNewGrp extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_new_grp);
+        setContentView(R.layout.activity_make_new_group);
         setTitle("New Group");
         Toast.makeText(getApplicationContext(), "Enter a name for your group!", Toast.LENGTH_LONG).show();
 

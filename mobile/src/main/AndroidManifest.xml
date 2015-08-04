@@ -21,7 +21,7 @@
         </service>
 
         <activity
-            android:name=".MakeNewGrp"
+            android:name=".MakeNewGroup"
             android:label="@string/title_activity_make_new_grp" >
         </activity>
         <activity
