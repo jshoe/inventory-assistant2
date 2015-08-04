@@ -3,6 +3,7 @@ package com.example.jonathan.inventoryassistant;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -31,6 +33,8 @@ public class ScanInItems extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_in_items);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         groupName = getIntent().getStringExtra("groupName");
         toCheckOff = getIntent().getStringExtra("itemName");
         itemReaderDbHelper = new ItemReaderDbHelper(this);
@@ -91,6 +95,14 @@ public class ScanInItems extends Activity {
         showFinishDialog(unchecked, checkedOff);
     }
 
+    public void backToGroupList() {
+        Intent i = new Intent();
+        i.putExtra("groupName", groupName);
+        i.setClass(this, GroupListWear.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
     public void showFinishDialog(ArrayList unchecked, final ArrayList checkedOff) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String msg;
@@ -99,7 +111,7 @@ public class ScanInItems extends Activity {
             builder.setPositiveButton("OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            finish();
+                            backToGroupList();
                         }
                     });
         } else {
@@ -124,9 +136,9 @@ public class ScanInItems extends Activity {
         builder.setMessage(msg);
         builder.setCancelable(true);
         AlertDialog alert = builder.create();
-        TextView textView = (TextView) alert.findViewById(android.R.id.message);
-        textView.setTextSize(15);
         alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(18);
     }
 
     public void deleteEntryDialog(final String itemName) {

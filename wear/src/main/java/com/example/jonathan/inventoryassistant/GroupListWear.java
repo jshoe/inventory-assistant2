@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -35,6 +36,7 @@ public class GroupListWear extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         myReceiver = new ReceiveMessages();
 
@@ -95,7 +97,7 @@ public class GroupListWear extends Activity {
             Log.d("GrpLst", "Trying to print out all the items in the GroupList");
         }
         if (groupArray.size() == 0) {
-            groupArray.add("(no groups)");
+            groupArray.add("          (no groups)");
         }
         ArrayAdapter<String> arrayAdapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, groupArray);
