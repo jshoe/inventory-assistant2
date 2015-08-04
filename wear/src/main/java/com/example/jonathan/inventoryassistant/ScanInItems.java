@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,9 +124,33 @@ public class ScanInItems extends Activity {
         builder.setMessage(msg);
         builder.setCancelable(true);
         AlertDialog alert = builder.create();
-        alert.show();
         TextView textView = (TextView) alert.findViewById(android.R.id.message);
         textView.setTextSize(15);
+        alert.show();
+    }
+
+    public void deleteEntryDialog(final String itemName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String msg = "Delete item " + itemName + "?";
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        itemReaderDbHelper.deleteItem(groupName, itemName);
+                        makeItemList();
+                    }
+                });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        builder.setMessage(msg);
+        builder.setCancelable(true);
+        AlertDialog alert = builder.create();
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(20);
     }
 
     private void makeItemList() {
@@ -167,7 +192,16 @@ public class ScanInItems extends Activity {
         itemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // argument position gives the index of item which is clicked
             public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+                //Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
                 String selectedItem = itemArray.get(position);
+            }
+        });
+
+        itemList.setLongClickable(true);
+        itemList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                deleteEntryDialog(itemArray.get(pos));
+                return true;
             }
         });
     }

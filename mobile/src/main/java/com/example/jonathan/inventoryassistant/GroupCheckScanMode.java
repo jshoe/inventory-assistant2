@@ -199,7 +199,7 @@ public class GroupCheckScanMode extends Activity {
         image.setImageResource(R.drawable.nfc_pic);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Start scanning items in any order! Nearby items have been auto-detected.\n");
+        builder.setMessage("Scan items in any order. Nearby tags have been auto-detected!\n");
         builder.setCancelable(true);
         builder.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
@@ -212,7 +212,7 @@ public class GroupCheckScanMode extends Activity {
         AlertDialog alert = builder.create();
         alert.show();
         TextView textView = (TextView) alert.findViewById(android.R.id.message);
-        textView.setTextSize(18);
+        textView.setTextSize(20);
     }
 
     public void cancelScan(View view) {

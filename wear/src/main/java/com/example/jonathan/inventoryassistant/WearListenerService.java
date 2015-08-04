@@ -154,7 +154,7 @@ public class WearListenerService extends WearableListenerService {
     public void updateItemList() {
         Intent i = new Intent(UPDATE_ITEM_LIST);
         sendBroadcast(i);
-        showItemList(groupName);
+        //showItemList(groupName);
     }
 
     public void showItemList(String groupName) {

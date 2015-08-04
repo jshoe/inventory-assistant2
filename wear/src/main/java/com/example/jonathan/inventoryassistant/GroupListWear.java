@@ -1,8 +1,10 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -95,18 +98,68 @@ public class GroupListWear extends Activity {
             groupArray.add("(no groups)");
         }
         ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(this, R.layout.black_text_listview, groupArray);
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, groupArray);
         groupList.setAdapter(arrayAdapter);
         cursor.close();
 
         groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // argument position gives the index of item which is clicked
             public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+                //Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
                 String selectedGroup = groupArray.get(position);
                 showItemList(selectedGroup);
+                //showScanStartMessage();
                 //Toast.makeText(getApplicationContext(), "Group Selected : " + selectedGroup, Toast.LENGTH_SHORT).show();
             }
         });
+
+        groupList.setLongClickable(true);
+        groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                deleteEntryDialog(groupArray.get(pos));
+                return true;
+            }
+        });
+    }
+
+    public void showScanStartMessage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Scan items in any order. Nearby tags have been auto-detected!\n");
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(20);
+    }
+
+    public void deleteEntryDialog(final String groupName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String msg = "Delete the " + groupName + " group?";
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        groupReaderDbHelper.deleteGroup(groupName);
+                        makeGroupList();
+                    }
+                });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        builder.setMessage(msg);
+        builder.setCancelable(true);
+        AlertDialog alert = builder.create();
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(20);
     }
 
     public void showItemList(String groupName) {

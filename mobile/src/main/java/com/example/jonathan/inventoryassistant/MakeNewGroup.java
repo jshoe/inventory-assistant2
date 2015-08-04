@@ -1,12 +1,17 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -94,7 +99,7 @@ public class MakeNewGroup extends Activity {
             PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
             PendingResult<DataApi.DataItemResult> pendingResult =
                     Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
-            startAddingItems();
+            finishCreation();
         }
     }
 
@@ -104,6 +109,23 @@ public class MakeNewGroup extends Activity {
         i.putExtra("groupName", groupName);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
+    }
+
+    public void finishCreation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Now it's time to add items to track!");
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        startAddingItems();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(22);
     }
 
     public void deleteAllGroups(View view) {

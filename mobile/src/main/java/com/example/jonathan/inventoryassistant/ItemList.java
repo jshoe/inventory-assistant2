@@ -124,6 +124,7 @@ public class ItemList extends Activity {
             // argument position gives the index of item which is clicked
             public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                 String selectedItem = itemArray.get(position);
+                Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
                 //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
             }
         });
