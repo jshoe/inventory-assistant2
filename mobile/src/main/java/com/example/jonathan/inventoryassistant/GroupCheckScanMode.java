@@ -359,6 +359,7 @@ public class GroupCheckScanMode extends Activity {
             String status = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.CHECKED));
             Log.d("checkOffItemsInDb", "Status of " + itemName + " is " + status);
         }
+        cursor.close();
     }
 
     public void checkOffItem(String NfcTag) {
