@@ -1,24 +1,26 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
 
-public class ItemScanConfirm extends Activity {
+public class WelcomeScreenWear extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_scan_confirm);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setContentView(R.layout.activity_welcome);
+
+        Intent intent = new Intent(this, WearListenerService.class);
+        startService(intent);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_item_scan_confirm, menu);
+        getMenuInflater().inflate(R.menu.menu_welcome_screen_wear, menu);
         return true;
     }
 
