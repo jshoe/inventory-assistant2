@@ -53,7 +53,7 @@ public class WriteNfcTag extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_nfc_write_test, menu);
+        getMenuInflater().inflate(R.menu.menu_write_nfc_tag, menu);
         return true;
     }
 
