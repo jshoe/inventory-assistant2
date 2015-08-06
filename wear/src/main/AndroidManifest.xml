@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ScanInItems"
+            android:name=".ItemListWear"
             android:label="@string/title_activity_scan_in_items" >
         </activity>
         <activity

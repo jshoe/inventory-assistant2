@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -167,7 +166,7 @@ public class GroupListWear extends Activity {
     public void showItemList(String groupName) {
         Intent i = new Intent();
         i.putExtra("groupName", groupName);
-        i.setClass(this, ScanInItems.class);
+        i.setClass(this, ItemListWear.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }

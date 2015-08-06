@@ -1,8 +1,6 @@
 package com.example.jonathan.inventoryassistant;
 
-import android.app.Service;
 import android.content.Intent;
-import android.os.IBinder;
 import android.util.Log;
 
 import com.google.android.gms.wearable.DataEvent;
@@ -120,7 +118,7 @@ public class WearListenerService extends WearableListenerService {
                                 Intent i = new Intent();
                                 i.putExtra("groupName", groupName);
                                 i.putExtra("itemName", itemName);
-                                i.setClass(this, ScanInItems.class);
+                                i.setClass(this, ItemListWear.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(i);
                                 //updateItemList();
@@ -161,7 +159,7 @@ public class WearListenerService extends WearableListenerService {
         Log.d("showItemList", "Refreshing the view with the change");
         Intent i = new Intent();
         i.putExtra("groupName", groupName);
-        i.setClass(this, ScanInItems.class);
+        i.setClass(this, ItemListWear.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }

@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +41,7 @@ public class ItemList extends Activity {
 
     public void makeNewItem(View view) {
         Intent i = new Intent();
-        i.setClass(this, MakeItem.class);
+        i.setClass(this, NewItem.class);
         i.putExtra("groupName", groupName);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
@@ -50,7 +49,7 @@ public class ItemList extends Activity {
 
     public void startScan(View view) {
         Intent i = new Intent();
-        i.setClass(this, GroupCheckScanMode.class);
+        i.setClass(this, GroupScanMode.class);
         i.putExtra("groupName", groupName);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
