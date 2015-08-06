@@ -113,6 +113,7 @@ public class WearListenerService extends WearableListenerService {
                                 updateItemList();
                                 break;
                             case "1":
+                                // TODOs : change to using broadcast receiver instead
                                 itemReaderDbHelper.checkItem(groupName, itemName);
                                 Log.d("case CHECK_KEY", "Going to try to check off");
                                 Intent i = new Intent();
@@ -152,15 +153,5 @@ public class WearListenerService extends WearableListenerService {
     public void updateItemList() {
         Intent i = new Intent(UPDATE_ITEM_LIST);
         sendBroadcast(i);
-        //showItemList(groupName);
-    }
-
-    public void showItemList(String groupName) {
-        Log.d("showItemList", "Refreshing the view with the change");
-        Intent i = new Intent();
-        i.putExtra("groupName", groupName);
-        i.setClass(this, ItemListWear.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
     }
 }

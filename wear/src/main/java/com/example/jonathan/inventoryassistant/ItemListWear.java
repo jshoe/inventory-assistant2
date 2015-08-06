@@ -37,6 +37,7 @@ public class ItemListWear extends Activity {
         toCheckOff = getIntent().getStringExtra("itemName");
         itemReaderDbHelper = new ItemReaderDbHelper(this);
         makeItemList();
+        // TODOs : change to broadcast receiver
         checkOffItem(toCheckOff);
     }
 
@@ -71,7 +72,7 @@ public class ItemListWear extends Activity {
         return -1;
     }
 
-    public void checkOffItem(String tag) {
+    private void checkOffItem(String tag) {
         Log.d("checkOffItem", "Going to try to check off " + tag);
         int p = getArrayPositionFromTitle(tag);
         if (p != -1) {
