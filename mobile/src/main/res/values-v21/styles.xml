@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="android:Theme.Material.Light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
     <style name="Button">
         <item name="android:textColor">@color/primary_material_light</item>
@@ -11,5 +12,13 @@
         <item name="android:elevation">1dp</item>
         <item name="android:translationZ">1dp</item>
         <item name="android:background">@drawable/round_button_yellow</item>
+    </style>
+    <style name="MyActionBar" parent="android:Widget.Material.Light.ActionBar.Solid">
+        <item name="android:background">#55acee</item>
+        <item name="android:titleTextStyle">@style/TitleBarTextColor</item>
+    </style>
+
+    <style name="TitleBarTextColor" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#ffffff</item>
     </style>
 </resources>
