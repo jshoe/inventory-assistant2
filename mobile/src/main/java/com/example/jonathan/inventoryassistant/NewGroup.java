@@ -77,6 +77,15 @@ public class NewGroup extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.setClass(this, GroupList.class);
+        i.putExtra("groupName", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_new_group, menu);

@@ -43,6 +43,14 @@ public class GroupList extends Activity {
     }
 
     @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        groupReaderDbHelper = new GroupReaderDbHelper(this);
+        makeGroupList();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_group_list, menu);
@@ -118,30 +126,35 @@ public class GroupList extends Activity {
             groupArray.add(groupName);
             Log.d("GrpLst", "Trying to print out all the items in the GroupList");
         }
+        cursor.close();
         if (groupArray.size() == 0) {
             groupArray.add("(no groups)");
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, groupArray);
+            groupList.setAdapter(arrayAdapter);
+            groupList.setOnItemClickListener(null);
+        } else {
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, groupArray);
+            groupList.setAdapter(arrayAdapter);
+
+            // register onClickListener to handle click events on each item
+            groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                // argument position gives the index of item which is clicked
+                public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+                    Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
+                    String selectedGroup = groupArray.get(position);
+                    showItemList(selectedGroup);
+                }
+            });
+
+            groupList.setLongClickable(true);
+            groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                    deleteEntryDialog(groupArray.get(pos));
+                    return true;
+                }
+            });
         }
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, groupArray);
-        groupList.setAdapter(arrayAdapter);
-        cursor.close();
-
-        // register onClickListener to handle click events on each item
-        groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // argument position gives the index of item which is clicked
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-                Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
-                String selectedGroup = groupArray.get(position);
-                showItemList(selectedGroup);
-            }
-        });
-
-        groupList.setLongClickable(true);
-        groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                deleteEntryDialog(groupArray.get(pos));
-                return true;
-            }
-        });
     }
 }

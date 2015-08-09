@@ -44,6 +44,22 @@ public class ItemList extends Activity {
     }
 
     @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        itemReaderDbHelper = new ItemReaderDbHelper(this);
+        makeItemList();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.setClass(this, GroupList.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_item_list, menu);
@@ -126,33 +142,36 @@ public class ItemList extends Activity {
         while (cursor.moveToNext()) {
             String itemName = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
             itemArray.add(itemName);
-            Log.d("ItemList", "Trying to print out all the items in the ItemList");
-        }
-        if (itemArray.size() == 0) {
-            itemArray.add("(no items)");
         }
         cursor.close();
+        if (itemArray.size() == 0) {
+            itemArray.add("(no items)");
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, itemArray);
+            itemList.setAdapter(arrayAdapter);
+            itemList.setOnItemClickListener(null);
+        } else {
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, itemArray);
+            itemList.setAdapter(arrayAdapter);
 
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, itemArray);
-        itemList.setAdapter(arrayAdapter);
+            // register onClickListener to handle click events on each item
+            itemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                // argument position gives the index of item which is clicked
+                public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+                    String selectedItem = itemArray.get(position);
+                    Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
+                }
+            });
 
-        // register onClickListener to handle click events on each item
-        itemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // argument position gives the index of item which is clicked
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-                String selectedItem = itemArray.get(position);
-                Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
-                //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        itemList.setLongClickable(true);
-        itemList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                deleteEntryDialog(itemArray.get(pos));
-                return true;
-            }
-        });
+            itemList.setLongClickable(true);
+            itemList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                    deleteEntryDialog(itemArray.get(pos));
+                    return true;
+                }
+            });
+        }
     }
 }

@@ -138,6 +138,15 @@ public class GroupScanMode extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.setClass(this, ItemList.class);
+        i.putExtra("groupName", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
+    @Override
     protected void onPause() {
         if (mNfcAdapter != null) {
             stopForegroundDispatch(this, mNfcAdapter);

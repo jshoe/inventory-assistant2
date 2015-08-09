@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -66,6 +67,15 @@ public class WriteNfcTag extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_write_nfc_tag, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.setClass(this, ItemList.class);
+        i.putExtra("groupName", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     @Override

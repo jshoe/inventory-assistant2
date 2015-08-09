@@ -78,6 +78,16 @@ public class NewItem extends Activity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.setClass(this, ItemList.class);
+        String groupName = getIntent().getStringExtra("groupName");
+        i.putExtra("groupName", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
     public void makeNewItem(View view) {
         String itemName = ((EditText) findViewById(R.id.itemName)).getText().toString();
         String groupName = getIntent().getStringExtra("groupName");
