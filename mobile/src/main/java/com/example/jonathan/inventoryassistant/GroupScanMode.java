@@ -71,6 +71,10 @@ public class GroupScanMode extends Activity {
         groupName = getIntent().getStringExtra("groupName");
         itemReaderDbHelper = new ItemReaderDbHelper(this);
 
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setLogo(R.drawable.action_bar_logo);
+        getActionBar().setDisplayUseLogoEnabled(true);
+
         initiateNfcComponents();
         makeItemList();
         showScanStartMessage();

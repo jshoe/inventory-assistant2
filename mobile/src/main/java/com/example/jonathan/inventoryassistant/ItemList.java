@@ -28,6 +28,10 @@ public class ItemList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
 
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setLogo(R.drawable.action_bar_logo);
+        getActionBar().setDisplayUseLogoEnabled(true);
+
         itemReaderDbHelper = new ItemReaderDbHelper(this);
         makeItemList();
     }

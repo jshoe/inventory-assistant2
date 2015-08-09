@@ -14,7 +14,7 @@
         <item name="android:background">@drawable/round_button_yellow</item>
     </style>
     <style name="MyActionBar" parent="android:Widget.Material.Light.ActionBar.Solid">
-        <item name="android:background">#55acee</item>
+        <item name="android:background">#4c9de9</item>
         <item name="android:titleTextStyle">@style/TitleBarTextColor</item>
     </style>
 

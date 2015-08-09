@@ -2,11 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="30dp"
+    android:background="#fefefe"
     tools:context="com.example.jonathan.inventoryassistant.WriteNfcTag">
 
     <TextView android:text="Attach the tag to your item. Then hold your phone to the tag!" android:layout_width="wrap_content"
         android:textSize="25sp"
         android:id="@+id/help_msg"
+        android:textColor="#000000"
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content" />
 
