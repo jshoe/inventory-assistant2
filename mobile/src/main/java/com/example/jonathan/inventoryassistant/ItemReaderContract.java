@@ -39,16 +39,16 @@ public class ItemReaderContract {
                         ItemEntry.ITEM_NAME + TEXT_TYPE + COMMA_SEP +
                         ItemEntry.NFC_TAG + TEXT_TYPE + COMMA_SEP +
                         ItemEntry.CHECKED + INT_TYPE + COMMA_SEP +
-                        ItemEntry.DATE_CHECKED1 + DATE_TYPE + COMMA_SEP +
-                        ItemEntry.DATE_CHECKED2 + DATE_TYPE + COMMA_SEP +
-                        ItemEntry.DATE_CHECKED3 + DATE_TYPE + COMMA_SEP +
-                        ItemEntry.DATE_CHECKED4 + DATE_TYPE + COMMA_SEP +
-                        ItemEntry.DATE_CHECKED5 + DATE_TYPE + COMMA_SEP +
-                        ItemEntry.DATE_CHECKED6 + DATE_TYPE + COMMA_SEP +
-                        ItemEntry.DATE_CHECKED7 + DATE_TYPE + COMMA_SEP +
-                        ItemEntry.DATE_CHECKED8 + DATE_TYPE + COMMA_SEP +
-                        ItemEntry.DATE_CHECKED9 + DATE_TYPE + COMMA_SEP +
-                        ItemEntry.DATE_CHECKED10 + DATE_TYPE +
+                        ItemEntry.DATE_CHECKED1 + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.DATE_CHECKED2 + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.DATE_CHECKED3 + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.DATE_CHECKED4 + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.DATE_CHECKED5 + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.DATE_CHECKED6 + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.DATE_CHECKED7 + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.DATE_CHECKED8 + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.DATE_CHECKED9 + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.DATE_CHECKED10 + TEXT_TYPE +
                 " )";
 
         protected static final String SQL_DELETE_ENTRIES =

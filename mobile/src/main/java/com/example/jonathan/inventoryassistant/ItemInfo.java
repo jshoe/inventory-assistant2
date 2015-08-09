@@ -105,18 +105,19 @@ public class ItemInfo extends Activity {
         ListView logList = (ListView) findViewById(R.id.scanLog);
 
         Cursor cursor = itemReaderDbHelper.getItem(groupName, itemName);
+        cursor.moveToFirst();
         logArray = new ArrayList<>();
 
-//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED1)));
-//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED2)));
-//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED3)));
-//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED4)));
-//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED5)));
-//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED6)));
-//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED7)));
-//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED8)));
-//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED9)));
-//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED10)));
+        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED1)));
+        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED2)));
+        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED3)));
+        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED4)));
+        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED5)));
+        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED6)));
+        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED7)));
+        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED8)));
+        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED9)));
+        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED10)));
         cursor.close();
 
         if (logArray.size() == 0) {

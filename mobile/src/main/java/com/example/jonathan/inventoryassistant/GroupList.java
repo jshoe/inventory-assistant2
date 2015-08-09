@@ -123,8 +123,8 @@ public class GroupList extends Activity {
                                     ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId() == R.id.groupList) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-            menu.setHeaderTitle(groupArray.get(info.position));
-            String[] menuItems = {"Hello"};
+            menu.setHeaderTitle("Group: " + groupArray.get(info.position));
+            String[] menuItems = {"Rename", "Delete"};
             for (int i = 0; i < menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);
             }
@@ -239,14 +239,14 @@ public class GroupList extends Activity {
             });
 
             groupList.setLongClickable(true);
-//            groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-//                    deleteEntryDialog(groupArray.get(pos));
-//                    return true;
-//                }
-//            });
+            groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                    deleteEntryDialog(groupArray.get(pos));
+                    return true;
+                }
+            });
 
-            registerForContextMenu(groupList);
+            //registerForContextMenu(groupList);
         }
     }
 
