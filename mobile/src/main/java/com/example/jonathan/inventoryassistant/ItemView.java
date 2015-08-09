@@ -7,7 +7,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class ItemView extends Activity {
 
@@ -49,6 +52,19 @@ public class ItemView extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_item_view, menu);
         return true;
+    }
+
+    public void showOnMap(View view) {
+        Intent i = new Intent();
+        i.setClass(this, ScanLogMapView.class);
+        Bundle b = new Bundle();
+        b.putDouble("latitude", 37.871891);
+        b.putDouble("longitude", -122.258532);
+        b.putString("title", "Check-In");
+        b.putString("snippet", "Location");
+        i.putExtras(b);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     @Override

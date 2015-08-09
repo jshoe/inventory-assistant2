@@ -16,6 +16,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,6 +54,8 @@ public class ScanLogMapView extends FragmentActivity implements
     private static final LatLng SYDNEY = new LatLng(-33.87365, 151.20689);
     private static final LatLng ADELAIDE = new LatLng(-34.92873, 138.59995);
     private static final LatLng PERTH = new LatLng(-31.952854, 115.857342);
+
+    LatLng position = new LatLng(37.871891, -122.258532);
 
     /** Demonstrates customizing the info window and/or its contents. */
     class CustomInfoWindowAdapter implements InfoWindowAdapter {
@@ -146,9 +150,26 @@ public class ScanLogMapView extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_map_test);
 
+        Bundle b = getIntent().getExtras();
+        Double latitude = b.getDouble("latitude");
+        Double longitude = b.getDouble("longitude");
+        position = new LatLng(latitude, longitude);
+        formatActionBar();
+
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    public void formatActionBar() {
+        setTitle("Scan Location");
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setLogo(R.drawable.action_bar_logo);
+        getActionBar().setDisplayUseLogoEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(getResources().getColor(R.color.backArrow), PorterDuff.Mode.SRC_ATOP);
+        getActionBar().setHomeAsUpIndicator(upArrow);
     }
 
     @Override
@@ -184,11 +205,10 @@ public class ScanLogMapView extends FragmentActivity implements
                 @Override
                 public void onGlobalLayout() {
                     LatLngBounds bounds = new LatLngBounds.Builder()
-                            .include(PERTH)
-                            .include(SYDNEY)
-                            .include(ADELAIDE)
-                            .include(BRISBANE)
-                            .include(MELBOURNE)
+                            .include(new LatLng(37.859284, -122.268323))
+                            .include(new LatLng(37.872210, -122.259108))
+                            .include(new LatLng(37.876614, -122.268886))
+                            .include(new LatLng(37.862826, -122.243895))
                             .build();
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                         mapView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -201,23 +221,34 @@ public class ScanLogMapView extends FragmentActivity implements
         }
     }
 
-    private void addMarkersToMap() {
-        // Uses a colored icon.
-        mBrisbane = mMap.addMarker(new MarkerOptions()
-                .position(BRISBANE)
-                .title("Brisbane")
-                .snippet("Population: 2,074,200")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+    Marker mCheck;
 
-        // A few more markers for good measure.
-        mPerth = mMap.addMarker(new MarkerOptions()
-                .position(PERTH)
-                .title("Perth")
-                .snippet("Population: 1,738,800"));
-        mAdelaide = mMap.addMarker(new MarkerOptions()
-                .position(ADELAIDE)
-                .title("Adelaide")
-                .snippet("Population: 1,213,000"));
+    private void addMarkersToMap() {
+        Bundle b = getIntent().getExtras();
+        String title = b.getString("title");
+        String snippet = b.getString("snippet");
+
+        mCheck = mMap.addMarker(new MarkerOptions()
+                .position(position)
+                .title(title)
+                .snippet(snippet));
+
+        // Uses a colored icon.
+//        mBrisbane = mMap.addMarker(new MarkerOptions()
+//                .position(BRISBANE)
+//                .title("Brisbane")
+//                .snippet("Population: 2,074,200")
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+//
+//        // A few more markers for good measure.
+//        mPerth = mMap.addMarker(new MarkerOptions()
+//                .position(PERTH)
+//                .title("Perth")
+//                .snippet("Population: 1,738,800"));
+//        mAdelaide = mMap.addMarker(new MarkerOptions()
+//                .position(ADELAIDE)
+//                .title("Adelaide")
+//                .snippet("Population: 1,213,000"));
     }
 
     private boolean checkReady() {

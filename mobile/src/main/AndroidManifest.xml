@@ -80,6 +80,7 @@
         </activity>
         <activity
             android:name=".ScanLogMapView"
+            android:parentActivityName=".ItemView"
             android:label="Map Test" >
         </activity>
         <activity
