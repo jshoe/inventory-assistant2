@@ -20,7 +20,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_group"
+        android:text="Add Group"
         android:id="@+id/button"
         android:background="@drawable/round_button_green"
         android:textColor="#FFFFFF"

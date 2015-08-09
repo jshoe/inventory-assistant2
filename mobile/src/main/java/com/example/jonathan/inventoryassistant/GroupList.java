@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class GroupList extends Activity {
 
     GroupReaderDbHelper groupReaderDbHelper;
+    ItemReaderDbHelper itemReaderDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class GroupList extends Activity {
         getActionBar().setHomeAsUpIndicator(upArrow);
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
+        itemReaderDbHelper = new ItemReaderDbHelper(this);
         makeGroupList();
     }
 
@@ -83,6 +85,7 @@ public class GroupList extends Activity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         groupReaderDbHelper.deleteGroup(groupName);
+                        itemReaderDbHelper.deleteItemsInGroup(groupName);
                         makeGroupList();
                     }
                 });

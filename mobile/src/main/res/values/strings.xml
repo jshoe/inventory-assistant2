@@ -26,5 +26,6 @@
     <string name="welcome1">A more organized life is just a few steps away. Let\'s start scanning in items to track.</string>
     <string name="start">Start</string>
     <string name="title_activity_item_view">ItemView</string>
+    <string name="title_activity_map_test">MapTest</string>
 </resources>
 

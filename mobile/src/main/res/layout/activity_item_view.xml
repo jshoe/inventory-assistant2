@@ -4,9 +4,10 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:clipToPadding="false"
     tools:context="com.example.jonathan.inventoryassistant.ItemView">
 
-    <TextView android:text="Item info:" android:layout_width="wrap_content"
+    <TextView android:text="Scan history:" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:textColor="#000000"
@@ -14,4 +15,43 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scanLog"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rename Item"
+        android:id="@+id/button"
+        android:background="@drawable/round_button_yellow"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:elevation="30dp"
+        android:onClick="showOnMap"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete Item"
+        android:id="@+id/initiate_scan"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:elevation="30dp"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:background="@drawable/round_button_red"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="startScan"
+        android:layout_toEndOf="@+id/make_new" />
 </RelativeLayout>

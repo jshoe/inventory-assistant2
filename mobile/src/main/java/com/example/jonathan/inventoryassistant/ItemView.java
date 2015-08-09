@@ -7,6 +7,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class ItemView extends Activity {
 
@@ -20,6 +24,7 @@ public class ItemView extends Activity {
         groupName = getIntent().getStringExtra("groupName");
         itemName = getIntent().getStringExtra("itemName");
         formatActionBar();
+        showScanHistory();
     }
 
     @Override
@@ -49,6 +54,19 @@ public class ItemView extends Activity {
         return true;
     }
 
+    public void showOnMap(View view) {
+        Intent i = new Intent();
+        i.setClass(this, ScanLogMapView.class);
+        Bundle b = new Bundle();
+        b.putDouble("latitude", 37.871891);
+        b.putDouble("longitude", -122.258532);
+        b.putString("title", "Check-In");
+        b.putString("snippet", "Location");
+        i.putExtras(b);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -68,5 +86,9 @@ public class ItemView extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showScanHistory() {
+        ListView itemList = (ListView) findViewById(R.id.scanLog);
     }
 }
