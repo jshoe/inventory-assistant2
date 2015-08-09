@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -71,6 +73,14 @@ public class GroupScanMode extends Activity {
         groupName = getIntent().getStringExtra("groupName");
         itemReaderDbHelper = new ItemReaderDbHelper(this);
 
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setLogo(R.drawable.action_bar_logo);
+        getActionBar().setDisplayUseLogoEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(getResources().getColor(R.color.backArrow), PorterDuff.Mode.SRC_ATOP);
+        getActionBar().setHomeAsUpIndicator(upArrow);
+
         initiateNfcComponents();
         makeItemList();
         showScanStartMessage();
@@ -125,6 +135,15 @@ public class GroupScanMode extends Activity {
         if (mNfcAdapter != null) {
             setupForegroundDispatch(this, mNfcAdapter);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.setClass(this, ItemList.class);
+        i.putExtra("groupName", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     @Override
@@ -198,9 +217,9 @@ public class GroupScanMode extends Activity {
         image.setImageResource(R.drawable.nfc_pic);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Scan items in any order. Nearby tags have been auto-detected!\n");
+        builder.setMessage("Ready to scan items in any order. Nearby tags will be auto-detected!\n");
         builder.setCancelable(true);
-        builder.setPositiveButton("OK",
+        builder.setPositiveButton("Start",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();

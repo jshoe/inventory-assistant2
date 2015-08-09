@@ -95,32 +95,37 @@ public class GroupListWear extends Activity {
             groupArray.add(groupName);
             Log.d("GrpLst", "Trying to print out all the items in the GroupList");
         }
-        if (groupArray.size() == 0) {
-            groupArray.add("          (no groups)");
-        }
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, groupArray);
-        groupList.setAdapter(arrayAdapter);
         cursor.close();
+        if (groupArray.size() == 0) {
+            groupArray.add("       (no groups)");
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, groupArray);
+            groupList.setAdapter(arrayAdapter);
+            groupList.setOnItemClickListener(null);
+        } else {
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, groupArray);
+            groupList.setAdapter(arrayAdapter);
 
-        groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // argument position gives the index of item which is clicked
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-                //Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
-                String selectedGroup = groupArray.get(position);
-                showItemList(selectedGroup);
-                //showScanStartMessage();
-                //Toast.makeText(getApplicationContext(), "Group Selected : " + selectedGroup, Toast.LENGTH_SHORT).show();
-            }
-        });
+            groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                // argument position gives the index of item which is clicked
+                public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+                    //Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
+                    String selectedGroup = groupArray.get(position);
+                    showItemList(selectedGroup);
+                    //showScanStartMessage();
+                    //Toast.makeText(getApplicationContext(), "Group Selected : " + selectedGroup, Toast.LENGTH_SHORT).show();
+                }
+            });
 
-        groupList.setLongClickable(true);
-        groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                deleteEntryDialog(groupArray.get(pos));
-                return true;
-            }
-        });
+            groupList.setLongClickable(true);
+            groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                    deleteEntryDialog(groupArray.get(pos));
+                    return true;
+                    }
+            });
+        }
     }
 
     public void showScanStartMessage() {

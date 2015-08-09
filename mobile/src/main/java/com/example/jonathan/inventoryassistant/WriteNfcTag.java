@@ -5,10 +5,13 @@ import java.nio.charset.Charset;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -41,6 +44,15 @@ public class WriteNfcTag extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_nfc_tag);
         context = getApplicationContext();
+
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setLogo(R.drawable.action_bar_logo);
+        getActionBar().setDisplayUseLogoEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(getResources().getColor(R.color.backArrow), PorterDuff.Mode.SRC_ATOP);
+        getActionBar().setHomeAsUpIndicator(upArrow);
+
         groupName = getIntent().getStringExtra("groupName");
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mNfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
@@ -55,6 +67,15 @@ public class WriteNfcTag extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_write_nfc_tag, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.setClass(this, ItemList.class);
+        i.putExtra("groupName", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     @Override

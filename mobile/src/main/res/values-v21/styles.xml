@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="android:Theme.Material.Light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
     </style>
-    <style name="Button">
-        <item name="android:textColor">@color/primary_material_light</item>
-        <item name="android:padding">0dp</item>
-        <item name="android:minWidth">88dp</item>
-        <item name="android:minHeight">36dp</item>
-        <item name="android:layout_margin">3dp</item>
-        <item name="android:elevation">1dp</item>
-        <item name="android:translationZ">1dp</item>
-        <item name="android:background">@drawable/round_button_yellow</item>
+    <style name="MyActionBar" parent="android:Widget.Material.Light.ActionBar.Solid">
+        <item name="android:background">#4c9de9</item>
+        <item name="android:titleTextStyle">@style/TitleBarTextColor</item>
+    </style>
+
+    <style name="TitleBarTextColor" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#ffffff</item>
     </style>
 </resources>

@@ -11,7 +11,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".WriteNfcTag"
-            android:label="@string/title_activity_nfc_write_test" >
+            android:label="@string/title_activity_nfc_write_test"
+            android:parentActivityName=".ItemList" >
         </activity>
 
         <service
@@ -22,11 +23,13 @@
 
         <activity
             android:name=".NewGroup"
-            android:label="@string/title_activity_make_new_grp" >
+            android:label="@string/title_activity_make_new_grp"
+            android:parentActivityName=".GroupList" >
         </activity>
         <activity
             android:name=".GroupScanMode"
-            android:label="@string/title_activity_group_check_scan_mode" >
+            android:label="@string/title_activity_group_check_scan_mode"
+            android:parentActivityName=".GroupList" >
         </activity>
         <activity
             android:name=".GroupList"
@@ -56,15 +59,25 @@
         </activity>
         <activity
             android:name=".NewItem"
-            android:label="@string/title_activity_make_item" >
+            android:label="@string/title_activity_make_item"
+            android:parentActivityName=".ItemList" >
         </activity>
         <activity
             android:name=".ItemList"
-            android:label="@string/title_activity_item_list" >
+            android:label="@string/title_activity_item_list"
+            android:parentActivityName=".GroupList" >
         </activity>
         <activity
             android:name=".WelcomeTutorial"
             android:label="@string/title_activity_welcome1" >
+        </activity>
+        <activity
+            android:name=".ItemView"
+            android:label="@string/title_activity_item_view"
+            android:parentActivityName=".ItemList" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.jonathan.inventoryassistant.ItemList" />
         </activity>
     </application>
 

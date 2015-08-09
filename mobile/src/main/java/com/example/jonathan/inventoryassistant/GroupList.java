@@ -5,7 +5,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,8 +30,28 @@ public class GroupList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
 
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(false);
+        getActionBar().setLogo(R.drawable.action_bar_logo);
+        getActionBar().setDisplayUseLogoEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(getResources().getColor(R.color.backArrow), PorterDuff.Mode.SRC_ATOP);
+        getActionBar().setHomeAsUpIndicator(upArrow);
+
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         makeGroupList();
+    }
+
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        groupReaderDbHelper = new GroupReaderDbHelper(this);
+        makeGroupList();
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     @Override
@@ -107,30 +130,35 @@ public class GroupList extends Activity {
             groupArray.add(groupName);
             Log.d("GrpLst", "Trying to print out all the items in the GroupList");
         }
+        cursor.close();
         if (groupArray.size() == 0) {
             groupArray.add("(no groups)");
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, groupArray);
+            groupList.setAdapter(arrayAdapter);
+            groupList.setOnItemClickListener(null);
+        } else {
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, groupArray);
+            groupList.setAdapter(arrayAdapter);
+
+            // register onClickListener to handle click events on each item
+            groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                // argument position gives the index of item which is clicked
+                public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+                    Toast.makeText(getApplicationContext(), "Long press for options", Toast.LENGTH_SHORT).show();
+                    String selectedGroup = groupArray.get(position);
+                    showItemList(selectedGroup);
+                }
+            });
+
+            groupList.setLongClickable(true);
+            groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                    deleteEntryDialog(groupArray.get(pos));
+                    return true;
+                }
+            });
         }
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, groupArray);
-        groupList.setAdapter(arrayAdapter);
-        cursor.close();
-
-        // register onClickListener to handle click events on each item
-        groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // argument position gives the index of item which is clicked
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-                Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
-                String selectedGroup = groupArray.get(position);
-                showItemList(selectedGroup);
-            }
-        });
-
-        groupList.setLongClickable(true);
-        groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                deleteEntryDialog(groupArray.get(pos));
-                return true;
-            }
-        });
     }
 }
