@@ -10,9 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import com.google.android.gms.maps.model.LatLng;
-
-public class ItemView extends Activity {
+public class ItemInfo extends Activity {
 
     String groupName = "";
     String itemName = "";
@@ -20,7 +18,7 @@ public class ItemView extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_view);
+        setContentView(R.layout.activity_item_info);
         groupName = getIntent().getStringExtra("groupName");
         itemName = getIntent().getStringExtra("itemName");
         formatActionBar();

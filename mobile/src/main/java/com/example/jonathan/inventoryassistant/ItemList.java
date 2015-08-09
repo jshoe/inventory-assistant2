@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.security.acl.Group;
 import java.util.ArrayList;
 
 public class ItemList extends Activity {
@@ -133,7 +131,7 @@ public class ItemList extends Activity {
 
     public void showItemView(String itemName) {
         Intent i = new Intent();
-        i.setClass(this, ItemView.class);
+        i.setClass(this, ItemInfo.class);
         i.putExtra("groupName", groupName);
         i.putExtra("itemName", itemName);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -376,6 +376,7 @@ public class GroupScanMode extends Activity {
         for (Object i: checkedOff) {
             Log.d("checkOffItemsInDb", "Trying to check off: " + i.toString());
             itemReaderDbHelper.checkItem(groupName, i.toString());
+            itemReaderDbHelper.updateDateCheckedItem(groupName, i.toString(), new Date());
         }
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
         cursor.moveToPosition(-1);
