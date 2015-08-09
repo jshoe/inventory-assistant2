@@ -137,6 +137,22 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from " + ItemEntry.TABLE_NAME);
     }
+    
+    public void copyItem(String oldGroupName, String newGroupName, String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("insert into " + ItemEntry.TABLE_NAME + " (" + ItemEntry.GROUP_NAME + ", " + ItemEntry.ITEM_NAME + ", " + ItemEntry.NFC_TAG + ", " +
+                        ItemEntry.DATE_CHECKED1 + ", " + ItemEntry.DATE_CHECKED2 + ", " + ItemEntry.DATE_CHECKED3 + ", " + ItemEntry.DATE_CHECKED4 + ", " +
+                        ItemEntry.DATE_CHECKED5 + ", " + ItemEntry.DATE_CHECKED6 + ItemEntry.DATE_CHECKED7 + ", " + ItemEntry.DATE_CHECKED8 +
+                        ItemEntry.DATE_CHECKED9 + ", " + ItemEntry.DATE_CHECKED10 + ") " +
+                "select " + newGroupName + ", " + ItemEntry.ITEM_NAME + ", " + ItemEntry.NFC_TAG + ", " +
+                        ItemEntry.DATE_CHECKED1 + ", " + ItemEntry.DATE_CHECKED2 + ", " + ItemEntry.DATE_CHECKED3 + ", " + ItemEntry.DATE_CHECKED4 + ", " +
+                        ItemEntry.DATE_CHECKED5 + ", " + ItemEntry.DATE_CHECKED6 + ItemEntry.DATE_CHECKED7 + ", " + ItemEntry.DATE_CHECKED8 +
+                        ItemEntry.DATE_CHECKED9 + ", " + ItemEntry.DATE_CHECKED10 +
+                " from " + ItemEntry.TABLE_NAME +
+                " where " + ItemEntry.GROUP_NAME + " = " + oldGroupName + " and " + ItemEntry.ITEM_NAME + " = " + itemName
+        );
+    }
 
     public void checkItem(String groupName, String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
