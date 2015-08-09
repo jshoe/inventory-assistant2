@@ -133,7 +133,7 @@ public class ItemList extends Activity {
 
     public void showItemView(String itemName) {
         Intent i = new Intent();
-        i.setClass(this, ItemView.class);
+        i.setClass(this, MapTestFragment.class);
         i.putExtra("groupName", groupName);
         i.putExtra("itemName", itemName);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
