@@ -31,6 +31,11 @@ public class WearListenerService extends WearableListenerService {
     private static final String CHECK_KEY = "check-key";
     private static final String DATE_KEY = "date-key";
 
+    private static final String UPDATE_KEY = "update-key";
+    private static final String CHECK_ITEM = "check-item";
+    private static final String UNCHECK_ITEM = "uncheck-item";
+    private static final String UPDATE_LIST = "update-list";
+
     private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
     private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
 
@@ -110,19 +115,12 @@ public class WearListenerService extends WearableListenerService {
                         switch (checkString) {
                             case "0":
                                 itemReaderDbHelper.uncheckItem(groupName, itemName);
-                                updateItemList();
+                                uncheckItem(itemName);
                                 break;
                             case "1":
                                 // TODOs : change to using broadcast receiver instead
                                 itemReaderDbHelper.checkItem(groupName, itemName);
-                                Log.d("case CHECK_KEY", "Going to try to check off");
-                                Intent i = new Intent();
-                                i.putExtra("groupName", groupName);
-                                i.putExtra("itemName", itemName);
-                                i.setClass(this, ItemListWear.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(i);
-                                //updateItemList();
+                                checkItem(itemName);
                                 break;
                         }
                         break;
@@ -145,13 +143,28 @@ public class WearListenerService extends WearableListenerService {
         }
     }
 
-    public void updateGroupList() {
+    private void updateGroupList() {
         Intent i = new Intent(UPDATE_GROUP_LIST);
         sendBroadcast(i);
     }
 
-    public void updateItemList() {
+    private void updateItemList() {
         Intent i = new Intent(UPDATE_ITEM_LIST);
+        i.putExtra(UPDATE_KEY, UPDATE_LIST);
+        sendBroadcast(i);
+    }
+
+    private void checkItem(String itemName) {
+        Intent i = new Intent(UPDATE_ITEM_LIST);
+        i.putExtra(UPDATE_KEY, CHECK_ITEM);
+        i.putExtra(ITEM_NAME_KEY, itemName);
+        sendBroadcast(i);
+    }
+
+    private void uncheckItem(String itemName) {
+        Intent i = new Intent(UPDATE_ITEM_LIST);
+        i.putExtra(UPDATE_KEY, UNCHECK_ITEM);
+        i.putExtra(ITEM_NAME_KEY, itemName);
         sendBroadcast(i);
     }
 }

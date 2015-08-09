@@ -2,8 +2,11 @@ package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,11 +24,20 @@ import java.util.ArrayList;
 
 public class ItemListWear extends Activity {
 
+    private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
+    private static final String UPDATE_KEY = "update-key";
+    private static final String CHECK_ITEM = "check-item";
+    private static final String UNCHECK_ITEM = "uncheck-item";
+    private static final String UPDATE_LIST = "update-list";
+    private static final String ITEM_NAME_KEY = "item-name";
+
     String groupName = "";
     ItemReaderDbHelper itemReaderDbHelper;
     ArrayList<String> itemArray;
     ListView itemList;
-    String toCheckOff;
+
+    ReceiveMessages myReceiver = null;
+    Boolean myReceiverIsRegistered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +46,29 @@ public class ItemListWear extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         groupName = getIntent().getStringExtra("groupName");
-        toCheckOff = getIntent().getStringExtra("itemName");
         itemReaderDbHelper = new ItemReaderDbHelper(this);
+
+        myReceiver = new ReceiveMessages();
+
         makeItemList();
-        // TODOs : change to broadcast receiver
-        checkOffItem(toCheckOff);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!myReceiverIsRegistered) {
+            registerReceiver(myReceiver, new IntentFilter(UPDATE_ITEM_LIST));
+            myReceiverIsRegistered = true;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (myReceiverIsRegistered) {
+            unregisterReceiver(myReceiver);
+            myReceiverIsRegistered = false;
+        }
     }
 
     @Override
@@ -77,6 +107,13 @@ public class ItemListWear extends Activity {
         int p = getArrayPositionFromTitle(tag);
         if (p != -1) {
             itemList.setItemChecked(p, true);
+        }
+    }
+
+    private void uncheckOffItem(String tag) {
+        int p = getArrayPositionFromTitle(tag);
+        if (p != -1) {
+            itemList.setItemChecked(p, false);
         }
     }
 
@@ -210,6 +247,30 @@ public class ItemListWear extends Activity {
                     return true;
                 }
             });
+        }
+    }
+
+    public class ReceiveMessages extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            String updateKey = intent.getStringExtra(UPDATE_KEY);
+
+            switch (updateKey) {
+                case UPDATE_LIST:
+                    Log.d("RECEIVE BROADCAST", "UPDATE_LIST RECEIVED");
+                    makeItemList();
+                    break;
+                case CHECK_ITEM:
+                    Log.d("RECEIVE BROADCAST", "CHECK_ITEM RECEIVED");
+                    checkOffItem(intent.getStringExtra(ITEM_NAME_KEY));
+                    break;
+                case UNCHECK_ITEM:
+                    Log.d("RECEIVE BROADCAST", "UNCHECK_ITEM RECEIVED");
+                    uncheckOffItem(intent.getStringExtra(ITEM_NAME_KEY));
+                    break;
+            }
         }
     }
 }

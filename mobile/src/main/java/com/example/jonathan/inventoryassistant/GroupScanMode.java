@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -298,7 +299,13 @@ public class GroupScanMode extends Activity {
             // argument position gives the index of item which is clicked
             public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3)
             {
-                String selectedItem = itemArray.get(position);
+                String itemName = itemArray.get(position);
+                CheckedTextView item = (CheckedTextView)v;
+                if(item.isChecked()){
+                    sendCheckToWear(groupName, itemName);
+                } else {
+                    sendUncheckToWear(groupName, itemName);
+                }
             }
         });
     }
@@ -443,52 +450,26 @@ public class GroupScanMode extends Activity {
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult =
                 Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
-
-        String[] argsKey = new String[3];
-        String[] argsValue = new String[3];
-
-        argsKey[0] = GROUP_NAME_KEY;
-        argsKey[1] = ITEM_NAME_KEY;
-        argsKey[2] = CHECK_KEY;
-
-        argsValue[0] = groupName;
-        argsValue[1] = itemName;
-        argsValue[2] = "1";
     }
 
     private void sendUncheckToWear(String groupName, String itemName) {
-        String[] argsKey = new String[3];
-        String[] argsValue = new String[3];
-
-        argsKey[0] = GROUP_NAME_KEY;
-        argsKey[1] = ITEM_NAME_KEY;
-        argsKey[2] = CHECK_KEY;
-
-        argsValue[0] = groupName;
-        argsValue[1] = itemName;
-        argsValue[2] = "0";
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, CHECK_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
+        putDataMapReq.getDataMap().putString(CHECK_KEY, "0");
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     private void sendUpdateDateToWear(String groupName, String itemName, Date date) {
-        String[] argsKey = new String[3];
-        String[] argsValue = new String[3];
 
-        argsKey[0] = GROUP_NAME_KEY;
-        argsKey[1] = ITEM_NAME_KEY;
-        argsKey[2] = DATE_KEY;
-
-        argsValue[0] = groupName;
-        argsValue[1] = itemName;
-        argsValue[2] = date.toString();
-    }
-
-    private void sendDataMapRequest(String actionKey, String[] argsKey, String[] argsValue) {
-        Log.d("sendDataMapRequest", "Trying to send data");
         PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
-        putDataMapReq.getDataMap().putString(ACTION_KEY, actionKey);
-        for (int i = 0; i < argsKey.length; i++) {
-            putDataMapReq.getDataMap().putString(argsKey[i], argsValue[i]);
-        }
+        putDataMapReq.getDataMap().putString(ACTION_KEY, DATE_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
+        putDataMapReq.getDataMap().putString(DATE_KEY, date.toString());
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult =
                 Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
