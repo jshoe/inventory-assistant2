@@ -40,9 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * This shows how to place markers on a map.
- */
 public class MapTestFragment extends FragmentActivity implements
         OnMarkerClickListener,
         OnInfoWindowClickListener,
@@ -70,22 +67,12 @@ public class MapTestFragment extends FragmentActivity implements
 
         @Override
         public View getInfoWindow(Marker marker) {
-            if (mOptions.getCheckedRadioButtonId() != R.id.custom_info_window) {
-                // This means that getInfoContents will be called.
-                return null;
-            }
-            render(marker, mWindow);
-            return mWindow;
+            return null;
         }
 
         @Override
         public View getInfoContents(Marker marker) {
-            if (mOptions.getCheckedRadioButtonId() != R.id.custom_info_contents) {
-                // This means that the default info contents will be used.
-                return null;
-            }
-            render(marker, mContents);
-            return mContents;
+            return null;
         }
 
         private void render(Marker marker, View view) {
@@ -159,25 +146,6 @@ public class MapTestFragment extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_map_test);
 
-        mTopText = (TextView) findViewById(R.id.top_text);
-
-        mRotationBar = (SeekBar) findViewById(R.id.rotationSeekBar);
-        mRotationBar.setMax(360);
-        mRotationBar.setOnSeekBarChangeListener(this);
-
-        mFlatBox = (CheckBox) findViewById(R.id.flat);
-
-        mOptions = (RadioGroup) findViewById(R.id.custom_info_window_options);
-        mOptions.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (mLastSelectedMarker != null && mLastSelectedMarker.isInfoWindowShown()) {
-                    // Refresh the info window when the info window's content has changed.
-                    mLastSelectedMarker.showInfoWindow();
-                }
-            }
-        });
-
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -241,21 +209,6 @@ public class MapTestFragment extends FragmentActivity implements
                 .snippet("Population: 2,074,200")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
-        // Uses a custom icon with the info window popping out of the center of the icon.
-        mSydney = mMap.addMarker(new MarkerOptions()
-                .position(SYDNEY)
-                .title("Sydney")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.arrow))
-                .infoWindowAnchor(0.5f, 0.5f));
-
-        // Creates a draggable marker. Long press to drag.
-        mMelbourne = mMap.addMarker(new MarkerOptions()
-                .position(MELBOURNE)
-                .title("Melbourne")
-                .snippet("Population: 4,137,400")
-                .draggable(true));
-
         // A few more markers for good measure.
         mPerth = mMap.addMarker(new MarkerOptions()
                 .position(PERTH)
@@ -265,23 +218,6 @@ public class MapTestFragment extends FragmentActivity implements
                 .position(ADELAIDE)
                 .title("Adelaide")
                 .snippet("Population: 1,213,000"));
-
-        // Creates a marker rainbow demonstrating how to create default marker icons of different
-        // hues (colors).
-        float rotation = mRotationBar.getProgress();
-        boolean flat = mFlatBox.isChecked();
-
-        int numMarkersInRainbow = 12;
-        for (int i = 0; i < numMarkersInRainbow; i++) {
-            mMarkerRainbow.add(mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(
-                            -30 + 10 * Math.sin(i * Math.PI / (numMarkersInRainbow - 1)),
-                            135 - 10 * Math.cos(i * Math.PI / (numMarkersInRainbow - 1))))
-                    .title("Marker " + i)
-                    .icon(BitmapDescriptorFactory.defaultMarker(i * 360 / numMarkersInRainbow))
-                    .flat(flat)
-                    .rotation(rotation)));
-        }
     }
 
     private boolean checkReady() {
