@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 public class ItemView extends Activity {
 
@@ -20,6 +21,7 @@ public class ItemView extends Activity {
         groupName = getIntent().getStringExtra("groupName");
         itemName = getIntent().getStringExtra("itemName");
         formatActionBar();
+        showScanHistory();
     }
 
     @Override
@@ -68,5 +70,9 @@ public class ItemView extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showScanHistory() {
+        ListView itemList = (ListView) findViewById(R.id.scanLog);
     }
 }

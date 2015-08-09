@@ -36,6 +36,8 @@
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         android:elevation="30dp"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
         android:onClick="makeNewItem"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
