@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import static com.example.jonathan.inventoryassistant.ItemReaderContract.ItemEntry;
@@ -16,7 +19,7 @@ import static com.example.jonathan.inventoryassistant.ItemReaderContract.ItemEnt
  * Created by randyramadhana on 7/31/15.
  */
 public class ItemReaderDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "ItemReader.db";
 
     public ItemReaderDbHelper(Context context) {
@@ -194,12 +197,17 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
     public void updateDateCheckedItem(String groupName, String itemName, Date utilDateChecked) {
         SQLiteDatabase db = this.getWritableDatabase();
-        java.sql.Date date = new java.sql.Date(utilDateChecked.getTime());
+        //java.sql.Date date = new java.sql.Date(utilDateChecked.getTime());
 
         updateDateHistory(groupName, itemName);
+        DateFormat df = new SimpleDateFormat("E, MM/dd/yyyy at HH:mm");
+        Date now = Calendar.getInstance().getTime();
+        String text = df.format(now);
+
+        Log.d("updateDateCheckedItem", "Date to write: " + text);
 
         db.execSQL("update " + ItemEntry.TABLE_NAME +
-                        " set " + ItemEntry.DATE_CHECKED1 + "=" + date +
+                        " set " + ItemEntry.DATE_CHECKED1 + "='" + text + "'" +
                         " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                         " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
         );

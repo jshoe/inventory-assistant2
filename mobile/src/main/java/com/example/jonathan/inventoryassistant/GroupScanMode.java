@@ -377,6 +377,7 @@ public class GroupScanMode extends Activity {
             Log.d("checkOffItemsInDb", "Trying to check off: " + i.toString());
             itemReaderDbHelper.checkItem(groupName, i.toString());
             itemReaderDbHelper.updateDateCheckedItem(groupName, i.toString(), new Date());
+            Log.d("checkOffItemsInDb", "Current date is: " + (new Date()).toString());
         }
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
         cursor.moveToPosition(-1);
@@ -393,7 +394,7 @@ public class GroupScanMode extends Activity {
             String[] parts = NfcTag.split(" --- ");
             NfcTag = parts[1];
         }
-        Toast.makeText(getApplicationContext(), "Checked off " + NfcTag + "!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Detected " + NfcTag + "!", Toast.LENGTH_SHORT).show();
         int p = getArrayPositionFromTitle(NfcTag);
         if (p != -1) {
             itemList.setItemChecked(p, true);
