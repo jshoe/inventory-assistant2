@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MapTestFragment extends FragmentActivity implements
+public class ScanLogMapView extends FragmentActivity implements
         OnMarkerClickListener,
         OnInfoWindowClickListener,
         OnMarkerDragListener,

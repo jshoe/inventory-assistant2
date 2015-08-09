@@ -79,7 +79,7 @@
             android:label="@string/title_activity_welcome1" >
         </activity>
         <activity
-            android:name=".MapTestFragment"
+            android:name=".ScanLogMapView"
             android:label="Map Test" >
         </activity>
         <activity
