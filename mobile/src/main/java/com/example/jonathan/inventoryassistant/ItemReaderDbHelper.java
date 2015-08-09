@@ -85,6 +85,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
                 ItemEntry._ID,
                 ItemEntry.GROUP_NAME,
                 ItemEntry.ITEM_NAME,
+                ItemEntry.NFC_TAG,
                 ItemEntry.CHECKED,
                 ItemEntry.DATE_CHECKED1,
                 ItemEntry.DATE_CHECKED2,
