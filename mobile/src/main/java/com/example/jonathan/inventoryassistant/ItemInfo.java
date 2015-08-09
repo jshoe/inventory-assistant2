@@ -2,18 +2,25 @@ package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class ItemInfo extends Activity {
 
     String groupName = "";
     String itemName = "";
+    ItemReaderDbHelper itemReaderDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +30,7 @@ public class ItemInfo extends Activity {
         itemName = getIntent().getStringExtra("itemName");
         formatActionBar();
         showScanHistory();
+        itemReaderDbHelper = new ItemReaderDbHelper(this);
     }
 
     @Override
@@ -86,7 +94,54 @@ public class ItemInfo extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    ArrayList logArray;
+
     private void showScanHistory() {
-        ListView itemList = (ListView) findViewById(R.id.scanLog);
+        ListView logList = (ListView) findViewById(R.id.scanLog);
+
+        Cursor cursor = itemReaderDbHelper.getItem(groupName, itemName);
+        logArray = new ArrayList<>();
+
+//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED1)));
+//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED2)));
+//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED3)));
+//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED4)));
+//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED5)));
+//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED6)));
+//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED7)));
+//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED8)));
+//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED9)));
+//        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED10)));
+        cursor.close();
+
+        if (logArray.size() == 0) {
+            logArray.add("(no scans logged)");
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, logArray);
+            logList.setAdapter(arrayAdapter);
+            logList.setOnItemClickListener(null);
+        } else {
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, logArray);
+            logList.setAdapter(arrayAdapter);
+
+            // register onClickListener to handle click events on each item
+            logList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                // argument position gives the index of item which is clicked
+                public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+                    //String selectedItem = logArray.get(position);
+                    //Toast.makeText(getApplicationContext(), "Long press for options", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            logList.setLongClickable(true);
+            logList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                    //deleteEntryDialog(itemArray.get(pos));
+                    return true;
+                }
+            });
+        }
     }
 }
