@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".WriteNfcTag"
+            android:parentActivityName=".ItemList"
             android:label="@string/title_activity_nfc_write_test" >
         </activity>
 
@@ -22,10 +23,12 @@
 
         <activity
             android:name=".NewGroup"
+            android:parentActivityName=".GroupList"
             android:label="@string/title_activity_make_new_grp" >
         </activity>
         <activity
             android:name=".GroupScanMode"
+            android:parentActivityName=".GroupList"
             android:label="@string/title_activity_group_check_scan_mode" >
         </activity>
         <activity
@@ -56,10 +59,12 @@
         </activity>
         <activity
             android:name=".NewItem"
+            android:parentActivityName=".ItemList"
             android:label="@string/title_activity_make_item" >
         </activity>
         <activity
             android:name=".ItemList"
+            android:parentActivityName=".GroupList"
             android:label="@string/title_activity_item_list" >
         </activity>
         <activity

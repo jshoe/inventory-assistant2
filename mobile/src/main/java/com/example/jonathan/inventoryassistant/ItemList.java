@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 
 public class ItemList extends Activity {
@@ -29,8 +32,12 @@ public class ItemList extends Activity {
         setContentView(R.layout.activity_item_list);
 
         getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setLogo(R.drawable.action_bar_logo);
         getActionBar().setDisplayUseLogoEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(getResources().getColor(R.color.backArrow), PorterDuff.Mode.SRC_ATOP);
+        getActionBar().setHomeAsUpIndicator(upArrow);
 
         itemReaderDbHelper = new ItemReaderDbHelper(this);
         makeItemList();
@@ -65,6 +72,14 @@ public class ItemList extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, GroupList.class);
+                startActivity(intent);
+                finish();
+                return true;
+        }
 
         //noinspection SimplifiableIfStatement
         /** if (id == R.id.action_settings) {
