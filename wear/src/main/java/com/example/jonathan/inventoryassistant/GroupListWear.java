@@ -31,10 +31,12 @@ import java.util.ArrayList;
 
 public class GroupListWear extends Activity {
 
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-mobile";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_GROUP_KEY = "delete-group-key";
     private static final String GROUP_NAME_KEY = "group-name";
+
+    private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
 
     GroupReaderDbHelper groupReaderDbHelper;
     ArrayList<String> groupArray;
@@ -42,7 +44,7 @@ public class GroupListWear extends Activity {
     ReceiveMessages myReceiver = null;
     Boolean myReceiverIsRegistered = false;
 
-    private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
+
 
     GoogleApiClient mGoogleApiClient;
 
@@ -55,7 +57,7 @@ public class GroupListWear extends Activity {
         myReceiver = new ReceiveMessages();
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
-        makeGroupList();
+
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -77,6 +79,8 @@ public class GroupListWear extends Activity {
                 .build();
 
         mGoogleApiClient.connect();
+
+        makeGroupList();
     }
 
     @Override

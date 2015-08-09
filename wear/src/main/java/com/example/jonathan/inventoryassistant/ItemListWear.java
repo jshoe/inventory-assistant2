@@ -22,6 +22,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
@@ -35,7 +39,7 @@ public class ItemListWear extends Activity {
     private static final String UPDATE_LIST = "update-list";
     private static final String ITEM_NAME_KEY = "item-name";
 
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-mobile";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_ITEM_KEY = "delete-item-key";
     private static final String GROUP_NAME_KEY = "group-name";
@@ -61,8 +65,6 @@ public class ItemListWear extends Activity {
 
         myReceiver = new ReceiveMessages();
 
-        makeItemList();
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
@@ -83,6 +85,8 @@ public class ItemListWear extends Activity {
                 .build();
 
         mGoogleApiClient.connect();
+
+        makeItemList();
     }
 
     @Override
@@ -216,6 +220,7 @@ public class ItemListWear extends Activity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         itemReaderDbHelper.deleteItem(groupName, itemName);
+                        sendDeleteItemToMobile(groupName, itemName);
                         makeItemList();
                     }
                 });
@@ -231,6 +236,16 @@ public class ItemListWear extends Activity {
         alert.show();
         TextView textView = (TextView) alert.findViewById(android.R.id.message);
         textView.setTextSize(20);
+    }
+
+    private void sendDeleteItemToMobile(String groupName, String itemName) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, DELETE_ITEM_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     private void makeItemList() {
