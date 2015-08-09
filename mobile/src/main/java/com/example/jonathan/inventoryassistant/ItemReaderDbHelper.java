@@ -16,7 +16,7 @@ import static com.example.jonathan.inventoryassistant.ItemReaderContract.ItemEnt
  * Created by randyramadhana on 7/31/15.
  */
 public class ItemReaderDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "ItemReader.db";
 
     public ItemReaderDbHelper(Context context) {
@@ -45,7 +45,16 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         values.put(ItemEntry.GROUP_NAME, groupName);
         values.put(ItemEntry.ITEM_NAME, itemName);
         values.put(ItemEntry.CHECKED, 0);
-        values.put(ItemEntry.DATE_CHECKED, "NULL");
+        values.put(ItemEntry.DATE_CHECKED1, "NULL");
+        values.put(ItemEntry.DATE_CHECKED2, "NULL");
+        values.put(ItemEntry.DATE_CHECKED3, "NULL");
+        values.put(ItemEntry.DATE_CHECKED4, "NULL");
+        values.put(ItemEntry.DATE_CHECKED5, "NULL");
+        values.put(ItemEntry.DATE_CHECKED6, "NULL");
+        values.put(ItemEntry.DATE_CHECKED7, "NULL");
+        values.put(ItemEntry.DATE_CHECKED8, "NULL");
+        values.put(ItemEntry.DATE_CHECKED9, "NULL");
+        values.put(ItemEntry.DATE_CHECKED10, "NULL");
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId;
@@ -53,6 +62,14 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
                 ItemEntry.TABLE_NAME,
                 null,
                 values);
+    }
+
+    public Cursor getItem(String groupName, String itemName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        return db.rawQuery("select * from " + ItemEntry.TABLE_NAME +
+                " where " + ItemEntry.GROUP_NAME + " = ? and " + ItemEntry.ITEM_NAME + " = ?",
+                new String[] {groupName, itemName});
     }
 
     public Cursor getAllItems() {
@@ -69,7 +86,16 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
                 ItemEntry.GROUP_NAME,
                 ItemEntry.ITEM_NAME,
                 ItemEntry.CHECKED,
-                ItemEntry.DATE_CHECKED
+                ItemEntry.DATE_CHECKED1,
+                ItemEntry.DATE_CHECKED2,
+                ItemEntry.DATE_CHECKED3,
+                ItemEntry.DATE_CHECKED4,
+                ItemEntry.DATE_CHECKED5,
+                ItemEntry.DATE_CHECKED6,
+                ItemEntry.DATE_CHECKED7,
+                ItemEntry.DATE_CHECKED8,
+                ItemEntry.DATE_CHECKED9,
+                ItemEntry.DATE_CHECKED10
         };
 
         String sortOrder = ItemEntry.ITEM_NAME;
@@ -134,10 +160,108 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         java.sql.Date date = new java.sql.Date(utilDateChecked.getTime());
 
+        updateDateHistory(groupName, itemName);
+
         db.execSQL("update " + ItemEntry.TABLE_NAME +
-                        " set " + ItemEntry.DATE_CHECKED + "=" + date +
+                        " set " + ItemEntry.DATE_CHECKED1 + "=" + date +
                         " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                         " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
         );
+    }
+
+    private void updateDateHistory (String groupName, String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = getItem(groupName, itemName);
+        cursor.moveToFirst();
+        String date = cursor.getString(cursor.getColumnIndexOrThrow(ItemEntry.DATE_CHECKED9));
+
+        if (!date.equals("NULL")) {
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + ItemEntry.DATE_CHECKED10 + "=" + date +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
+
+        date = cursor.getString(cursor.getColumnIndexOrThrow(ItemEntry.DATE_CHECKED8));
+
+        if (!date.equals("NULL")) {
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + ItemEntry.DATE_CHECKED9 + "=" + date +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
+
+        date = cursor.getString(cursor.getColumnIndexOrThrow(ItemEntry.DATE_CHECKED7));
+
+        if (!date.equals("NULL")) {
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + ItemEntry.DATE_CHECKED8 + "=" + date +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
+
+        date = cursor.getString(cursor.getColumnIndexOrThrow(ItemEntry.DATE_CHECKED6));
+
+        if (!date.equals("NULL")) {
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + ItemEntry.DATE_CHECKED7 + "=" + date +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
+
+        date = cursor.getString(cursor.getColumnIndexOrThrow(ItemEntry.DATE_CHECKED5));
+
+        if (!date.equals("NULL")) {
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + ItemEntry.DATE_CHECKED6 + "=" + date +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
+
+        date = cursor.getString(cursor.getColumnIndexOrThrow(ItemEntry.DATE_CHECKED4));
+
+        if (!date.equals("NULL")) {
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + ItemEntry.DATE_CHECKED5 + "=" + date +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
+
+        date = cursor.getString(cursor.getColumnIndexOrThrow(ItemEntry.DATE_CHECKED3));
+
+        if (!date.equals("NULL")) {
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + ItemEntry.DATE_CHECKED4 + "=" + date +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
+
+        date = cursor.getString(cursor.getColumnIndexOrThrow(ItemEntry.DATE_CHECKED2));
+
+        if (!date.equals("NULL")) {
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + ItemEntry.DATE_CHECKED3 + "=" + date +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
+
+        date = cursor.getString(cursor.getColumnIndexOrThrow(ItemEntry.DATE_CHECKED1));
+
+        if (!date.equals("NULL")) {
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + ItemEntry.DATE_CHECKED2 + "=" + date +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
     }
 }
