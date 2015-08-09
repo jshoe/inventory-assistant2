@@ -253,7 +253,7 @@ public class ScanLogMapView extends FragmentActivity implements
 
     private boolean checkReady() {
         if (mMap == null) {
-            Toast.makeText(this, R.string.map_not_ready, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Map not ready", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

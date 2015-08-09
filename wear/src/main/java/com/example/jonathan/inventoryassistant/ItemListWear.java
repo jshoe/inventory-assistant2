@@ -20,6 +20,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.Wearable;
+
 import java.util.ArrayList;
 
 public class ItemListWear extends Activity {
@@ -31,6 +35,11 @@ public class ItemListWear extends Activity {
     private static final String UPDATE_LIST = "update-list";
     private static final String ITEM_NAME_KEY = "item-name";
 
+    private static final String PATH = "/database-action";
+    private static final String ACTION_KEY = "action-key";
+    private static final String DELETE_ITEM_KEY = "delete-item-key";
+    private static final String GROUP_NAME_KEY = "group-name";
+
     String groupName = "";
     ItemReaderDbHelper itemReaderDbHelper;
     ArrayList<String> itemArray;
@@ -38,6 +47,8 @@ public class ItemListWear extends Activity {
 
     ReceiveMessages myReceiver = null;
     Boolean myReceiverIsRegistered = false;
+
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +62,27 @@ public class ItemListWear extends Activity {
         myReceiver = new ReceiveMessages();
 
         makeItemList();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle connectionHint) {
+                        // Now you can use the Data Layer API
+                    }
+                    @Override
+                    public void onConnectionSuspended(int cause) {
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult result) {
+                    }
+                })
+                        // Request access only to the Wearable API
+                .addApi(Wearable.API)
+                .build();
+
+        mGoogleApiClient.connect();
     }
 
     @Override
