@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ public class GroupList extends Activity {
 
     GroupReaderDbHelper groupReaderDbHelper;
     ItemReaderDbHelper itemReaderDbHelper;
+    ArrayList<String> groupArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,19 @@ public class GroupList extends Activity {
 
     @Override
     public void onBackPressed() {
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.groupList) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle(groupArray.get(info.position));
+            String[] menuItems = {"Hello"};
+            for (int i = 0; i < menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
     }
 
     @Override
@@ -119,8 +134,6 @@ public class GroupList extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    ArrayList<String> groupArray;
-
     private void makeGroupList() {
         Cursor cursor = groupReaderDbHelper.getAllGroups();
         cursor.moveToPosition(-1);
@@ -156,12 +169,14 @@ public class GroupList extends Activity {
             });
 
             groupList.setLongClickable(true);
-            groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                    deleteEntryDialog(groupArray.get(pos));
-                    return true;
-                }
-            });
+//            groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+//                    deleteEntryDialog(groupArray.get(pos));
+//                    return true;
+//                }
+//            });
+
+            registerForContextMenu(groupList);
         }
     }
 }
