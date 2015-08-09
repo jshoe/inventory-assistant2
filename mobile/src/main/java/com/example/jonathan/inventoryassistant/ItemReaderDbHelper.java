@@ -137,7 +137,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from " + ItemEntry.TABLE_NAME);
     }
-    
+
     public void copyItem(String oldGroupName, String newGroupName, String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -150,7 +150,17 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
                         ItemEntry.DATE_CHECKED5 + ", " + ItemEntry.DATE_CHECKED6 + ItemEntry.DATE_CHECKED7 + ", " + ItemEntry.DATE_CHECKED8 +
                         ItemEntry.DATE_CHECKED9 + ", " + ItemEntry.DATE_CHECKED10 +
                 " from " + ItemEntry.TABLE_NAME +
-                " where " + ItemEntry.GROUP_NAME + " = " + oldGroupName + " and " + ItemEntry.ITEM_NAME + " = " + itemName
+                " where " + ItemEntry.GROUP_NAME + "='" + oldGroupName + "' and " + ItemEntry.ITEM_NAME + "='" + itemName + "'"
+        );
+    }
+
+    public void renameItem(String groupName, String oldItemName, String newItemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("update " + ItemEntry.TABLE_NAME +
+                        " set " + ItemEntry.ITEM_NAME + "='" + newItemName + "'" +
+                        " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                        " and " + ItemEntry.ITEM_NAME + " ='" + oldItemName + "'"
         );
     }
 
