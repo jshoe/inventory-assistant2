@@ -159,8 +159,17 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         db.execSQL("update " + ItemEntry.TABLE_NAME +
                         " set " + ItemEntry.ITEM_NAME + "='" + newItemName + "'" +
-                        " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
-                        " and " + ItemEntry.ITEM_NAME + " ='" + oldItemName + "'"
+                        " where " + ItemEntry.GROUP_NAME + "='" + groupName + "'" +
+                        " and " + ItemEntry.ITEM_NAME + "='" + oldItemName + "'"
+        );
+    }
+
+    public void renameGroup(String oldGroupName, String newGroupName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("update " + ItemEntry.TABLE_NAME +
+                        " set " + ItemEntry.GROUP_NAME + "='" + newGroupName + "'" +
+                        " where " + ItemEntry.GROUP_NAME + "='" + oldGroupName + "'"
         );
     }
 

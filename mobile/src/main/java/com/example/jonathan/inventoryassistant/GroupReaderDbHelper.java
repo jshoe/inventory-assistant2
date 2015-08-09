@@ -57,6 +57,15 @@ public class GroupReaderDbHelper extends SQLiteOpenHelper {
 
     }
 
+    public void renameGroup(String oldGroupName, String newGroupName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("update " + GroupEntry.TABLE_NAME +
+                        " set " + GroupEntry.GROUP_NAME + "='" + newGroupName + "'" +
+                        " where " + GroupEntry.GROUP_NAME + "='" + oldGroupName + "'"
+        );
+    }
+
     public void deleteGroup(String groupName) {
         SQLiteDatabase db = this.getWritableDatabase();
 
