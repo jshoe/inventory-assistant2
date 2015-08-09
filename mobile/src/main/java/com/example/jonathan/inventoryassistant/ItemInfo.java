@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,12 +26,16 @@ public class ItemInfo extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        itemReaderDbHelper = new ItemReaderDbHelper(this);
+
         setContentView(R.layout.activity_item_info);
         groupName = getIntent().getStringExtra("groupName");
         itemName = getIntent().getStringExtra("itemName");
+        Log.d("GROUP NAME", groupName);
+        Log.d("ITEM NAME", itemName);
         formatActionBar();
         showScanHistory();
-        itemReaderDbHelper = new ItemReaderDbHelper(this);
     }
 
     @Override
