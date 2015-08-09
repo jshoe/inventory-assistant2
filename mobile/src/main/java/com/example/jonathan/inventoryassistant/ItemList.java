@@ -131,6 +131,15 @@ public class ItemList extends Activity {
 
     ArrayList<String> itemArray;
 
+    public void showItemView(String itemName) {
+        Intent i = new Intent();
+        i.setClass(this, ItemView.class);
+        i.putExtra("groupName", groupName);
+        i.putExtra("itemName", itemName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
     private void makeItemList() {
         groupName = getIntent().getStringExtra("groupName");
         setTitle("Group: " + groupName);
@@ -160,8 +169,9 @@ public class ItemList extends Activity {
                 // argument position gives the index of item which is clicked
                 public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                     String selectedItem = itemArray.get(position);
-                    Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Long press for options", Toast.LENGTH_SHORT).show();
                     //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
+                    showItemView(selectedItem);
                 }
             });
 

@@ -3,10 +3,14 @@
     <style name="AppTheme" parent="android:Theme.Material.Light">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:actionOverflowButtonStyle">@style/AppTheme.OverFlow</item>
     </style>
     <style name="MyActionBar" parent="android:Widget.Material.Light.ActionBar.Solid">
         <item name="android:background">#4c9de9</item>
         <item name="android:titleTextStyle">@style/TitleBarTextColor</item>
+    </style>
+    <style name="AppTheme.OverFlow">
+        <item name="android:src">@mipmap/my_overflow_image</item>
     </style>
 
     <style name="TitleBarTextColor" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">

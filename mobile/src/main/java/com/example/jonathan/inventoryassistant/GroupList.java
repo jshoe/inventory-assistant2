@@ -146,7 +146,7 @@ public class GroupList extends Activity {
             groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 // argument position gives the index of item which is clicked
                 public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-                    Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Long press for options", Toast.LENGTH_SHORT).show();
                     String selectedGroup = groupArray.get(position);
                     showItemList(selectedGroup);
                 }
