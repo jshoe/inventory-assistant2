@@ -19,9 +19,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.Wearable;
+
 import java.util.ArrayList;
 
 public class GroupList extends Activity {
+
+    private static final String PATH = "/database-action";
+    private static final String ACTION_KEY = "action-key";
+    private static final String DELETE_GROUP_KEY = "delete-group-key";
+    private static final String GROUP_NAME_KEY = "group-name";
+
+    GoogleApiClient mGoogleApiClient;
 
     GroupReaderDbHelper groupReaderDbHelper;
     ItemReaderDbHelper itemReaderDbHelper;
@@ -42,6 +57,27 @@ public class GroupList extends Activity {
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         itemReaderDbHelper = new ItemReaderDbHelper(this);
         makeGroupList();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle connectionHint) {
+                        // Now you can use the Data Layer API
+                    }
+                    @Override
+                    public void onConnectionSuspended(int cause) {
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult result) {
+                    }
+                })
+                        // Request access only to the Wearable API
+                .addApi(Wearable.API)
+                .build();
+
+        mGoogleApiClient.connect();
     }
 
     @Override
@@ -86,6 +122,7 @@ public class GroupList extends Activity {
                     public void onClick(DialogInterface dialog, int id) {
                         groupReaderDbHelper.deleteGroup(groupName);
                         itemReaderDbHelper.deleteItemsInGroup(groupName);
+                        sendDeleteGroupToWear(groupName);
                         makeGroupList();
                     }
                 });
@@ -101,6 +138,15 @@ public class GroupList extends Activity {
         alert.show();
         TextView textView = (TextView) alert.findViewById(android.R.id.message);
         textView.setTextSize(20);
+    }
+
+    private void sendDeleteGroupToWear(String groupName) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, DELETE_GROUP_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     @Override
