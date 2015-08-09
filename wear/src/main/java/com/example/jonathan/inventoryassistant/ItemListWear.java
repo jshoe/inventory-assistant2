@@ -183,7 +183,7 @@ public class ItemListWear extends Activity {
         }
         cursor.close();
         if (itemArray.size() == 0) {
-            itemArray.add("(no items)");
+            itemArray.add("        (no items)");
             ArrayAdapter<String> arrayAdapter =
                     new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, itemArray);
             itemList.setAdapter(arrayAdapter);
