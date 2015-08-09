@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     android:layout_margin="30dp"
     android:background="#fefefe"
+    android:clipToPadding="false"
     tools:context="com.example.jonathan.inventoryassistant.WriteNfcTag">
 
     <TextView android:text="Attach the tag to your item. Then hold your phone to the tag!" android:layout_width="wrap_content"
@@ -32,6 +33,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:onClick="skipScan"
+        android:elevation="30dp"
         android:layout_toEndOf="@+id/make_new" />
 
 </RelativeLayout>
