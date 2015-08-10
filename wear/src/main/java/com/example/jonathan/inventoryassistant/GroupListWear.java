@@ -36,13 +36,15 @@ public class GroupListWear extends Activity {
     private static final String DELETE_GROUP_KEY = "delete-group-key";
     private static final String GROUP_NAME_KEY = "group-name";
 
+    private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
+
     GroupReaderDbHelper groupReaderDbHelper;
     ArrayList<String> groupArray;
 
     ReceiveMessages myReceiver = null;
     Boolean myReceiverIsRegistered = false;
 
-    private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
+
 
     GoogleApiClient mGoogleApiClient;
 
@@ -52,10 +54,14 @@ public class GroupListWear extends Activity {
         setContentView(R.layout.activity_group_list);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+
+        Intent intent = new Intent(this, WearListenerService.class);
+        startService(intent);
+
         myReceiver = new ReceiveMessages();
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
-        makeGroupList();
+
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -77,6 +83,8 @@ public class GroupListWear extends Activity {
                 .build();
 
         mGoogleApiClient.connect();
+
+        makeGroupList();
     }
 
     @Override

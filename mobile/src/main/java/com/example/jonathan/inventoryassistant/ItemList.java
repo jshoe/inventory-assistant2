@@ -2,12 +2,16 @@ package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +33,12 @@ import java.util.ArrayList;
 
 public class ItemList extends Activity {
 
+    private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
+    private static final String UPDATE_KEY = "update-key";
+    private static final String CHECK_ITEM = "check-item";
+    private static final String UNCHECK_ITEM = "uncheck-item";
+    private static final String UPDATE_LIST = "update-list";
+
     private static final String PATH = "/database-action";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_ITEM_KEY = "delete-item-key";
@@ -37,6 +47,11 @@ public class ItemList extends Activity {
 
     ItemReaderDbHelper itemReaderDbHelper;
     String groupName = "";
+
+    ListView itemList;
+
+    ReceiveMessages myReceiver = null;
+    Boolean myReceiverIsRegistered = false;
 
     GoogleApiClient mGoogleApiClient;
 
@@ -53,8 +68,9 @@ public class ItemList extends Activity {
         upArrow.setColorFilter(getResources().getColor(R.color.backArrow), PorterDuff.Mode.SRC_ATOP);
         getActionBar().setHomeAsUpIndicator(upArrow);
 
+        myReceiver = new ReceiveMessages();
+
         itemReaderDbHelper = new ItemReaderDbHelper(this);
-        makeItemList();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -76,14 +92,29 @@ public class ItemList extends Activity {
                 .build();
 
         mGoogleApiClient.connect();
+
+        makeItemList();
     }
 
     @Override
     public void onResume()
     {  // After a pause OR at startup
         super.onResume();
+        if (!myReceiverIsRegistered) {
+            registerReceiver(myReceiver, new IntentFilter(UPDATE_ITEM_LIST));
+            myReceiverIsRegistered = true;
+        }
         itemReaderDbHelper = new ItemReaderDbHelper(this);
         makeItemList();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (myReceiverIsRegistered) {
+            unregisterReceiver(myReceiver);
+            myReceiverIsRegistered = false;
+        }
     }
 
     @Override
@@ -191,7 +222,7 @@ public class ItemList extends Activity {
         setTitle("Group: " + groupName);
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
         cursor.moveToPosition(-1);
-        ListView itemList = (ListView) findViewById(R.id.itemList);
+        itemList = (ListView) findViewById(R.id.itemList);
         itemArray = new ArrayList<>();
 
         while (cursor.moveToNext()) {
@@ -228,6 +259,22 @@ public class ItemList extends Activity {
                     return true;
                 }
             });
+        }
+    }
+
+    public class ReceiveMessages extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            String updateKey = intent.getStringExtra(UPDATE_KEY);
+
+            switch (updateKey) {
+                case UPDATE_LIST:
+                    Log.d("RECEIVE BROADCAST", "UPDATE_LIST RECEIVED");
+                    makeItemList();
+                    break;
+            }
         }
     }
 }

@@ -2,8 +2,11 @@ package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -37,11 +40,16 @@ public class GroupList extends Activity {
     private static final String DELETE_GROUP_KEY = "delete-group-key";
     private static final String GROUP_NAME_KEY = "group-name";
 
+    private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
+
     GoogleApiClient mGoogleApiClient;
 
     GroupReaderDbHelper groupReaderDbHelper;
     ItemReaderDbHelper itemReaderDbHelper;
     ArrayList<String> groupArray;
+
+    ReceiveMessages myReceiver = null;
+    Boolean myReceiverIsRegistered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +66,12 @@ public class GroupList extends Activity {
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         itemReaderDbHelper = new ItemReaderDbHelper(this);
-        makeGroupList();
+
+        myReceiver = new ReceiveMessages();
+
+
+        Intent intent = new Intent(this, MobileListenerService.class);
+        startService(intent);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -80,14 +93,29 @@ public class GroupList extends Activity {
                 .build();
 
         mGoogleApiClient.connect();
+
+        makeGroupList();
     }
 
     @Override
     public void onResume()
     {  // After a pause OR at startup
         super.onResume();
+        if (!myReceiverIsRegistered) {
+            registerReceiver(myReceiver, new IntentFilter(UPDATE_GROUP_LIST));
+            myReceiverIsRegistered = true;
+        }
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         makeGroupList();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (myReceiverIsRegistered) {
+            unregisterReceiver(myReceiver);
+            myReceiverIsRegistered = false;
+        }
     }
 
     @Override
@@ -223,6 +251,17 @@ public class GroupList extends Activity {
             });
 
             //registerForContextMenu(groupList);
+        }
+    }
+
+    public class ReceiveMessages extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(UPDATE_GROUP_LIST)) {
+                makeGroupList();
+            }
         }
     }
 }

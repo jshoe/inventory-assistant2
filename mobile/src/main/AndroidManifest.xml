@@ -22,10 +22,10 @@
             android:parentActivityName=".ItemList" >
         </activity>
 
-        <service
-            android:name=".MobileListenerService"
-            android:enabled="true"
-            android:exported="true" >
+        <service android:name=".MobileListenerService">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+            </intent-filter>
         </service>
 
         <activity

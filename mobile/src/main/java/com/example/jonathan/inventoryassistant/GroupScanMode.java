@@ -3,6 +3,8 @@ package com.example.jonathan.inventoryassistant;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -48,6 +50,13 @@ import java.util.Date;
 
 public class GroupScanMode extends Activity {
 
+    private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
+    private static final String UPDATE_KEY = "update-key";
+    private static final String CHECK_ITEM = "check-item";
+    private static final String UNCHECK_ITEM = "uncheck-item";
+    private static final String UPDATE_LIST = "update-list";
+
+
     private static final String PATH = "/database-action";
     private static final String ACTION_KEY = "action-key";
     private static final String CHECK_KEY = "check-key";
@@ -63,6 +72,9 @@ public class GroupScanMode extends Activity {
     public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "NfcDemo";
     private NfcAdapter mNfcAdapter;
+
+    ReceiveMessages myReceiver = null;
+    Boolean myReceiverIsRegistered = false;
 
     GoogleApiClient mGoogleApiClient;
 
@@ -82,9 +94,9 @@ public class GroupScanMode extends Activity {
         upArrow.setColorFilter(getResources().getColor(R.color.backArrow), PorterDuff.Mode.SRC_ATOP);
         getActionBar().setHomeAsUpIndicator(upArrow);
 
-        initiateNfcComponents();
-        makeItemList();
-        showScanStartMessage();
+        myReceiver = new ReceiveMessages();
+
+
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -106,6 +118,10 @@ public class GroupScanMode extends Activity {
                 .build();
 
         mGoogleApiClient.connect();
+
+        initiateNfcComponents();
+        makeItemList();
+        showScanStartMessage();
     }
 
     public void initiateNfcComponents() {
@@ -133,6 +149,10 @@ public class GroupScanMode extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (!myReceiverIsRegistered) {
+            registerReceiver(myReceiver, new IntentFilter(UPDATE_ITEM_LIST));
+            myReceiverIsRegistered = true;
+        }
         if (mNfcAdapter != null) {
             setupForegroundDispatch(this, mNfcAdapter);
         }
@@ -149,6 +169,10 @@ public class GroupScanMode extends Activity {
 
     @Override
     protected void onPause() {
+        if (myReceiverIsRegistered) {
+            unregisterReceiver(myReceiver);
+            myReceiverIsRegistered = false;
+        }
         if (mNfcAdapter != null) {
             stopForegroundDispatch(this, mNfcAdapter);
         }
@@ -295,16 +319,14 @@ public class GroupScanMode extends Activity {
             ArrayAdapter<String> arrayAdapter =
                     new ArrayAdapter<>(this,android.R.layout.simple_list_item_multiple_choice, itemArray);
             itemList.setAdapter(arrayAdapter);
-
             // register onClickListener to handle click events on each item
             itemList.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 // argument position gives the index of item which is clicked
-                public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3)
-                {
+                public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                     String itemName = itemArray.get(position);
-                    CheckedTextView item = (CheckedTextView)v;
-                    if(item.isChecked()){
+                    CheckedTextView item = (CheckedTextView) v;
+                    if (item.isChecked()) {
                         sendCheckToWear(groupName, itemName);
                     } else {
                         sendUncheckToWear(groupName, itemName);
@@ -312,15 +334,6 @@ public class GroupScanMode extends Activity {
                 }
             });
         }
-    }
-
-    public int getArrayPositionFromTitle(String title){
-        for (int i = 0; i < itemArray.size(); i++) {
-            if (itemArray.get(i).equals(title)) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     public void finishScan(View view) {
@@ -393,7 +406,7 @@ public class GroupScanMode extends Activity {
         cursor.close();
     }
 
-    public void checkOffItem(String NfcTag) {
+    public void checkOffItemNfc(String NfcTag) {
         if (NfcTag.contains(" --- ")) {
             String[] parts = NfcTag.split(" --- ");
             NfcTag = parts[1];
@@ -440,7 +453,7 @@ public class GroupScanMode extends Activity {
         protected void onPostExecute(String result) {
             if (result != null) {
                 //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-                checkOffItem(result);
+                checkOffItemNfc(result);
             }
         }
     }
@@ -479,5 +492,52 @@ public class GroupScanMode extends Activity {
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult =
                 Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
+    }
+
+    public int getArrayPositionFromTitle(String title){
+        for (int i = 0; i < itemArray.size(); i++) {
+            if (itemArray.get(i).equals(title)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void checkOffItem(String tag) {
+        int p = getArrayPositionFromTitle(tag);
+        if (p != -1) {
+            itemList.setItemChecked(p, true);
+        }
+    }
+
+    private void uncheckOffItem(String tag) {
+        int p = getArrayPositionFromTitle(tag);
+        if (p != -1) {
+            itemList.setItemChecked(p, false);
+        }
+    }
+
+    public class ReceiveMessages extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            String updateKey = intent.getStringExtra(UPDATE_KEY);
+
+            switch (updateKey) {
+                case UPDATE_LIST:
+                    Log.d("RECEIVE BROADCAST", "UPDATE_LIST RECEIVED");
+                    makeItemList();
+                    break;
+                case CHECK_ITEM:
+                    Log.d("RECEIVE BROADCAST", "CHECK_ITEM RECEIVED");
+                    checkOffItem(intent.getStringExtra(ITEM_NAME_KEY));
+                    break;
+                case UNCHECK_ITEM:
+                    Log.d("RECEIVE BROADCAST", "UNCHECK_ITEM RECEIVED");
+                    uncheckOffItem(intent.getStringExtra(ITEM_NAME_KEY));
+                    break;
+            }
+        }
     }
 }
