@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -55,6 +56,8 @@ public class ScanLogMapView extends FragmentActivity implements
     private static final LatLng SYDNEY = new LatLng(-33.87365, 151.20689);
     private static final LatLng ADELAIDE = new LatLng(-34.92873, 138.59995);
     private static final LatLng PERTH = new LatLng(-31.952854, 115.857342);
+    String groupName;
+    String itemName;
 
     LatLng position = new LatLng(37.871891, -122.258532);
 
@@ -154,6 +157,8 @@ public class ScanLogMapView extends FragmentActivity implements
         Bundle b = getIntent().getExtras();
         Double latitude = b.getDouble("latitude");
         Double longitude = b.getDouble("longitude");
+        groupName = b.getString("groupName");
+        itemName = b.getString("itemName");
 
         position = new LatLng(latitude, longitude);
 
@@ -162,6 +167,16 @@ public class ScanLogMapView extends FragmentActivity implements
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.setClass(this, ItemInfo.class);
+        i.putExtra("groupName", groupName);
+        i.putExtra("itemName", itemName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     public void formatActionBar() {
@@ -230,6 +245,12 @@ public class ScanLogMapView extends FragmentActivity implements
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
 
         //noinspection SimplifiableIfStatement
         /** if (id == R.id.action_settings) {

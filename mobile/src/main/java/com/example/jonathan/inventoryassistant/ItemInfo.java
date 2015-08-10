@@ -109,6 +109,8 @@ public class ItemInfo extends Activity {
             b.putDouble("latitude", lat);
             b.putDouble("longitude", lon);
             b.putString("title", "Check-In");
+            b.putString("groupName", groupName);
+            b.putString("itemName", itemName);
             String snippet = lat.toString() + ", " + lon.toString();
             b.putString("snippet", snippet);
             i.putExtras(b);

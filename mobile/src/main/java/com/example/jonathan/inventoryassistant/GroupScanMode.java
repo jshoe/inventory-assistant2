@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
@@ -73,6 +75,8 @@ public class GroupScanMode extends Activity {
     public static final String TAG = "NfcDemo";
     private NfcAdapter mNfcAdapter;
 
+    Location lastKnownLocation;
+
     ReceiveMessages myReceiver = null;
     Boolean myReceiverIsRegistered = false;
 
@@ -96,13 +100,17 @@ public class GroupScanMode extends Activity {
 
         myReceiver = new ReceiveMessages();
 
-
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(Bundle connectionHint) {
-                        // Now you can use the Data Layer API
+                        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                        if (location == null) {
+                            Log.d("CURRENT LOCATION:", " IS NULL.");
+                        }
+                        else {
+                            handleNewLocation(location);
+                        };
                     }
                     @Override
                     public void onConnectionSuspended(int cause) {
@@ -115,6 +123,7 @@ public class GroupScanMode extends Activity {
                 })
                         // Request access only to the Wearable API
                 .addApi(Wearable.API)
+                .addApi(LocationServices.API)
                 .build();
 
         mGoogleApiClient.connect();
@@ -122,6 +131,11 @@ public class GroupScanMode extends Activity {
         initiateNfcComponents();
         makeItemList();
         showScanStartMessage();
+    }
+
+    private void handleNewLocation(Location location) {
+        Log.d("CURRENT LOCATION IS: ", location.toString());
+        lastKnownLocation = location;
     }
 
     public void initiateNfcComponents() {
@@ -395,8 +409,8 @@ public class GroupScanMode extends Activity {
             String itemName = i.toString();
             itemReaderDbHelper.checkItem(groupName, itemName);
             itemReaderDbHelper.updateDateCheckedItem(groupName, itemName, new Date());
-            itemReaderDbHelper.insertLatestLatitude(groupName, itemName, (float) 37.863678);
-            itemReaderDbHelper.insertLatestLongitude(groupName, itemName, (float) -122.267057);
+            itemReaderDbHelper.insertLatestLatitude(groupName, itemName, (float) lastKnownLocation.getLatitude());
+            itemReaderDbHelper.insertLatestLongitude(groupName, itemName, (float) lastKnownLocation.getLongitude());
             Log.d("checkOffItemsInDb", "Current date is: " + (new Date()).toString());
         }
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
