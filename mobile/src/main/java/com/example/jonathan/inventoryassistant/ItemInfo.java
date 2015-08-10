@@ -147,16 +147,12 @@ public class ItemInfo extends Activity {
         logArray = new ArrayList<>();
         ArrayList tempArray = new ArrayList();
 
-        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED1)));
-        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED2)));
-        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED3)));
-        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED4)));
-        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED5)));
-        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED6)));
-        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED7)));
-        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED8)));
-        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED9)));
-        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED10)));
+        String cur;
+        for (Integer n = 1; n <= 10; n++) {
+            cur = "date_checked" + n.toString();
+            tempArray.add(cursor.getString(cursor.getColumnIndex(cur)));
+        }
+
         cursor.close();
 
         for (Object o: tempArray) {

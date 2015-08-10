@@ -214,10 +214,10 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     public void updateDateCheckedItem(String groupName, String itemName, Date utilDateChecked) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        DateFormat df = new SimpleDateFormat("EEEE, MMMM, dd, yyyy");
+        DateFormat df = new SimpleDateFormat("EEEE, MMMM, d, yyyy");
         Date now = Calendar.getInstance().getTime();
         String date = df.format(now);
-        date = String.format("%-35s", date);
+        date = String.format("%-36s", date);
 
         df = new SimpleDateFormat("h:mm a");
         String time = df.format(now);
