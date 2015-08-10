@@ -109,7 +109,8 @@ public class ItemInfo extends Activity {
             b.putDouble("latitude", lat);
             b.putDouble("longitude", lon);
             b.putString("title", "Check-In");
-            //b.putString("snippet", "Location");
+            String snippet = lat.toString() + ", " + lon.toString();
+            b.putString("snippet", snippet);
             i.putExtras(b);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
