@@ -88,7 +88,7 @@ public class ItemReaderContract {
                         ItemEntry.LAT9 + REAL_TYPE + COMMA_SEP +
                         ItemEntry.LON9 + REAL_TYPE + COMMA_SEP +
                         ItemEntry.LAT10 + REAL_TYPE + COMMA_SEP +
-                        ItemEntry.LON10 + REAL_TYPE + COMMA_SEP +
+                        ItemEntry.LON10 + REAL_TYPE +
                 " )";
 
         protected static final String SQL_DELETE_ENTRIES =

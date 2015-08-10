@@ -395,8 +395,8 @@ public class GroupScanMode extends Activity {
             String itemName = i.toString();
             itemReaderDbHelper.checkItem(groupName, itemName);
             itemReaderDbHelper.updateDateCheckedItem(groupName, itemName, new Date());
-            itemReaderDbHelper.insertLatitude(groupName, itemName, (float) 37.863678);
-            itemReaderDbHelper.insertLongitude(groupName, itemName, (float) -122.267057);
+            itemReaderDbHelper.insertLatestLatitude(groupName, itemName, (float) 37.863678);
+            itemReaderDbHelper.insertLatestLongitude(groupName, itemName, (float) -122.267057);
             Log.d("checkOffItemsInDb", "Current date is: " + (new Date()).toString());
         }
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);

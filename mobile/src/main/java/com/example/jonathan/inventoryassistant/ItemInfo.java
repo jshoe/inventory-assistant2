@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class ItemInfo extends Activity {
@@ -66,35 +67,53 @@ public class ItemInfo extends Activity {
         return true;
     }
 
-    public void showOnMap(String itemName) {
+    public void showOnMap(Integer position) {
+        String latFront = "latitude";
+        String lonFront = "longitude";
+        position++;
+        latFront += position.toString();
+        lonFront += position.toString();
+
         Cursor cursor = itemReaderDbHelper.getItem(groupName, itemName);
         cursor.moveToFirst();
         Float latitude;
         Float longitude;
+
+        Double lat;
+        Double lon;
+
+        Log.d("showOnMap", "The thing we are trying to get is: " + latFront);
+
         try {
-            latitude = cursor.getFloat(cursor.getColumnIndex(ItemReaderContract.ItemEntry.LAT));
+            latitude = cursor.getFloat(cursor.getColumnIndex(latFront));
         } catch (android.database.CursorIndexOutOfBoundsException e) {
             latitude = 0f;
         }
         try {
-            longitude = cursor.getFloat(cursor.getColumnIndex(ItemReaderContract.ItemEntry.LON));
+            longitude = cursor.getFloat(cursor.getColumnIndex(lonFront));
         } catch (android.database.CursorIndexOutOfBoundsException e) {
             longitude = 0f;
         }
+        Log.d("showOnMap", "Value of lat from database manually is: " + latitude.toString());
+        Log.d("showOnMap", "Value of lon from database manually is: " + longitude.toString());
 
-        Double lat = Double.parseDouble(latitude.toString());
-        Double lon = Double.parseDouble(longitude.toString());
+        if (latitude == 0f && longitude == 0f) {
+            Toast.makeText(getApplicationContext(), "Entry has no location logged", Toast.LENGTH_SHORT).show();
+        } else {
+            lat = Double.parseDouble(latitude.toString());
+            lon = Double.parseDouble(longitude.toString());
 
-        Intent i = new Intent();
-        i.setClass(this, ScanLogMapView.class);
-        Bundle b = new Bundle();
-        b.putDouble("latitude", latitude);
-        b.putDouble("longitude", longitude);
-        b.putString("title", "Check-In");
-        //b.putString("snippet", "Location");
-        i.putExtras(b);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
+            Intent i = new Intent();
+            i.setClass(this, ScanLogMapView.class);
+            Bundle b = new Bundle();
+            b.putDouble("latitude", lat);
+            b.putDouble("longitude", lon);
+            b.putString("title", "Check-In");
+            //b.putString("snippet", "Location");
+            i.putExtras(b);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        }
     }
 
     @Override
@@ -162,7 +181,7 @@ public class ItemInfo extends Activity {
                 // argument position gives the index of item which is clicked
                 public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                     String selectedItem = (String) logArray.get(position);
-                    showOnMap(selectedItem);
+                    showOnMap(position);
                     //Toast.makeText(getApplicationContext(), "Long press for options", Toast.LENGTH_SHORT).show();
                     //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
                 }
