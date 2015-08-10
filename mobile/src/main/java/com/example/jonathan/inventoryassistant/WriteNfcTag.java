@@ -130,9 +130,6 @@ public class WriteNfcTag extends Activity {
                 Toast.makeText(context,"This tag type is not supported",Toast.LENGTH_SHORT).show();
             }
         }
-        Intent i = new Intent(this, ItemList.class);
-        i.putExtra("groupName", groupName);
-        startActivity(i);
     }
 
     @Override
@@ -177,6 +174,9 @@ public class WriteNfcTag extends Activity {
                 ndef.writeNdefMessage(message);
                 if(writeProtect)  ndef.makeReadOnly();
                 mess = "Tag written successfully!";
+                Intent i = new Intent(this, ItemList.class);
+                i.putExtra("groupName", groupName);
+                startActivity(i);
                 return new WriteResponse(1,mess);
             } else {
                 NdefFormatable format = NdefFormatable.get(tag);
@@ -197,7 +197,9 @@ public class WriteNfcTag extends Activity {
             }
         } catch (Exception e) {
             mess = "Failed to write tag!";
-            return new WriteResponse(0,mess);
+            Toast.makeText(context, "Failed to write tag!", Toast.LENGTH_SHORT).show();
+            writeTag(message, tag);
+            return new WriteResponse(0, "Write finished");
         }
     }
 

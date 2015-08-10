@@ -217,11 +217,11 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         DateFormat df = new SimpleDateFormat("EEEE, MMMM, d, yyyy");
         Date now = Calendar.getInstance().getTime();
         String date = df.format(now);
-        date = String.format("%-36s", date);
+        date = String.format("%-33s", date);
 
         df = new SimpleDateFormat("h:mm a");
         String time = df.format(now);
-        time = String.format("%15s", time);
+        time = String.format("%14s", time);
 
         String text = date + time;
 
