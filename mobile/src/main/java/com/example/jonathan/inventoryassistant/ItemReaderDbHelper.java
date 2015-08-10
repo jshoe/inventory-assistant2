@@ -19,8 +19,11 @@ import static com.example.jonathan.inventoryassistant.ItemReaderContract.ItemEnt
  * Created by randyramadhana on 7/31/15.
  */
 public class ItemReaderDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "ItemReader.db";
+
+    private static final String LATITUDE = "latitude";
+    private static final String LONGITUDE = "longitude";
 
     public ItemReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,8 +52,6 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         values.put(ItemEntry.ITEM_NAME, itemName);
         values.put(ItemEntry.CHECKED, 0);
         values.put(ItemEntry.NFC_TAG, "NULL");
-        values.put(ItemEntry.LAT, "NULL");
-        values.put(ItemEntry.LON, "NULL");
         values.put(ItemEntry.DATE_CHECKED1, "NULL");
         values.put(ItemEntry.DATE_CHECKED2, "NULL");
         values.put(ItemEntry.DATE_CHECKED3, "NULL");
@@ -61,6 +62,26 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         values.put(ItemEntry.DATE_CHECKED8, "NULL");
         values.put(ItemEntry.DATE_CHECKED9, "NULL");
         values.put(ItemEntry.DATE_CHECKED10, "NULL");
+        values.put(ItemEntry.LAT1, "NULL");
+        values.put(ItemEntry.LON1, "NULL");
+        values.put(ItemEntry.LAT2, "NULL");
+        values.put(ItemEntry.LON2, "NULL");
+        values.put(ItemEntry.LAT3, "NULL");
+        values.put(ItemEntry.LON3, "NULL");
+        values.put(ItemEntry.LAT4, "NULL");
+        values.put(ItemEntry.LON4, "NULL");
+        values.put(ItemEntry.LAT5, "NULL");
+        values.put(ItemEntry.LON5, "NULL");
+        values.put(ItemEntry.LAT6, "NULL");
+        values.put(ItemEntry.LON6, "NULL");
+        values.put(ItemEntry.LAT7, "NULL");
+        values.put(ItemEntry.LON7, "NULL");
+        values.put(ItemEntry.LAT8, "NULL");
+        values.put(ItemEntry.LON8, "NULL");
+        values.put(ItemEntry.LAT9, "NULL");
+        values.put(ItemEntry.LON9, "NULL");
+        values.put(ItemEntry.LAT10, "NULL");
+        values.put(ItemEntry.LON10, "NULL");
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId;
@@ -87,39 +108,8 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     public Cursor getAllItemsInGroup(String groupName) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] projection = {
-                ItemEntry._ID,
-                ItemEntry.GROUP_NAME,
-                ItemEntry.ITEM_NAME,
-                ItemEntry.NFC_TAG,
-                ItemEntry.CHECKED,
-                ItemEntry.LAT,
-                ItemEntry.LON,
-                ItemEntry.DATE_CHECKED1,
-                ItemEntry.DATE_CHECKED2,
-                ItemEntry.DATE_CHECKED3,
-                ItemEntry.DATE_CHECKED4,
-                ItemEntry.DATE_CHECKED5,
-                ItemEntry.DATE_CHECKED6,
-                ItemEntry.DATE_CHECKED7,
-                ItemEntry.DATE_CHECKED8,
-                ItemEntry.DATE_CHECKED9,
-                ItemEntry.DATE_CHECKED10
-        };
-
-        String sortOrder = ItemEntry.ITEM_NAME;
-
-        String selection = ItemEntry.GROUP_NAME + " = ?";
-        String[] selectionArgs = {groupName};
-
-        return db.query(
-                ItemEntry.TABLE_NAME,                     // The table to query
-                projection,                               // The columns to return
-                selection,                                // The columns for the WHERE clause
-                selectionArgs,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
+        return db.rawQuery("select * from " + ItemEntry.TABLE_NAME +
+                " where " + ItemEntry.GROUP_NAME + " = ?", new String[] {groupName}
         );
 
     }
@@ -200,21 +190,21 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         );
     }
 
-    public void insertLatitude(String groupName, String itemName, float lat) {
+    public void insertLatitude(String groupName, String itemName, int latitudeIndex, float lat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.execSQL("update " + ItemEntry.TABLE_NAME +
-                        " set " + ItemEntry.LAT + "=" + lat +
+                        " set " + LATITUDE + latitudeIndex + "=" + lat +
                         " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                         " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
         );
     }
 
-    public void insertLongitude(String groupName, String itemName, float lon) {
+    public void insertLongitude(String groupName, String itemName, int longitudeIndex, float lon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.execSQL("update " + ItemEntry.TABLE_NAME +
-                        " set " + ItemEntry.LON + "=" + lon +
+                        " set " + LONGITUDE + longitudeIndex + "=" + lon +
                         " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                         " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
         );
