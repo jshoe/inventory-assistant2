@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ItemInfo extends Activity {
@@ -107,18 +108,25 @@ public class ItemInfo extends Activity {
         Cursor cursor = itemReaderDbHelper.getItem(groupName, itemName);
         cursor.moveToFirst();
         logArray = new ArrayList<>();
+        ArrayList tempArray = new ArrayList();
 
-        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED1)));
-        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED2)));
-        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED3)));
-        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED4)));
-        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED5)));
-        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED6)));
-        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED7)));
-        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED8)));
-        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED9)));
-        logArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED10)));
+        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED1)));
+        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED2)));
+        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED3)));
+        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED4)));
+        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED5)));
+        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED6)));
+        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED7)));
+        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED8)));
+        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED9)));
+        tempArray.add(cursor.getString(cursor.getColumnIndex(ItemReaderContract.ItemEntry.DATE_CHECKED10)));
         cursor.close();
+
+        for (Object o: tempArray) {
+            if (!o.equals("NULL")) {
+                logArray.add(o);
+            }
+        }
 
         if (logArray.size() == 0) {
             logArray.add("(no scans logged)");
@@ -135,7 +143,7 @@ public class ItemInfo extends Activity {
             logList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 // argument position gives the index of item which is clicked
                 public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-                    //String selectedItem = logArray.get(position);
+                    String selectedItem = (String) logArray.get(position);
                     //Toast.makeText(getApplicationContext(), "Long press for options", Toast.LENGTH_SHORT).show();
                     //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
                 }

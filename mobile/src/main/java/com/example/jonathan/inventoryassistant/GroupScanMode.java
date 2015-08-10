@@ -284,30 +284,34 @@ public class GroupScanMode extends Activity {
             itemArray.add(itemName);
             Log.d("ItemList", "Trying to print out all the items in the ItemList");
         }
+        cursor.close();
         if (itemArray.size() == 0) {
             itemArray.add("(no items)");
-        }
-        cursor.close();
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, itemArray);
+            itemList.setAdapter(arrayAdapter);
+            itemList.setOnItemClickListener(null);
+        } else {
+            ArrayAdapter<String> arrayAdapter =
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_multiple_choice, itemArray);
+            itemList.setAdapter(arrayAdapter);
 
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(this,android.R.layout.simple_list_item_multiple_choice, itemArray);
-        itemList.setAdapter(arrayAdapter);
-
-        // register onClickListener to handle click events on each item
-        itemList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            // argument position gives the index of item which is clicked
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3)
+            // register onClickListener to handle click events on each item
+            itemList.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
-                String itemName = itemArray.get(position);
-                CheckedTextView item = (CheckedTextView)v;
-                if(item.isChecked()){
-                    sendCheckToWear(groupName, itemName);
-                } else {
-                    sendUncheckToWear(groupName, itemName);
+                // argument position gives the index of item which is clicked
+                public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3)
+                {
+                    String itemName = itemArray.get(position);
+                    CheckedTextView item = (CheckedTextView)v;
+                    if(item.isChecked()){
+                        sendCheckToWear(groupName, itemName);
+                    } else {
+                        sendUncheckToWear(groupName, itemName);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public int getArrayPositionFromTitle(String title){

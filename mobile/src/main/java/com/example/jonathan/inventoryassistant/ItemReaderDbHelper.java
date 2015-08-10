@@ -197,12 +197,19 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
     public void updateDateCheckedItem(String groupName, String itemName, Date utilDateChecked) {
         SQLiteDatabase db = this.getWritableDatabase();
-        //java.sql.Date date = new java.sql.Date(utilDateChecked.getTime());
+
+        DateFormat df = new SimpleDateFormat("EEEE, MMMM, dd, yyyy");
+        Date now = Calendar.getInstance().getTime();
+        String date = df.format(now);
+        date = String.format("%-35s", date);
+
+        df = new SimpleDateFormat("h:mm a");
+        String time = df.format(now);
+        time = String.format("%15s", time);
+
+        String text = date + time;
 
         updateDateHistory(groupName, itemName);
-        DateFormat df = new SimpleDateFormat("E, MM/dd/yyyy at HH:mm");
-        Date now = Calendar.getInstance().getTime();
-        String text = df.format(now);
 
         Log.d("updateDateCheckedItem", "Date to write: " + text);
 
@@ -222,7 +229,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         if (!date.equals("NULL")) {
             db.execSQL("update " + ItemEntry.TABLE_NAME +
-                            " set " + ItemEntry.DATE_CHECKED10 + "=" + date +
+                            " set " + ItemEntry.DATE_CHECKED10 + "='" + date + "'" +
                             " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                             " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
             );
@@ -232,7 +239,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         if (!date.equals("NULL")) {
             db.execSQL("update " + ItemEntry.TABLE_NAME +
-                            " set " + ItemEntry.DATE_CHECKED9 + "=" + date +
+                            " set " + ItemEntry.DATE_CHECKED9 + "='" + date + "'" +
                             " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                             " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
             );
@@ -242,7 +249,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         if (!date.equals("NULL")) {
             db.execSQL("update " + ItemEntry.TABLE_NAME +
-                            " set " + ItemEntry.DATE_CHECKED8 + "=" + date +
+                            " set " + ItemEntry.DATE_CHECKED8 + "='" + date + "'" +
                             " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                             " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
             );
@@ -252,7 +259,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         if (!date.equals("NULL")) {
             db.execSQL("update " + ItemEntry.TABLE_NAME +
-                            " set " + ItemEntry.DATE_CHECKED7 + "=" + date +
+                            " set " + ItemEntry.DATE_CHECKED7 + "='" + date + "'" +
                             " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                             " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
             );
@@ -262,7 +269,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         if (!date.equals("NULL")) {
             db.execSQL("update " + ItemEntry.TABLE_NAME +
-                            " set " + ItemEntry.DATE_CHECKED6 + "=" + date +
+                            " set " + ItemEntry.DATE_CHECKED6 + "='" + date + "'" +
                             " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                             " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
             );
@@ -272,7 +279,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         if (!date.equals("NULL")) {
             db.execSQL("update " + ItemEntry.TABLE_NAME +
-                            " set " + ItemEntry.DATE_CHECKED5 + "=" + date +
+                            " set " + ItemEntry.DATE_CHECKED5 + "='" + date + "'" +
                             " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                             " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
             );
@@ -282,7 +289,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         if (!date.equals("NULL")) {
             db.execSQL("update " + ItemEntry.TABLE_NAME +
-                            " set " + ItemEntry.DATE_CHECKED4 + "=" + date +
+                            " set " + ItemEntry.DATE_CHECKED4 + "='" + date + "'" +
                             " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                             " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
             );
@@ -292,7 +299,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         if (!date.equals("NULL")) {
             db.execSQL("update " + ItemEntry.TABLE_NAME +
-                            " set " + ItemEntry.DATE_CHECKED3 + "=" + date +
+                            " set " + ItemEntry.DATE_CHECKED3 + "='" + date + "'" +
                             " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                             " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
             );
@@ -302,7 +309,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         if (!date.equals("NULL")) {
             db.execSQL("update " + ItemEntry.TABLE_NAME +
-                            " set " + ItemEntry.DATE_CHECKED2 + "=" + date +
+                            " set " + ItemEntry.DATE_CHECKED2 + "='" + date + "'" +
                             " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                             " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
             );
