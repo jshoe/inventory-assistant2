@@ -69,6 +69,10 @@ public class GroupList extends Activity {
 
         myReceiver = new ReceiveMessages();
 
+
+        Intent intent = new Intent(this, MobileListenerService.class);
+        startService(intent);
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override

@@ -13,8 +13,6 @@ public class WelcomeScreenWear extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        Intent intent = new Intent(this, WearListenerService.class);
-        startService(intent);
     }
 
     @Override

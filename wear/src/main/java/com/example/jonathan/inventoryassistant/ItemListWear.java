@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,7 +40,8 @@ public class ItemListWear extends Activity {
     private static final String UPDATE_LIST = "update-list";
     private static final String ITEM_NAME_KEY = "item-name";
 
-    private static final String PATH = "/database-action-mobile";
+    private static final String PATH = "/database-action";
+    private static final String CHECK_KEY = "check-key";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_ITEM_KEY = "delete-item-key";
     private static final String GROUP_NAME_KEY = "group-name";
@@ -283,7 +285,13 @@ public class ItemListWear extends Activity {
                 // argument position gives the index of item which is clicked
                 public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                     //Toast.makeText(getApplicationContext(), "Long press to delete", Toast.LENGTH_SHORT).show();
-                    String selectedItem = itemArray.get(position);
+                    String itemName = itemArray.get(position);
+                    CheckedTextView item = (CheckedTextView) v;
+                    if (item.isChecked()) {
+                        sendCheckToMobile(groupName, itemName);
+                    } else {
+                        sendUncheckToMobile(groupName, itemName);
+                    }
                 }
             });
 
@@ -295,6 +303,30 @@ public class ItemListWear extends Activity {
                 }
             });
         }
+    }
+
+    private void sendCheckToMobile(String groupName, String itemName) {
+        Log.d("sendCheckToWear", "Trying to check off: " + groupName + ", " + itemName);
+
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, CHECK_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
+        putDataMapReq.getDataMap().putString(CHECK_KEY, "1");
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
+    }
+
+    private void sendUncheckToMobile(String groupName, String itemName) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, CHECK_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
+        putDataMapReq.getDataMap().putString(CHECK_KEY, "0");
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     public class ReceiveMessages extends BroadcastReceiver {

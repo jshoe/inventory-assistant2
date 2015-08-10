@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class GroupListWear extends Activity {
 
-    private static final String PATH = "/database-action-mobile";
+    private static final String PATH = "/database-action";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_GROUP_KEY = "delete-group-key";
     private static final String GROUP_NAME_KEY = "group-name";
@@ -53,6 +53,10 @@ public class GroupListWear extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
+        Intent intent = new Intent(this, WearListenerService.class);
+        startService(intent);
 
         myReceiver = new ReceiveMessages();
 

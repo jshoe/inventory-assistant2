@@ -262,30 +262,6 @@ public class ItemList extends Activity {
         }
     }
 
-    public int getArrayPositionFromTitle(String title){
-        for (int i = 0; i < itemArray.size(); i++) {
-            if (itemArray.get(i).equals(title)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    private void checkOffItem(String tag) {
-        Log.d("checkOffItem", "Going to try to check off " + tag);
-        int p = getArrayPositionFromTitle(tag);
-        if (p != -1) {
-            itemList.setItemChecked(p, true);
-        }
-    }
-
-    private void uncheckOffItem(String tag) {
-        int p = getArrayPositionFromTitle(tag);
-        if (p != -1) {
-            itemList.setItemChecked(p, false);
-        }
-    }
-
     public class ReceiveMessages extends BroadcastReceiver {
 
         @Override
@@ -297,14 +273,6 @@ public class ItemList extends Activity {
                 case UPDATE_LIST:
                     Log.d("RECEIVE BROADCAST", "UPDATE_LIST RECEIVED");
                     makeItemList();
-                    break;
-                case CHECK_ITEM:
-                    Log.d("RECEIVE BROADCAST", "CHECK_ITEM RECEIVED");
-                    checkOffItem(intent.getStringExtra(ITEM_NAME_KEY));
-                    break;
-                case UNCHECK_ITEM:
-                    Log.d("RECEIVE BROADCAST", "UNCHECK_ITEM RECEIVED");
-                    uncheckOffItem(intent.getStringExtra(ITEM_NAME_KEY));
                     break;
             }
         }
