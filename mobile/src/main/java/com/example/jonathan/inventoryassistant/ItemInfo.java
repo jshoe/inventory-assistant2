@@ -69,14 +69,29 @@ public class ItemInfo extends Activity {
     public void showOnMap(String itemName) {
         Cursor cursor = itemReaderDbHelper.getItem(groupName, itemName);
         cursor.moveToFirst();
+        Float latitude;
+        Float longitude;
+        try {
+            latitude = cursor.getFloat(cursor.getColumnIndex(ItemReaderContract.ItemEntry.LAT));
+        } catch (android.database.CursorIndexOutOfBoundsException e) {
+            latitude = 0f;
+        }
+        try {
+            longitude = cursor.getFloat(cursor.getColumnIndex(ItemReaderContract.ItemEntry.LON));
+        } catch (android.database.CursorIndexOutOfBoundsException e) {
+            longitude = 0f;
+        }
+
+        Double lat = Double.parseDouble(latitude.toString());
+        Double lon = Double.parseDouble(longitude.toString());
 
         Intent i = new Intent();
         i.setClass(this, ScanLogMapView.class);
         Bundle b = new Bundle();
-        b.putDouble("latitude", 37.871891);
-        b.putDouble("longitude", -122.258532);
+        b.putDouble("latitude", latitude);
+        b.putDouble("longitude", longitude);
         b.putString("title", "Check-In");
-        b.putString("snippet", "Location");
+        //b.putString("snippet", "Location");
         i.putExtras(b);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);

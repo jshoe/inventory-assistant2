@@ -392,8 +392,11 @@ public class GroupScanMode extends Activity {
     public void checkOffItemsInDb(ArrayList checkedOff) {
         for (Object i: checkedOff) {
             Log.d("checkOffItemsInDb", "Trying to check off: " + i.toString());
-            itemReaderDbHelper.checkItem(groupName, i.toString());
-            itemReaderDbHelper.updateDateCheckedItem(groupName, i.toString(), new Date());
+            String itemName = i.toString();
+            itemReaderDbHelper.checkItem(groupName, itemName);
+            itemReaderDbHelper.updateDateCheckedItem(groupName, itemName, new Date());
+            itemReaderDbHelper.insertLatitude(groupName, itemName, (float) 37.863678);
+            itemReaderDbHelper.insertLongitude(groupName, itemName, (float) -122.267057);
             Log.d("checkOffItemsInDb", "Current date is: " + (new Date()).toString());
         }
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
