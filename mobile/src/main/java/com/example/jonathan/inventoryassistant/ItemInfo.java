@@ -66,7 +66,10 @@ public class ItemInfo extends Activity {
         return true;
     }
 
-    public void showOnMap(View view) {
+    public void showOnMap(String itemName) {
+        Cursor cursor = itemReaderDbHelper.getItem(groupName, itemName);
+        cursor.moveToFirst();
+
         Intent i = new Intent();
         i.setClass(this, ScanLogMapView.class);
         Bundle b = new Bundle();
@@ -144,6 +147,7 @@ public class ItemInfo extends Activity {
                 // argument position gives the index of item which is clicked
                 public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                     String selectedItem = (String) logArray.get(position);
+                    showOnMap(selectedItem);
                     //Toast.makeText(getApplicationContext(), "Long press for options", Toast.LENGTH_SHORT).show();
                     //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
                 }

@@ -33,7 +33,7 @@
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         android:elevation="30dp"
-        android:onClick="showOnMap"
+        android:onClick=""
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:layout_alignParentBottom="true"
