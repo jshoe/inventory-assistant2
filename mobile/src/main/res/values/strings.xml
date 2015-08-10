@@ -27,5 +27,6 @@
     <string name="start">Start</string>
     <string name="title_activity_item_view">ItemView</string>
     <string name="title_activity_map_test">MapTest</string>
+    <string name="title_activity_group_tag_scan_mode">GroupTagScanMode</string>
 </resources>
 

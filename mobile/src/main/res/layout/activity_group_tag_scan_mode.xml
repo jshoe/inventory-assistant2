@@ -2,73 +2,67 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:id="@+id/topLayout"
-    android:background="#fefefe"
     android:paddingRight="@dimen/activity_horizontal_margin"
+    android:background="#fefefe"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:clipToPadding="false"
     tools:context="com.example.jonathan.inventoryassistant.ItemList">
 
-    <TextView android:text="Items in this group:" android:layout_width="wrap_content"
+    <TextView android:text="Groups to detect:" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:textColor="#000000"
-        android:id="@+id/make_new"
+        android:id="@+id/header"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemList"
+        android:id="@+id/groupList"
         android:layout_marginTop="15dp"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/button"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/make_new" />
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/button" />
+
+    <!--
+    <CheckedTextView
+        android:id="@+id/checkList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
+        android:text="checkList" />
+    -->
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="   Add Item   "
+        android:text="  Cancel Scan  "
         android:id="@+id/button"
-        android:background="@drawable/round_button_green"
+        android:background="@drawable/round_button_red"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
-        android:elevation="30dp"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:onClick="makeNewItem"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:onClick="cancelScan"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tag Group"
-        android:id="@+id/tagGroup"
+        android:text="Done"
+        android:id="@+id/done"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
-        android:elevation="30dp"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:background="@drawable/round_button_blue"
-        android:onClick="makeGroupTag"
+        android:background="@drawable/round_button_green"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scan Items"
-        android:id="@+id/initiate_scan"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        android:elevation="30dp"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:background="@drawable/round_button_yellow"
-        android:onClick="startScan"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/itemList" />
+        android:layout_alignParentRight="true"
+        android:onClick="finishScan"
+        android:layout_toEndOf="@+id/make_new" />
 </RelativeLayout>

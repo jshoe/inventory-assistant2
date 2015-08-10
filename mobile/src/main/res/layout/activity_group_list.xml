@@ -40,4 +40,19 @@
         android:layout_above="@+id/button"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/make_new" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scan Groups"
+        android:id="@+id/initiate_scan"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:elevation="30dp"
+        android:paddingLeft="17dip"
+        android:paddingRight="17dip"
+        android:background="@drawable/round_button_blue"
+        android:onClick="startGroupsScan"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/groupList" />
 </RelativeLayout>

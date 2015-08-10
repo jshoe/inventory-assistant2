@@ -140,6 +140,15 @@ public class ItemList extends Activity {
         startActivity(i);
     }
 
+    public void makeGroupTag(View view) {
+        Intent i = new Intent();
+        i.setClass(this, WriteNfcTag.class);
+        i.putExtra("groupName", groupName);
+        i.putExtra("textToWrite", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
     public void startScan(View view) {
         Intent i = new Intent();
         i.setClass(this, GroupScanMode.class);

@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /** Source attribution: Lots of NFC help from this tutorial:
@@ -38,6 +39,7 @@ public class WriteNfcTag extends Activity {
     private boolean writeProtect = false;
     private Context context;
     String groupName;
+    String textToWrite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +56,22 @@ public class WriteNfcTag extends Activity {
         getActionBar().setHomeAsUpIndicator(upArrow);
 
         groupName = getIntent().getStringExtra("groupName");
+        textToWrite = getIntent().getStringExtra("textToWrite");
+        confirmTitle(textToWrite);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mNfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
                 getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP), 0);
         IntentFilter discovery=new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
         mWriteTagFilters = new IntentFilter[] { discovery };
         setTitle("Write Data to Tag");
+    }
+
+    public void confirmTitle(String textToWrite) {
+        if (!textToWrite.contains("---")) {
+            TextView t = (TextView) findViewById(R.id.help_msg);
+            setTitle("Set a Group Tag");
+            t.setText("Attach a tag to a container such as a backpack to count for all items in the group!");
+        }
     }
 
     @Override
@@ -113,7 +125,7 @@ public class WriteNfcTag extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        String textToWrite = getIntent().getStringExtra("textToWrite");
+        textToWrite = getIntent().getStringExtra("textToWrite");
         groupName = getIntent().getStringExtra("groupName");
         if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             // validate that this tag can be written

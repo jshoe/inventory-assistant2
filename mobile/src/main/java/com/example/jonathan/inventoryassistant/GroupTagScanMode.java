@@ -50,7 +50,7 @@ import java.util.Date;
  *  http://code.tutsplus.com/tutorials/reading-nfc-tags-with-android--mobile-17278
  */
 
-public class GroupScanMode extends Activity {
+public class GroupTagScanMode extends Activity {
 
     private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
     private static final String UPDATE_KEY = "update-key";
@@ -67,8 +67,9 @@ public class GroupScanMode extends Activity {
 
     ItemReaderDbHelper itemReaderDbHelper;
     String groupName = "";
-    ArrayList<String> itemArray;
-    ListView itemList;
+    ArrayList<String> groupArray;
+    ListView groupList;
+    GroupReaderDbHelper groupReaderDbHelper;
 
     public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "NfcDemo";
@@ -84,10 +85,12 @@ public class GroupScanMode extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_scan_mode);
+        setContentView(R.layout.activity_group_tag_scan_mode);
 
-        groupName = getIntent().getStringExtra("groupName");
+        groupList = (ListView) findViewById(R.id.groupList);
+
         itemReaderDbHelper = new ItemReaderDbHelper(this);
+        groupReaderDbHelper = new GroupReaderDbHelper(this);
 
         getActionBar().setDisplayShowHomeEnabled(true);
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -128,7 +131,7 @@ public class GroupScanMode extends Activity {
         mGoogleApiClient.connect();
 
         initiateNfcComponents();
-        makeItemList();
+        makeGroupList();
         showScanStartMessage();
     }
 
@@ -174,8 +177,7 @@ public class GroupScanMode extends Activity {
     @Override
     public void onBackPressed() {
         Intent i = new Intent();
-        i.setClass(this, ItemList.class);
-        i.putExtra("groupName", groupName);
+        i.setClass(this, GroupList.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }
@@ -255,7 +257,7 @@ public class GroupScanMode extends Activity {
         image.setImageResource(R.drawable.nfc_pic);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Prepare to scan items in any order. Nearby tags will be auto-detected!\n");
+        builder.setMessage("A Group Tag counts for all items in the Group. Nearby tags will be auto-detected!\n");
         builder.setCancelable(true);
         builder.setPositiveButton("Start",
                 new DialogInterface.OnClickListener() {
@@ -302,62 +304,78 @@ public class GroupScanMode extends Activity {
 
         //noinspection SimplifiableIfStatement
         /** if (id == R.id.action_settings) {
-            return true;
-        } */
+         return true;
+         } */
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void makeItemList() {
-        setTitle("Group: " + groupName);
-        Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
+    private void makeGroupList() {
+        setTitle("Group Batch Scanning");
+
+        Cursor cursor = groupReaderDbHelper.getAllGroups();
         cursor.moveToPosition(-1);
-        itemList = (ListView) findViewById(R.id.itemList);
-        itemList.setChoiceMode(itemList.CHOICE_MODE_MULTIPLE);
-        itemArray = new ArrayList<>();
+
+        ListView groupList = (ListView) findViewById(R.id.groupList);
+        groupList.setChoiceMode(groupList.CHOICE_MODE_MULTIPLE);
+        groupArray = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            String itemName = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
-            itemArray.add(itemName);
-            Log.d("ItemList", "Trying to print out all the items in the ItemList");
+            String groupName = cursor.getString(cursor.getColumnIndexOrThrow(GroupReaderContract.GroupEntry.GROUP_NAME));
+            groupArray.add(groupName);
+            Log.d("GrpLst", "Trying to print out all the items in the GroupList");
         }
         cursor.close();
-        if (itemArray.size() == 0) {
-            itemArray.add("(no items)");
+        if (groupArray.size() == 0) {
+            groupArray.add("(no groups)");
             ArrayAdapter<String> arrayAdapter =
-                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, itemArray);
-            itemList.setAdapter(arrayAdapter);
-            itemList.setOnItemClickListener(null);
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, groupArray);
+            groupList.setAdapter(arrayAdapter);
+            groupList.setOnItemClickListener(null);
         } else {
             ArrayAdapter<String> arrayAdapter =
-                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_multiple_choice, itemArray);
-            itemList.setAdapter(arrayAdapter);
+                    new ArrayAdapter<>(this,android.R.layout.simple_list_item_multiple_choice, groupArray);
+            groupList.setAdapter(arrayAdapter);
+
             // register onClickListener to handle click events on each item
-            itemList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
+            groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 // argument position gives the index of item which is clicked
                 public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-                    String itemName = itemArray.get(position);
-                    CheckedTextView item = (CheckedTextView) v;
-                    if (item.isChecked()) {
-                        sendCheckToWear(groupName, itemName);
+                    //Toast.makeText(getApplicationContext(), "Long press for options", Toast.LENGTH_SHORT).show();
+                    //String selectedGroup = groupArray.get(position);
+                    //showItemList(selectedGroup);
+
+                    String selectedGroup = groupArray.get(position);
+                    CheckedTextView group = (CheckedTextView) v;
+                    if (group.isChecked()) {
+                        //sendCheckToWear(groupName, itemName);
                     } else {
-                        sendUncheckToWear(groupName, itemName);
+                        //sendUncheckToWear(groupName, itemName);
                     }
                 }
             });
+
+            groupList.setLongClickable(true);
+            groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                    //deleteEntryDialog(groupArray.get(pos));
+                    return true;
+                }
+            });
+
+            //registerForContextMenu(groupList);
         }
     }
 
     public void finishScan(View view) {
-        SparseBooleanArray items = itemList.getCheckedItemPositions();
+        SparseBooleanArray items = groupList.getCheckedItemPositions();
         ArrayList unchecked = new ArrayList();
         ArrayList checkedOff = new ArrayList();
-        for (int i = 0; i < itemArray.size(); i++) {
+        for (int i = 0; i < groupArray.size(); i++) {
             if (!items.get(i)) {
-                unchecked.add(itemArray.get(i));
+                unchecked.add(groupArray.get(i));
             } else {
-                checkedOff.add(itemArray.get(i));
+                checkedOff.add(groupArray.get(i));
             }
         }
         showFinishDialog(unchecked, checkedOff);
@@ -367,23 +385,23 @@ public class GroupScanMode extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String msg;
         if (unchecked.size() == 0) {
-            msg = "All items checked off!";
+            msg = "All groups checked off!";
             builder.setPositiveButton("OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            checkOffItemsInDb(checkedOff);
+                            checkOffGroupItemsInDb(checkedOff);
                             finish();
                         }
                     });
         } else {
-            msg = "Are you sure you want to exit scan mode? You're missing some things!\n\n";
+            msg = "Are you sure you want to exit scan mode? You're missing some groups!\n\n";
             for (Object str : unchecked) {
                 msg += "  * " + str.toString() + "\n";
             }
             builder.setPositiveButton("Ignore Missing",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            checkOffItemsInDb(checkedOff);
+                            checkOffGroupItemsInDb(checkedOff);
                             finish();
                         }
                     });
@@ -402,22 +420,22 @@ public class GroupScanMode extends Activity {
         textView.setTextSize(20);
     }
 
-    public void checkOffItemsInDb(ArrayList checkedOff) {
+    public void checkOffGroupItemsInDb(ArrayList checkedOff) {
         for (Object i: checkedOff) {
             Log.d("checkOffGroupItemsInDb", "Trying to check off: " + i.toString());
-            String itemName = i.toString();
-            itemReaderDbHelper.checkItem(groupName, itemName);
-            itemReaderDbHelper.updateDateCheckedItem(groupName, itemName, new Date());
-            itemReaderDbHelper.insertLatestLatitude(groupName, itemName, (float) lastKnownLocation.getLatitude());
-            itemReaderDbHelper.insertLatestLongitude(groupName, itemName, (float) lastKnownLocation.getLongitude());
-            Log.d("checkOffGroupItemsInDb", "Current date is: " + (new Date()).toString());
+            checkOffItemsInDb(i.toString());
         }
+    }
+
+    public void checkOffItemsInDb(String groupName) {
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
         cursor.moveToPosition(-1);
         while (cursor.moveToNext()) {
             String itemName = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
-            String status = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.CHECKED));
-            Log.d("checkOffGroupItemsInDb", "Status of " + itemName + " is " + status);
+            itemReaderDbHelper.checkItem(groupName, itemName);
+            itemReaderDbHelper.updateDateCheckedItem(groupName, itemName, new Date());
+            itemReaderDbHelper.insertLatestLatitude(groupName, itemName, (float) lastKnownLocation.getLatitude());
+            itemReaderDbHelper.insertLatestLongitude(groupName, itemName, (float) lastKnownLocation.getLongitude());
         }
         cursor.close();
     }
@@ -430,9 +448,9 @@ public class GroupScanMode extends Activity {
         Toast.makeText(getApplicationContext(), "Detected " + NfcTag + "!", Toast.LENGTH_SHORT).show();
         int p = getArrayPositionFromTitle(NfcTag);
         if (p != -1) {
-            itemList.setItemChecked(p, true);
+            groupList.setItemChecked(p, true);
         }
-        sendCheckToWear(groupName, NfcTag);
+        //sendCheckToWear(groupName, NfcTag);
     }
 
     private class NdefReaderTask extends AsyncTask<Tag, Void, String> {
@@ -511,8 +529,8 @@ public class GroupScanMode extends Activity {
     }
 
     public int getArrayPositionFromTitle(String title){
-        for (int i = 0; i < itemArray.size(); i++) {
-            if (itemArray.get(i).equals(title)) {
+        for (int i = 0; i < groupArray.size(); i++) {
+            if (groupArray.get(i).equals(title)) {
                 return i;
             }
         }
@@ -522,14 +540,14 @@ public class GroupScanMode extends Activity {
     private void checkOffItem(String tag) {
         int p = getArrayPositionFromTitle(tag);
         if (p != -1) {
-            itemList.setItemChecked(p, true);
+            groupList.setItemChecked(p, true);
         }
     }
 
     private void uncheckOffItem(String tag) {
         int p = getArrayPositionFromTitle(tag);
         if (p != -1) {
-            itemList.setItemChecked(p, false);
+            groupList.setItemChecked(p, false);
         }
     }
 
@@ -543,7 +561,7 @@ public class GroupScanMode extends Activity {
             switch (updateKey) {
                 case UPDATE_LIST:
                     Log.d("RECEIVE BROADCAST", "UPDATE_LIST RECEIVED");
-                    makeItemList();
+                    makeGroupList();
                     break;
                 case CHECK_ITEM:
                     Log.d("RECEIVE BROADCAST", "CHECK_ITEM RECEIVED");

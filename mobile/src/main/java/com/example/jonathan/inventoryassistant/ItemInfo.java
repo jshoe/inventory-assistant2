@@ -189,7 +189,7 @@ public class ItemInfo extends Activity {
             logList.setLongClickable(true);
             logList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                    //deleteEntryDialog(itemArray.get(pos));
+                    //deleteEntryDialog(groupArray.get(pos));
                     return true;
                 }
             });

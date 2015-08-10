@@ -142,6 +142,13 @@ public class GroupList extends Activity {
         return true;
     }
 
+    public void startGroupsScan(View view) {
+        Intent i = new Intent();
+        i.setClass(this, GroupTagScanMode.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+    }
+
     public void makeNewGroup(View view) {
         Intent i = new Intent();
         i.setClass(this, NewGroup.class);
