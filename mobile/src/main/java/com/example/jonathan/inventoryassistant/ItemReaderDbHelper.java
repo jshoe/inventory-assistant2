@@ -22,9 +22,6 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "ItemReader.db";
 
-    private static final String LATITUDE = "latitude";
-    private static final String LONGITUDE = "longitude";
-
     public ItemReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -190,21 +187,25 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         );
     }
 
-    public void insertLatitude(String groupName, String itemName, int latitudeIndex, float lat) {
+    public void insertLatestLatitude(String groupName, String itemName, float lat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
+        updateLatitudeHistory(groupName, itemName);
+
         db.execSQL("update " + ItemEntry.TABLE_NAME +
-                        " set " + LATITUDE + latitudeIndex + "=" + lat +
+                        " set " + ItemEntry.LAT1 + "=" + lat +
                         " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                         " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
         );
     }
 
-    public void insertLongitude(String groupName, String itemName, int longitudeIndex, float lon) {
+    public void insertLatestLongitude(String groupName, String itemName, float lon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
+        updateLongitudeHistory(groupName, itemName);
+
         db.execSQL("update " + ItemEntry.TABLE_NAME +
-                        " set " + LONGITUDE + longitudeIndex + "=" + lon +
+                        " set " + ItemEntry.LON1 + "=" + lon +
                         " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                         " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
         );
@@ -325,6 +326,46 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         if (!date.equals("NULL")) {
             db.execSQL("update " + ItemEntry.TABLE_NAME +
                             " set " + ItemEntry.DATE_CHECKED2 + "='" + date + "'" +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
+    }
+
+    private void updateLatitudeHistory(String groupName, String itemName) {
+        final String LAT_COL = "latitude";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = getItem(groupName, itemName);
+        cursor.moveToFirst();
+        float lat;
+
+        for (int i = 9; i > 0; i--) {
+            lat = cursor.getFloat(cursor.getColumnIndexOrThrow(LAT_COL + i));
+
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + LAT_COL + (i+1) + "='" + lat + "'" +
+                            " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                            " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+            );
+        }
+    }
+
+    private void updateLongitudeHistory(String groupName, String itemName) {
+        final String LON_COL = "longitude";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = getItem(groupName, itemName);
+        cursor.moveToFirst();
+        float lon;
+
+        for (int i = 9; i > 0; i--) {
+            lon = cursor.getFloat(cursor.getColumnIndexOrThrow(LON_COL + i));
+
+            db.execSQL("update " + ItemEntry.TABLE_NAME +
+                            " set " + LON_COL + (i+1) + "='" + lon + "'" +
                             " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                             " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
             );
