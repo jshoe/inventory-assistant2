@@ -16,6 +16,8 @@ public class ItemReaderContract {
         public static final String GROUP_NAME = "groupName";
         public static final String ITEM_NAME = "itemName";
         public static final String NFC_TAG = "nfcTag";
+        public static final String LAT = "latitude";
+        public static final String LON = "longitude";
         public static final String CHECKED = "checked";
         public static final String DATE_CHECKED1 = "date_checked1";
         public static final String DATE_CHECKED2 = "date_checked2";
@@ -30,7 +32,7 @@ public class ItemReaderContract {
 
         private static final String TEXT_TYPE = " TEXT";
         private static final String INT_TYPE = " INTEGER";
-        private static final String DATE_TYPE = " DATETIME";
+        private static final String REAL_TYPE = " REAL";
         private static final String COMMA_SEP = ",";
         protected static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + ItemEntry.TABLE_NAME + " (" +
@@ -38,6 +40,8 @@ public class ItemReaderContract {
                         ItemEntry.GROUP_NAME + TEXT_TYPE + COMMA_SEP +
                         ItemEntry.ITEM_NAME + TEXT_TYPE + COMMA_SEP +
                         ItemEntry.NFC_TAG + TEXT_TYPE + COMMA_SEP +
+                        ItemEntry.LAT + REAL_TYPE + COMMA_SEP +
+                        ItemEntry.LON + REAL_TYPE + COMMA_SEP +
                         ItemEntry.CHECKED + INT_TYPE + COMMA_SEP +
                         ItemEntry.DATE_CHECKED1 + TEXT_TYPE + COMMA_SEP +
                         ItemEntry.DATE_CHECKED2 + TEXT_TYPE + COMMA_SEP +

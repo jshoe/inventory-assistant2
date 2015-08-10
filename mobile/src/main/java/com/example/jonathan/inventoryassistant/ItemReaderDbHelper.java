@@ -19,7 +19,7 @@ import static com.example.jonathan.inventoryassistant.ItemReaderContract.ItemEnt
  * Created by randyramadhana on 7/31/15.
  */
 public class ItemReaderDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "ItemReader.db";
 
     public ItemReaderDbHelper(Context context) {
@@ -48,6 +48,9 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         values.put(ItemEntry.GROUP_NAME, groupName);
         values.put(ItemEntry.ITEM_NAME, itemName);
         values.put(ItemEntry.CHECKED, 0);
+        values.put(ItemEntry.NFC_TAG, "NULL");
+        values.put(ItemEntry.LAT, "NULL");
+        values.put(ItemEntry.LON, "NULL");
         values.put(ItemEntry.DATE_CHECKED1, "NULL");
         values.put(ItemEntry.DATE_CHECKED2, "NULL");
         values.put(ItemEntry.DATE_CHECKED3, "NULL");
@@ -90,6 +93,8 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
                 ItemEntry.ITEM_NAME,
                 ItemEntry.NFC_TAG,
                 ItemEntry.CHECKED,
+                ItemEntry.LAT,
+                ItemEntry.LON,
                 ItemEntry.DATE_CHECKED1,
                 ItemEntry.DATE_CHECKED2,
                 ItemEntry.DATE_CHECKED3,
@@ -190,6 +195,26 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         db.execSQL("update " + ItemEntry.TABLE_NAME +
                         " set " + ItemEntry.CHECKED + "=" + 0 +
+                        " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                        " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+        );
+    }
+
+    public void insertLatitude(String groupName, String itemName, float lat) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("update " + ItemEntry.TABLE_NAME +
+                        " set " + ItemEntry.LAT + "=" + lat +
+                        " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
+                        " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
+        );
+    }
+
+    public void insertLongitude(String groupName, String itemName, float lon) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("update " + ItemEntry.TABLE_NAME +
+                        " set " + ItemEntry.LON + "=" + lon +
                         " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
                         " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
         );
