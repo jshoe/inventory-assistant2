@@ -140,7 +140,8 @@ public class WearListenerService extends WearableListenerService {
                         }
                         break;
                     case DONE_KEY:
-                        doneScanning();
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        doneScanning(groupName);
                         break;
                 }
             }
@@ -172,9 +173,10 @@ public class WearListenerService extends WearableListenerService {
         sendBroadcast(i);
     }
 
-    private void doneScanning() {
+    private void doneScanning(String groupName) {
         Intent i = new Intent(UPDATE_ITEM_LIST);
         i.putExtra(UPDATE_KEY, DONE_KEY);
+        i.putExtra(GROUP_NAME_KEY, groupName);
         sendBroadcast(i);
     }
 }
