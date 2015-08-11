@@ -423,16 +423,38 @@ public class GroupScanMode extends Activity {
     }
 
     public void checkOffItemNfc(String NfcTag) {
+        String itemName = "";
         if (NfcTag.contains(" --- ")) {
-            String[] parts = NfcTag.split(" --- ");
-            NfcTag = parts[1];
+            /*String[] parts = NfcTag.split(" --- ");
+            NfcTag = parts[1];*/
+
+            itemName = compareTagToEachItemInGroup(NfcTag);
         }
-        Toast.makeText(getApplicationContext(), "Detected " + NfcTag + "!", Toast.LENGTH_SHORT).show();
-        int p = getArrayPositionFromTitle(NfcTag);
-        if (p != -1) {
-            itemList.setItemChecked(p, true);
+        if (!itemName.equals("")) {
+            Toast.makeText(getApplicationContext(), "Detected " + itemName + "!", Toast.LENGTH_SHORT).show();
+            int p = getArrayPositionFromTitle(itemName);
+            if (p != -1) {
+                itemList.setItemChecked(p, true);
+            }
+            sendCheckToWear(groupName, NfcTag);
         }
-        sendCheckToWear(groupName, NfcTag);
+        else {
+            Toast.makeText(getApplicationContext(), "Item " + itemName + "is not in this group!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String compareTagToEachItemInGroup(String nfcTag) {
+        Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
+        cursor.moveToPosition(-1);
+        String itemTag;
+        while (cursor.moveToNext()) {
+            itemTag = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.NFC_TAG));
+            if (nfcTag.equals(itemTag)) {
+                return cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
+            }
+        }
+
+        return "";
     }
 
     private class NdefReaderTask extends AsyncTask<Tag, Void, String> {
