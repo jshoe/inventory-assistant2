@@ -446,14 +446,17 @@ public class GroupScanMode extends Activity {
     private String compareTagToEachItemInGroup(String nfcTag) {
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
         cursor.moveToPosition(-1);
-        String itemTag;
+        String itemTag, itemName;
         while (cursor.moveToNext()) {
             itemTag = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.NFC_TAG));
             if (nfcTag.equals(itemTag)) {
-                return cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
+                itemName = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
+                cursor.close();
+                return itemName;
             }
         }
 
+        cursor.close();
         return "";
     }
 
