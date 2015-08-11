@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/footerAddButton"
         android:scaleType="fitCenter"
-        android:background="@drawable/round_button_green"
-        android:src="@mipmap/whiteadd"
-        android:layout_marginTop="10dip"
-        android:layout_marginBottom="10dip"
-        android:layout_marginLeft="10dip"
+        android:background="@drawable/roundish_button_green"
+        android:src="@mipmap/white_add_small"
+        android:layout_marginTop="12dip"
+        android:layout_marginBottom="12dip"
+        android:layout_marginLeft="15dip"
         android:onClick="makeNewItem"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView android:text="New Item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="19sp"
+        android:textStyle="italic"
+        android:layout_marginTop="15dip"
+        android:paddingLeft="10dip"
+        android:textColor="#b1b1b1"
+        android:id="@+id/make_new"
+        android:onClick="makeNewItem"
         android:layout_alignParentStart="true" />
 
 </LinearLayout>

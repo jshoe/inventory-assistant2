@@ -23,24 +23,9 @@
         android:id="@+id/itemList"
         android:layout_marginTop="15dp"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/button"
+        android:layout_above="@+id/tagGroup"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/make_new"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="   Add Item   "
-        android:id="@+id/button"
-        android:background="@drawable/round_button_green"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        android:elevation="30dp"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:onClick="makeNewItem"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
