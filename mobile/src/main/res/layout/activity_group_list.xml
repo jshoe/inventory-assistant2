@@ -17,27 +17,13 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Group"
-        android:id="@+id/button"
-        android:background="@drawable/round_button_green"
-        android:textColor="#FFFFFF"
-        android:elevation="30dp"
-        android:textSize="15sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:onClick="makeNewGroup"
-        android:layout_alignEnd="@+id/make_new" />
-
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/groupList"
         android:layout_marginTop="15dp"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/button"
+        android:layout_above="@+id/initiate_scan"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/make_new" />
 

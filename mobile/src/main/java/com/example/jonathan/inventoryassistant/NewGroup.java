@@ -123,7 +123,7 @@ public class NewGroup extends Activity {
 
     public void startAddingItems() {
         Intent i = new Intent();
-        i.setClass(this, NewItem.class);
+        i.setClass(this, ItemList.class);
         i.putExtra("groupName", groupName);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
