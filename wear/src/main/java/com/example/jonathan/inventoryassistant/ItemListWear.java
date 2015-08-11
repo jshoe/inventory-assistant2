@@ -31,6 +31,7 @@ import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ItemListWear extends Activity {
 
@@ -46,6 +47,9 @@ public class ItemListWear extends Activity {
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_ITEM_KEY = "delete-item-key";
     private static final String GROUP_NAME_KEY = "group-name";
+    private static final String DATE_KEY = "date-key";
+
+    private static final String DONE_KEY = "done-key";
 
     String groupName = "";
     ItemReaderDbHelper itemReaderDbHelper;
@@ -167,6 +171,7 @@ public class ItemListWear extends Activity {
                 unchecked.add(itemArray.get(i));
             } else {
                 checkedOff.add(itemArray.get(i));
+                sendScanInfoToMobile(groupName, itemList.getItemAtPosition(i).toString());
             }
         }
         showFinishDialog(unchecked, checkedOff);
@@ -188,6 +193,7 @@ public class ItemListWear extends Activity {
             builder.setPositiveButton("OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            sendDoneToMobile();
                             backToGroupList();
                         }
                     });
@@ -200,6 +206,7 @@ public class ItemListWear extends Activity {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             //checkOffItemsInDb(checkedOff);
+                            sendDoneToMobile();
                             finish();
                         }
                     });
@@ -333,6 +340,25 @@ public class ItemListWear extends Activity {
                 Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
+    private void sendScanInfoToMobile(String groupName, String itemName) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, DATE_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
+        putDataMapReq.getDataMap().putString(DATE_KEY, (new Date()).toString());
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
+    }
+
+    private void sendDoneToMobile() {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, DONE_KEY);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
+    }
+
     public class ReceiveMessages extends BroadcastReceiver {
 
         @Override
@@ -352,6 +378,10 @@ public class ItemListWear extends Activity {
                 case UNCHECK_ITEM:
                     Log.d("RECEIVE BROADCAST", "UNCHECK_ITEM RECEIVED");
                     uncheckOffItem(intent.getStringExtra(ITEM_NAME_KEY));
+                    break;
+                case DONE_KEY:
+                    Log.d("RECEIVE BROADCAST", "DONE_KEY RECEIVED");
+                    finishScan((View) findViewById(R.id.done));
                     break;
             }
         }

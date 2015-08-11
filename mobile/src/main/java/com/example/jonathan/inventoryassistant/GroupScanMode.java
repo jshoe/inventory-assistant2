@@ -65,6 +65,8 @@ public class GroupScanMode extends Activity {
     private static final String GROUP_NAME_KEY = "group-name";
     private static final String ITEM_NAME_KEY = "item-name";
 
+    private static final String DONE_KEY = "done-key";
+
     ItemReaderDbHelper itemReaderDbHelper;
     String groupName = "";
     ArrayList<String> itemArray;
@@ -109,7 +111,7 @@ public class GroupScanMode extends Activity {
                         }
                         else {
                             handleNewLocation(location);
-                        };
+                        }
                     }
                     @Override
                     public void onConnectionSuspended(int cause) {
@@ -162,6 +164,13 @@ public class GroupScanMode extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (location == null) {
+            Log.d("CURRENT LOCATION:", " IS NULL.");
+        }
+        else {
+            handleNewLocation(location);
+        }
         if (!myReceiverIsRegistered) {
             registerReceiver(myReceiver, new IntentFilter(UPDATE_ITEM_LIST));
             myReceiverIsRegistered = true;
@@ -583,6 +592,10 @@ public class GroupScanMode extends Activity {
                 case UNCHECK_ITEM:
                     Log.d("RECEIVE BROADCAST", "UNCHECK_ITEM RECEIVED");
                     uncheckOffItem(intent.getStringExtra(ITEM_NAME_KEY));
+                    break;
+                case DONE_KEY:
+                    Log.d("RECEIVE BROADCAST", "DONE_KEY RECEIVED");
+                    finishScan((View) findViewById(R.id.done));
                     break;
             }
         }

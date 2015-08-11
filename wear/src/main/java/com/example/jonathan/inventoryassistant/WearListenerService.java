@@ -35,6 +35,7 @@ public class WearListenerService extends WearableListenerService {
     private static final String CHECK_ITEM = "check-item";
     private static final String UNCHECK_ITEM = "uncheck-item";
     private static final String UPDATE_LIST = "update-list";
+    private static final String DONE_KEY = "done-key";
 
     private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
     private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
@@ -138,6 +139,9 @@ public class WearListenerService extends WearableListenerService {
                             System.out.println(e);
                         }
                         break;
+                    case DONE_KEY:
+                        doneScanning();
+                        break;
                 }
             }
         }
@@ -165,6 +169,12 @@ public class WearListenerService extends WearableListenerService {
         Intent i = new Intent(UPDATE_ITEM_LIST);
         i.putExtra(UPDATE_KEY, UNCHECK_ITEM);
         i.putExtra(ITEM_NAME_KEY, itemName);
+        sendBroadcast(i);
+    }
+
+    private void doneScanning() {
+        Intent i = new Intent(UPDATE_ITEM_LIST);
+        i.putExtra(UPDATE_KEY, DONE_KEY);
         sendBroadcast(i);
     }
 }

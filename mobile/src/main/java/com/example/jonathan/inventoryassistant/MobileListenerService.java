@@ -1,14 +1,20 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.content.Intent;
+import android.location.Location;
+import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageEvent;
+import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 
 import java.text.SimpleDateFormat;
@@ -36,10 +42,15 @@ public class MobileListenerService extends WearableListenerService {
     private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
     private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
 
+    private static final String DONE_KEY = "done-key";
+
     ItemReaderDbHelper itemReaderDbHelper;
     GroupReaderDbHelper groupReaderDbHelper;
     String groupName;
     String itemName;
+
+    GoogleApiClient mGoogleApiClient;
+    Location lastKnownLocation;
 
     @Override
     public void onCreate() {
@@ -48,6 +59,38 @@ public class MobileListenerService extends WearableListenerService {
         itemReaderDbHelper = new ItemReaderDbHelper(this);
         groupReaderDbHelper = new GroupReaderDbHelper(this);
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle connectionHint) {
+                        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                        if (location == null) {
+                            Log.d("CURRENT LOCATION:", " IS NULL.");
+                        }
+                        else {
+                            handleNewLocation(location);
+                        }
+                    }
+                    @Override
+                    public void onConnectionSuspended(int cause) {
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult result) {
+                    }
+                })
+                        // Request access only to the Wearable API
+                .addApi(Wearable.API)
+                .addApi(LocationServices.API)
+                .build();
+
+        mGoogleApiClient.connect();
+    }
+
+    private void handleNewLocation(Location location) {
+        Log.d("CURRENT LOCATION IS: ", location.toString());
+        lastKnownLocation = location;
     }
 
     @Override
@@ -118,10 +161,22 @@ public class MobileListenerService extends WearableListenerService {
                         try {
                             Date date = sdf.parse(dateString);
                             itemReaderDbHelper.updateDateCheckedItem(groupName, itemName, date);
+                            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                            if (location == null) {
+                                Log.d("CURRENT LOCATION:", " IS NULL.");
+                            }
+                            else {
+                                handleNewLocation(location);
+                            }
+                            itemReaderDbHelper.insertLatestLatitude(groupName, itemName, (float) lastKnownLocation.getLatitude());
+                            itemReaderDbHelper.insertLatestLongitude(groupName, itemName, (float) lastKnownLocation.getLongitude());
                             updateItemList();
                         } catch (Exception e) {
                             System.out.println(e);
                         }
+                        break;
+                    case DONE_KEY:
+                        doneScanning();
                         break;
                 }
             }
@@ -150,6 +205,12 @@ public class MobileListenerService extends WearableListenerService {
         Intent i = new Intent(UPDATE_ITEM_LIST);
         i.putExtra(UPDATE_KEY, UNCHECK_ITEM);
         i.putExtra(ITEM_NAME_KEY, itemName);
+        sendBroadcast(i);
+    }
+
+    private void doneScanning() {
+        Intent i = new Intent(UPDATE_ITEM_LIST);
+        i.putExtra(UPDATE_KEY, DONE_KEY);
         sendBroadcast(i);
     }
 }
