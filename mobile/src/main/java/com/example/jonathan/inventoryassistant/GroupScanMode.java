@@ -439,7 +439,7 @@ public class GroupScanMode extends Activity {
             sendCheckToWear(groupName, NfcTag);
         }
         else {
-
+            Toast.makeText(getApplicationContext(), "Item " + itemName + "is not in this group!", Toast.LENGTH_SHORT).show();
         }
     }
 
