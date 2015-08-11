@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -89,6 +90,8 @@ public class ItemListWear extends Activity {
         mGoogleApiClient.connect();
 
         makeItemList();
+
+
     }
 
     @Override
@@ -255,6 +258,7 @@ public class ItemListWear extends Activity {
         setTitle("Group: " + groupName);
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
         cursor.moveToPosition(-1);
+        Button doneButton = (Button) findViewById(R.id.done);
         itemList = (ListView) findViewById(R.id.itemList);
         itemList.setChoiceMode(itemList.CHOICE_MODE_MULTIPLE);
         itemArray = new ArrayList<>();
