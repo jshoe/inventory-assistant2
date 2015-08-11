@@ -2,6 +2,7 @@ package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +10,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -28,6 +32,8 @@ import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class GroupListWear extends Activity {
 
@@ -38,13 +44,15 @@ public class GroupListWear extends Activity {
 
     private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
 
+    private final int REQ_CODE_SPEECH_INPUT = 0;
+
     GroupReaderDbHelper groupReaderDbHelper;
     ArrayList<String> groupArray;
 
     ReceiveMessages myReceiver = null;
     Boolean myReceiverIsRegistered = false;
 
-
+    ListView groupList;
 
     GoogleApiClient mGoogleApiClient;
 
@@ -85,6 +93,9 @@ public class GroupListWear extends Activity {
         mGoogleApiClient.connect();
 
         makeGroupList();
+
+        View footerView =  ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.group_list_footer, null, false);
+        groupList.addFooterView(footerView);
     }
 
     @Override
@@ -127,11 +138,40 @@ public class GroupListWear extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void makeNewGroupSpeech(View view) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (requestCode == REQ_CODE_SPEECH_INPUT && resultCode == RESULT_OK) {
+            List<String> results = data.getStringArrayListExtra(
+                    RecognizerIntent.EXTRA_RESULTS);
+            String spokenText = results.get(0);
+            groupReaderDbHelper.insertGroup(spokenText);
+            makeGroupList();
+            // Do something with spokenText
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void makeGroupList() {
         Cursor cursor = groupReaderDbHelper.getAllGroups();
         cursor.moveToPosition(-1);
 
-        ListView groupList = (ListView) findViewById(R.id.groupList);
+        groupList = (ListView) findViewById(R.id.groupList);
         groupArray = new ArrayList<>();
 
         while (cursor.moveToNext()) {
