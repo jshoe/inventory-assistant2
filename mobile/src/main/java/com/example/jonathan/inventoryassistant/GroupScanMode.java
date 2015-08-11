@@ -69,6 +69,7 @@ public class GroupScanMode extends Activity {
 
     ItemReaderDbHelper itemReaderDbHelper;
     String groupName = "";
+    String itemName;
     ArrayList<String> itemArray;
     ListView itemList;
 
@@ -89,6 +90,7 @@ public class GroupScanMode extends Activity {
         setContentView(R.layout.activity_group_scan_mode);
 
         groupName = getIntent().getStringExtra("groupName");
+        itemName = getIntent().getStringExtra("itemName");
         itemReaderDbHelper = new ItemReaderDbHelper(this);
 
         getActionBar().setDisplayShowHomeEnabled(true);
@@ -309,10 +311,10 @@ public class GroupScanMode extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        /** if (id == R.id.action_settings) {
-            return true;
-        } */
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -442,7 +444,6 @@ public class GroupScanMode extends Activity {
         if (NfcTag.contains(" --- ")) {
             /*String[] parts = NfcTag.split(" --- ");
             NfcTag = parts[1];*/
-
             itemName = compareTagToEachItemInGroup(NfcTag);
         }
         if (!itemName.equals("")) {
@@ -459,12 +460,16 @@ public class GroupScanMode extends Activity {
     }
 
     private String compareTagToEachItemInGroup(String nfcTag) {
+        Log.d("compareTag", "Trying to compare the tag: " + nfcTag);
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
         cursor.moveToPosition(-1);
         String itemTag, itemName;
         while (cursor.moveToNext()) {
             itemTag = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.NFC_TAG));
+            Log.d("compareTag", "Right now we're looking at the tag: " + itemTag);
+            Log.d("compareTag", "Right now we're looking at item: " + cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME)));
             if (nfcTag.equals(itemTag)) {
+                Log.d("compareTag", "We found a match!");
                 itemName = cursor.getString(cursor.getColumnIndexOrThrow(ItemReaderContract.ItemEntry.ITEM_NAME));
                 cursor.close();
                 return itemName;

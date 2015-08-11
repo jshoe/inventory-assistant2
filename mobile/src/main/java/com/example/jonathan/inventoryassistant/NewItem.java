@@ -104,6 +104,7 @@ public class NewItem extends Activity {
                     Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
 
             Intent i = new Intent(this, WriteNfcTag.class);
+            i.putExtra("itemName", itemName);
             i.putExtra("groupName", groupName);
             String textToWrite = groupName + " --- " + itemName;
             i.putExtra("textToWrite", textToWrite);
@@ -131,10 +132,11 @@ public class NewItem extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        /** if (id == R.id.action_settings) {
-            return true;
-        } */
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

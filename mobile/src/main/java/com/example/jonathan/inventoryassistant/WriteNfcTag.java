@@ -20,6 +20,7 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ public class WriteNfcTag extends Activity {
     private boolean writeProtect = false;
     private Context context;
     String groupName;
+    String itemName;
     String textToWrite;
 
     @Override
@@ -56,6 +58,7 @@ public class WriteNfcTag extends Activity {
         getActionBar().setHomeAsUpIndicator(upArrow);
 
         groupName = getIntent().getStringExtra("groupName");
+        itemName = getIntent().getStringExtra("itemName");
         textToWrite = getIntent().getStringExtra("textToWrite");
         confirmTitle(textToWrite);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -151,11 +154,10 @@ public class WriteNfcTag extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        /** if (id == R.id.action_settings) {
-            return true;
-        } */
-
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -185,6 +187,9 @@ public class WriteNfcTag extends Activity {
 
                 ndef.writeNdefMessage(message);
                 if(writeProtect)  ndef.makeReadOnly();
+                ItemReaderDbHelper itemReaderDbHelper = new ItemReaderDbHelper(this);
+                Log.d("writeTag", "Things we're writing are: " + groupName + ", " + itemName + ", " + textToWrite);
+                itemReaderDbHelper.updateNfcTag(groupName, itemName, textToWrite);
                 mess = "Tag written successfully!";
                 Intent i = new Intent(this, ItemList.class);
                 i.putExtra("groupName", groupName);

@@ -12,12 +12,14 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemList extends Activity {
 
@@ -232,6 +235,96 @@ public class ItemList extends Activity {
         startActivity(i);
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.itemList) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle("Item: " + itemArray.get(info.position));
+            String[] menuItems = {"Rename", "Delete", "Copy to Another Group"};
+            for (int i = 0; i < menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        String[] menuItems = {"Rename", "Delete", "Copy to Another Group"};
+        String optionSelected = menuItems[menuItemIndex];
+        String entrySelected = itemArray.get(info.position);
+        switch (optionSelected) {
+            case "Rename":
+                renameItemDialog(entrySelected);
+                break;
+            case "Delete":
+                itemReaderDbHelper.deleteItem(groupName, entrySelected);
+                makeItemList();
+                break;
+            case "Copy to Another Group":
+                copyItemDialog(entrySelected);
+                break;
+            default:
+                return true;
+        }
+        return true;
+    }
+
+    public void copyItemDialog(final String itemName) {
+        GroupReaderDbHelper groupReaderDbHelper = new GroupReaderDbHelper(this);
+        Cursor cursor = groupReaderDbHelper.getAllGroups();
+        cursor.moveToPosition(-1);
+        List<String> groupArray = new ArrayList<String>();
+        while (cursor.moveToNext()) {
+            String groupName = cursor.getString(cursor.getColumnIndexOrThrow(GroupReaderContract.GroupEntry.GROUP_NAME));
+            groupArray.add(groupName);
+        }
+        cursor.close();
+        final String groups[] = groupArray.toArray(new String[groupArray.size()]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pick target group:");
+        builder.setItems(groups, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String targetGroup = groups[which];
+                itemReaderDbHelper.copyItem(groupName, targetGroup, itemName);
+            }
+        });
+        builder.show();
+        makeItemList();
+        Toast.makeText(getApplicationContext(), "Copied item successfully!", Toast.LENGTH_SHORT).show();
+    }
+
+    public boolean renameItemDialog(final String oldName) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(ItemList.this);
+        alert.setTitle("Enter a new name:");
+
+        final EditText input = new EditText(ItemList.this);
+        input.setText(oldName);
+        alert.setView(input);
+
+        alert.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String newName = input.getEditableText().toString();
+                itemReaderDbHelper.renameItem(groupName, oldName, newName);
+                makeItemList();
+            }
+        });
+
+        alert.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alert.create();
+        alertDialog.show();
+        return false;
+    }
+
     private void makeItemList() {
         groupName = getIntent().getStringExtra("groupName");
         setTitle("Group: " + groupName);
@@ -246,7 +339,7 @@ public class ItemList extends Activity {
         }
         cursor.close();
         if (itemArray.size() == 0) {
-            itemArray.add("(no items)");
+            //itemArray.add("(no items)");
             ArrayAdapter<String> arrayAdapter =
                     new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, itemArray);
             itemList.setAdapter(arrayAdapter);
@@ -268,12 +361,14 @@ public class ItemList extends Activity {
             });
 
             itemList.setLongClickable(true);
-            itemList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                    deleteEntryDialog(itemArray.get(pos));
-                    return true;
-                }
-            });
+//            itemList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+//                    deleteEntryDialog(itemArray.get(pos));
+//                    return true;
+//                }
+//            });
+
+            registerForContextMenu(itemList);
         }
 
     }
