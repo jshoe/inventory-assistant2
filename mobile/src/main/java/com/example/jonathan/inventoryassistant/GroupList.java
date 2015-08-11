@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +52,8 @@ public class GroupList extends Activity {
 
     ReceiveMessages myReceiver = null;
     Boolean myReceiverIsRegistered = false;
+
+    ListView groupList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,9 @@ public class GroupList extends Activity {
         mGoogleApiClient.connect();
 
         makeGroupList();
+
+        View footerView =  ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.group_list_footer, null, false);
+        groupList.addFooterView(footerView);
     }
 
     @Override
@@ -270,7 +276,7 @@ public class GroupList extends Activity {
         Cursor cursor = groupReaderDbHelper.getAllGroups();
         cursor.moveToPosition(-1);
 
-        ListView groupList = (ListView) findViewById(R.id.groupList);
+        groupList = (ListView) findViewById(R.id.groupList);
         groupArray = new ArrayList<>();
 
         while (cursor.moveToNext()) {

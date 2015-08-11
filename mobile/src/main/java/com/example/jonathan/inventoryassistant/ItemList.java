@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -93,7 +94,12 @@ public class ItemList extends Activity {
 
         mGoogleApiClient.connect();
 
+
+
         makeItemList();
+
+        View footerView =  ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.item_list_footer, null, false);
+        itemList.addFooterView(footerView);
     }
 
     @Override
@@ -269,6 +275,7 @@ public class ItemList extends Activity {
                 }
             });
         }
+
     }
 
     public class ReceiveMessages extends BroadcastReceiver {
