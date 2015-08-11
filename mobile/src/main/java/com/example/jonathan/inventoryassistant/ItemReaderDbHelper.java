@@ -164,7 +164,7 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
 
         db.execSQL("update " + ItemEntry.TABLE_NAME +
                         " set " + ItemEntry.GROUP_NAME + "='" + newGroupName + "'" +
-                        " where " + ItemEntry.GROUP_NAME + "='" + oldGroupName
+                        " where " + ItemEntry.GROUP_NAME + "='" + oldGroupName + "'"
         );
     }
 

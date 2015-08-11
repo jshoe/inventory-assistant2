@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -136,6 +137,56 @@ public class GroupList extends Activity {
     }
 
     @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        String[] menuItems = {"Rename", "Delete"};
+        String optionSelected = menuItems[menuItemIndex];
+        String entrySelected = groupArray.get(info.position);
+        switch (optionSelected) {
+            case "Rename":
+                renameGroupDialog(entrySelected);
+                break;
+            case "Delete":
+                groupReaderDbHelper.deleteGroup(entrySelected);
+                itemReaderDbHelper.deleteItemsInGroup(entrySelected);
+                makeGroupList();
+                break;
+            default:
+                return true;
+        }
+        return true;
+    }
+
+    public boolean renameGroupDialog(final String oldName) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(GroupList.this);
+        alert.setTitle("Enter a new name:");
+
+        final EditText input = new EditText(GroupList.this);
+        input.setText(oldName);
+        alert.setView(input);
+
+        alert.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String newName = input.getEditableText().toString();
+                groupReaderDbHelper.renameGroup(oldName, newName);
+                itemReaderDbHelper.renameGroup(oldName, newName);
+                makeGroupList();
+            }
+        });
+
+        alert.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alert.create();
+        alertDialog.show();
+        return false;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_group_list, menu);
@@ -249,15 +300,15 @@ public class GroupList extends Activity {
                 }
             });
 
-            groupList.setLongClickable(true);
-            groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
-                    deleteEntryDialog(groupArray.get(pos));
-                    return true;
-                }
-            });
+//            groupList.setLongClickable(true);
+//            groupList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+//                    deleteEntryDialog(groupArray.get(pos));
+//                    return true;
+//                }
+//            });
 
-            //registerForContextMenu(groupList);
+            registerForContextMenu(groupList);
         }
     }
 
