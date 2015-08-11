@@ -77,6 +77,8 @@ public class GroupList extends Activity {
         Intent intent = new Intent(this, MobileListenerService.class);
         startService(intent);
 
+        Toast.makeText(getApplicationContext(), "Long press entries for options", Toast.LENGTH_LONG).show();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
