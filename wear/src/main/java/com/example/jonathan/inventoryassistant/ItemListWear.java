@@ -354,6 +354,7 @@ public class ItemListWear extends Activity {
     private void sendDoneToMobile() {
         PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
         putDataMapReq.getDataMap().putString(ACTION_KEY, DONE_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult =
                 Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
@@ -381,7 +382,10 @@ public class ItemListWear extends Activity {
                     break;
                 case DONE_KEY:
                     Log.d("RECEIVE BROADCAST", "DONE_KEY RECEIVED");
-                    finishScan((View) findViewById(R.id.done));
+                    String receivedGroupName = intent.getStringExtra(GROUP_NAME_KEY);
+                    if (groupName.equals(receivedGroupName)) {
+                        finishScan((View) findViewById(R.id.done));
+                    }
                     break;
             }
         }

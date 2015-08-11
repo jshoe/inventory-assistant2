@@ -380,6 +380,7 @@ public class GroupScanMode extends Activity {
             builder.setPositiveButton("OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            sendDoneToWear();
                             checkOffItemsInDb(checkedOff);
                             finish();
                         }
@@ -392,6 +393,7 @@ public class GroupScanMode extends Activity {
             builder.setPositiveButton("Ignore Missing",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            sendDoneToWear();
                             checkOffItemsInDb(checkedOff);
                             finish();
                         }
@@ -538,13 +540,10 @@ public class GroupScanMode extends Activity {
                 Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
-    private void sendUpdateDateToWear(String groupName, String itemName, Date date) {
-
+    private void sendDoneToWear() {
         PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
-        putDataMapReq.getDataMap().putString(ACTION_KEY, DATE_KEY);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, DONE_KEY);
         putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
-        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
-        putDataMapReq.getDataMap().putString(DATE_KEY, date.toString());
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult =
                 Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
@@ -595,7 +594,12 @@ public class GroupScanMode extends Activity {
                     break;
                 case DONE_KEY:
                     Log.d("RECEIVE BROADCAST", "DONE_KEY RECEIVED");
-                    finishScan((View) findViewById(R.id.done));
+                    String receivedGroupName = intent.getStringExtra(GROUP_NAME_KEY);
+                    Log.d("RECEIVED GROUP NAME =", receivedGroupName);
+                    Log.d("GROUP NAME =", groupName);
+                    if (groupName.equals(receivedGroupName)) {
+                        finishScan((View) findViewById(R.id.done));
+                    }
                     break;
             }
         }
