@@ -159,6 +159,8 @@ public class ItemListWear extends Activity {
             registerReceiver(myReceiver, new IntentFilter(UPDATE_ITEM_LIST));
             myReceiverIsRegistered = true;
         }
+        Log.d("onResume", "ITEM LIST IS RESUMING");
+        makeItemList();
     }
 
     @Override

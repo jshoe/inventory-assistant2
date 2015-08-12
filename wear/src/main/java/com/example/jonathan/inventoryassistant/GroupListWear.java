@@ -110,11 +110,13 @@ public class GroupListWear extends Activity {
 
     @Override
     public void onResume() {
+        Log.d("onResume", "ALL GROUPS IS RESUMING");
         super.onResume();
         if (!myReceiverIsRegistered) {
             registerReceiver(myReceiver, new IntentFilter(UPDATE_GROUP_LIST));
             myReceiverIsRegistered = true;
         }
+        makeGroupList();
     }
 
     @Override

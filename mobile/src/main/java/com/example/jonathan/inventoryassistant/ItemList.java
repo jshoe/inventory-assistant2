@@ -252,7 +252,7 @@ public class ItemList extends Activity {
         if (v.getId() == R.id.itemList) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
             menu.setHeaderTitle("Item: " + itemArray.get(info.position));
-            String[] menuItems = {"Rename", "Delete", "Copy to another group", "Add/update associated NFC tag"};
+            String[] menuItems = {"Rename", "Delete", "Copy to another group", "Add/rewrite NFC tag"};
             for (int i = 0; i < menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);
             }
@@ -263,7 +263,7 @@ public class ItemList extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         int menuItemIndex = item.getItemId();
-        String[] menuItems = {"Rename", "Delete", "Copy to another group", "Add/update associated NFC tag"};
+        String[] menuItems = {"Rename", "Delete", "Copy to another group", "Add/rewrite NFC tag"};
         String optionSelected = menuItems[menuItemIndex];
         String entrySelected = itemArray.get(info.position);
         switch (optionSelected) {
@@ -277,7 +277,7 @@ public class ItemList extends Activity {
             case "Copy to another group":
                 copyItemDialog(entrySelected);
                 break;
-            case "Add/update associated NFC tag":
+            case "Add/rewrite NFC tag":
                 rewriteNfcTag(entrySelected);
                 break;
             default:
