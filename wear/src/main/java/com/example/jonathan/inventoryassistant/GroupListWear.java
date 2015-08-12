@@ -194,7 +194,7 @@ public class GroupListWear extends Activity {
         }
         cursor.close();
         if (groupArray.size() == 0) {
-            groupArray.add("       (no groups)");
+            groupArray.add("         (no groups)");
             ArrayAdapter<String> arrayAdapter =
                     new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, groupArray);
             groupList.setAdapter(arrayAdapter);

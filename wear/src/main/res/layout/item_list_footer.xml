@@ -10,7 +10,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="15dip"
         android:layout_marginBottom="15dip"
-        android:layout_marginLeft="30dip"
+        android:layout_marginLeft="43dip"
         android:onClick="makeNewItemSpeech"
         />
 
@@ -20,7 +20,7 @@
         android:id="@+id/done"
         android:scaleType="fitCenter"
         android:background="@drawable/round_button_green"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/white_checkmark"
         android:layout_marginTop="15dip"
         android:layout_marginBottom="15dip"
         android:layout_marginLeft="15dip"
