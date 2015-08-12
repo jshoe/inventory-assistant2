@@ -481,7 +481,7 @@ public class GroupScanMode extends Activity {
             if (p != -1) {
                 itemList.setItemChecked(p, true);
             }
-            sendCheckToWear(groupName, NfcTag);
+            sendCheckToWear(groupName, itemName);
         }
         else {
             showCustomToast("Item " + itemName + "is not in this group!");

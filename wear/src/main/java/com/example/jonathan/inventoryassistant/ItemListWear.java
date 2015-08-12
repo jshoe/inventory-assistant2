@@ -76,6 +76,7 @@ public class ItemListWear extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         groupName = getIntent().getStringExtra("groupName");
+        setTitle(groupName + ":");
         itemReaderDbHelper = new ItemReaderDbHelper(this);
 
         myReceiver = new ReceiveMessages();

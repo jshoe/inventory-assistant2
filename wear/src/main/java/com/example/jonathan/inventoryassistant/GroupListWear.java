@@ -50,6 +50,7 @@ public class GroupListWear extends Activity {
     private final int REQ_CODE_SPEECH_INPUT = 0;
 
     GroupReaderDbHelper groupReaderDbHelper;
+    ItemReaderDbHelper itemReaderDbHelper;
     ArrayList<String> groupArray;
 
     ReceiveMessages myReceiver = null;
@@ -72,6 +73,7 @@ public class GroupListWear extends Activity {
         myReceiver = new ReceiveMessages();
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
+        itemReaderDbHelper = new ItemReaderDbHelper(this);
 
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -250,6 +252,7 @@ public class GroupListWear extends Activity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         groupReaderDbHelper.deleteGroup(groupName);
+                        itemReaderDbHelper.deleteItemsInGroup(groupName);
                         sendDeleteGroupToMobile(groupName);
                         makeGroupList();
                     }

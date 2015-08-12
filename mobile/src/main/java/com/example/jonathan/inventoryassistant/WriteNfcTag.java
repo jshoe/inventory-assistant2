@@ -210,14 +210,15 @@ public class WriteNfcTag extends Activity {
                     Log.d("writeTag", "Things we're writing are: " + groupName + ", " + itemName + ", " + textToWrite);
                     itemReaderDbHelper.updateNfcTag(groupName, itemName, textToWrite);
                     mess = "Tag written successfully!";
-                    i = new Intent(this, GroupList.class);
+                    i = new Intent(this, ItemList.class);
+                    i.putExtra("groupName", groupName);
                 } else {
                     Log.d("writeTag", "Writing the Group Tag!!");
                     GroupReaderDbHelper groupReaderDbHelper = new GroupReaderDbHelper(this);
                     groupReaderDbHelper.updateNfcTag(groupName, textToWrite);
                     mess = "Tag written successfully!";
-                    i = new Intent(this, ItemList.class);
-                    i.putExtra("groupName", groupName);
+                    i = new Intent(this, GroupList.class);
+                    //i.putExtra("groupName", groupName);
                 }
                 Log.d("writeTag", "Past the SQL block");
                 startActivity(i);
