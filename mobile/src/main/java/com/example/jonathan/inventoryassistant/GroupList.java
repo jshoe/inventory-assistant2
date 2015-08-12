@@ -37,10 +37,13 @@ import java.util.ArrayList;
 
 public class GroupList extends Activity {
 
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-wear";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_GROUP_KEY = "delete-group-key";
     private static final String GROUP_NAME_KEY = "group-name";
+
+    private static final String RENAME_GROUP_KEY = "rename-group-key";
+    private static final String NEW_GROUP_NAME_KEY = "new-group-name";
 
     private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
 
@@ -192,6 +195,7 @@ public class GroupList extends Activity {
                 String newName = input.getEditableText().toString();
                 groupReaderDbHelper.renameGroup(oldName, newName);
                 itemReaderDbHelper.renameGroup(oldName, newName);
+                sendRenameGroupToWear(oldName, newName);
                 makeGroupList();
             }
         });
@@ -205,6 +209,16 @@ public class GroupList extends Activity {
         AlertDialog alertDialog = alert.create();
         alertDialog.show();
         return false;
+    }
+
+    private void sendRenameGroupToWear(String oldGroupName, String newGroupName) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, RENAME_GROUP_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, oldGroupName);
+        putDataMapReq.getDataMap().putString(NEW_GROUP_NAME_KEY, newGroupName);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,8 +10,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +24,7 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,6 +36,7 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ItemListWear extends Activity {
 
@@ -42,14 +47,17 @@ public class ItemListWear extends Activity {
     private static final String UPDATE_LIST = "update-list";
     private static final String ITEM_NAME_KEY = "item-name";
 
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-mobile";
     private static final String CHECK_KEY = "check-key";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_ITEM_KEY = "delete-item-key";
     private static final String GROUP_NAME_KEY = "group-name";
     private static final String DATE_KEY = "date-key";
+    private static final String MAKE_GROUP_KEY = "make-group-key";
 
     private static final String DONE_KEY = "done-key";
+
+    private static final int REQ_CODE_SPEECH_INPUT = 0;
 
     String groupName = "";
     ItemReaderDbHelper itemReaderDbHelper;
@@ -93,6 +101,48 @@ public class ItemListWear extends Activity {
 
         mGoogleApiClient.connect();
         makeItemList();
+        View footerView =  ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.item_list_footer, null, false);
+        itemList.addFooterView(footerView);
+    }
+
+    public void makeNewGroupSpeech(View view) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_item_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (requestCode == REQ_CODE_SPEECH_INPUT && resultCode == RESULT_OK) {
+            List<String> results = data.getStringArrayListExtra(
+                    RecognizerIntent.EXTRA_RESULTS);
+            String spokenText = results.get(0);
+            itemReaderDbHelper.insertItem(groupName, spokenText);
+            sendMakeItemToMobile(groupName, spokenText);
+            makeItemList();
+            // Do something with spokenText
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void sendMakeItemToMobile(String groupName, String itemName) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, MAKE_GROUP_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     public void onBackPressed() {

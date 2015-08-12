@@ -23,7 +23,7 @@ import java.util.Date;
 // Service to run on the Mobile to listen for messages coming from the Wear.
 
 public class MobileListenerService extends WearableListenerService {
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-mobile";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_GROUP_KEY = "delete-group-key";
     private static final String DELETE_ALL_GROUPS_KEY = "delete-all-groups-key";
@@ -33,6 +33,8 @@ public class MobileListenerService extends WearableListenerService {
     private static final String GROUP_NAME_KEY = "group-name";
     private static final String CHECK_KEY = "check-key";
     private static final String DATE_KEY = "date-key";
+    private static final String MAKE_GROUP_KEY = "make-group-key";
+    private static final String MAKE_ITEM_KEY = "make-item-key";
 
     private static final String UPDATE_KEY = "update-key";
     private static final String CHECK_ITEM = "check-item";
@@ -109,6 +111,12 @@ public class MobileListenerService extends WearableListenerService {
                 String key = dataMap.getString(ACTION_KEY);
                 String checkString, dateString;
                 switch (key) {
+                    case MAKE_GROUP_KEY:
+                        Log.d("DATA", "MAKE_GROUP_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        groupReaderDbHelper.insertGroup(groupName);
+                        updateGroupList();
+                        break;
                     case DELETE_GROUP_KEY:
                         Log.d("DATA", "DELETE_GROUP_KEY RECEIVED");
                         groupName = dataMap.getString(GROUP_NAME_KEY);
@@ -121,6 +129,13 @@ public class MobileListenerService extends WearableListenerService {
                         groupReaderDbHelper.deleteAllGroups();
                         itemReaderDbHelper.deleteAllItems();
                         updateGroupList();
+                        break;
+                    case MAKE_ITEM_KEY:
+                        Log.d("DATA", "MAKE_ITEM_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        itemName = dataMap.getString(ITEM_NAME_KEY);
+                        itemReaderDbHelper.insertItem(groupName, itemName);
+                        updateItemList();
                         break;
                     case DELETE_ITEM_KEY:
                         Log.d("DATA", "DELETE_ITEM_KEY RECEIVED");

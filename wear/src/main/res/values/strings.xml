@@ -14,7 +14,8 @@
     <string name="welcome">Welcome to the Inventory Assistant!</string>
     <string name="welcome1">Quickly and easily keep track of all the important things in your life! Use your phone to begin.</string>
     <string name="title_activity_item_list">ItemList</string>
-    <string name="speech_prompt">Say the group name</string>
+    <string name="speech_group_prompt">Say the group name</string>
+    <string name="speech_item_prompt">Say the item name</string>
     <string name="speech_not_supported">This device does not support speech capability</string>
     <color name="light_blue">#4c9de9</color>
 </resources>
