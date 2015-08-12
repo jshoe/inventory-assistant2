@@ -10,6 +10,7 @@
         android:textSize="25sp"
         android:id="@+id/help_msg"
         android:textColor="#000000"
+        android:lineSpacingMultiplier="1.1"
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content" />
 

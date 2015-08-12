@@ -155,7 +155,7 @@ public class GroupList extends Activity {
         if (v.getId() == R.id.groupList) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
             menu.setHeaderTitle("Group: " + groupArray.get(info.position));
-            String[] menuItems = {"Rename", "Delete", "Add Tag for the Whole Group"};
+            String[] menuItems = {"Rename", "Delete", "Add/update NFC tag for whole group"};
             for (int i = 0; i < menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);
             }
@@ -166,7 +166,7 @@ public class GroupList extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         int menuItemIndex = item.getItemId();
-        String[] menuItems = {"Rename", "Delete", "Add Tag for the Whole Group"};
+        String[] menuItems = {"Rename", "Delete", "Add/update NFC tag for whole group"};
         String optionSelected = menuItems[menuItemIndex];
         String entrySelected = groupArray.get(info.position);
         switch (optionSelected) {
@@ -178,7 +178,7 @@ public class GroupList extends Activity {
                 itemReaderDbHelper.deleteItemsInGroup(entrySelected);
                 makeGroupList();
                 break;
-            case "Add Tag for the Whole Group":
+            case "Add/update NFC tag for whole group":
                 makeGroupTag(entrySelected);
                 break;
             default:

@@ -251,7 +251,7 @@ public class ItemList extends Activity {
         if (v.getId() == R.id.itemList) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
             menu.setHeaderTitle("Item: " + itemArray.get(info.position));
-            String[] menuItems = {"Rename", "Delete", "Copy to Another Group"};
+            String[] menuItems = {"Rename", "Delete", "Copy to another group", "Add/update associated NFC tag"};
             for (int i = 0; i < menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);
             }
@@ -262,7 +262,7 @@ public class ItemList extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         int menuItemIndex = item.getItemId();
-        String[] menuItems = {"Rename", "Delete", "Copy to Another Group"};
+        String[] menuItems = {"Rename", "Delete", "Copy to another group", "Add/update associated NFC tag"};
         String optionSelected = menuItems[menuItemIndex];
         String entrySelected = itemArray.get(info.position);
         switch (optionSelected) {
@@ -273,13 +273,25 @@ public class ItemList extends Activity {
                 itemReaderDbHelper.deleteItem(groupName, entrySelected);
                 makeItemList();
                 break;
-            case "Copy to Another Group":
+            case "Copy to another group":
                 copyItemDialog(entrySelected);
+                break;
+            case "Add/update associated NFC tag":
+                rewriteNfcTag(entrySelected);
                 break;
             default:
                 return true;
         }
         return true;
+    }
+
+    public void rewriteNfcTag(String itemName) {
+        Intent i = new Intent(this, WriteNfcTag.class);
+        i.putExtra("itemName", itemName);
+        i.putExtra("groupName", groupName);
+        String textToWrite = groupName + " --- " + itemName;
+        i.putExtra("textToWrite", textToWrite);
+        startActivity(i);
     }
 
     public void copyItemDialog(final String itemName) {
