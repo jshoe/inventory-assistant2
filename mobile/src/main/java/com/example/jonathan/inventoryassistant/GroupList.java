@@ -37,7 +37,7 @@ import java.util.ArrayList;
 
 public class GroupList extends Activity {
 
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-wear";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_GROUP_KEY = "delete-group-key";
     private static final String GROUP_NAME_KEY = "group-name";

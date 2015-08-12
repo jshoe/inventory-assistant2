@@ -22,7 +22,7 @@ import com.google.android.gms.wearable.Wearable;
 
 public class NewItem extends Activity {
 
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-wear";
     private static final String ACTION_KEY = "action-key";
     private static final String MAKE_ITEM_KEY = "make-item-key";
     private static final String DELETE_ALL_ITEMS_IN_GROUP_KEY = "delete-all-items-in-group-key";

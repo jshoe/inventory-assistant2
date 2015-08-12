@@ -38,7 +38,7 @@ import java.util.Locale;
 
 public class GroupListWear extends Activity {
 
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-mobile";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_GROUP_KEY = "delete-group-key";
     private static final String GROUP_NAME_KEY = "group-name";

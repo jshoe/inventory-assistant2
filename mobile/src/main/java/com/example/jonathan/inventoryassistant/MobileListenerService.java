@@ -23,7 +23,7 @@ import java.util.Date;
 // Service to run on the Mobile to listen for messages coming from the Wear.
 
 public class MobileListenerService extends WearableListenerService {
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-mobile";
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_GROUP_KEY = "delete-group-key";
     private static final String DELETE_ALL_GROUPS_KEY = "delete-all-groups-key";

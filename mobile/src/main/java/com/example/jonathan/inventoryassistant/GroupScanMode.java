@@ -58,7 +58,7 @@ public class GroupScanMode extends Activity {
     private static final String UNCHECK_ITEM = "uncheck-item";
     private static final String UPDATE_LIST = "update-list";
 
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-wear";
     private static final String ACTION_KEY = "action-key";
     private static final String CHECK_KEY = "check-key";
     private static final String DATE_KEY = "date-key";

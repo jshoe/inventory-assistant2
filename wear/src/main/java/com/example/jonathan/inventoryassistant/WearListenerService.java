@@ -18,7 +18,7 @@ import java.util.Date;
 
 public class WearListenerService extends WearableListenerService {
 
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-wear";
     private static final String ACTION_KEY = "action-key";
     private static final String MAKE_GROUP_KEY = "make-group-key";
     private static final String DELETE_GROUP_KEY = "delete-group-key";

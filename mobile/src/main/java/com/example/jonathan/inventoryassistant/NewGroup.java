@@ -24,7 +24,7 @@ import com.google.android.gms.wearable.Wearable;
 
 public class NewGroup extends Activity {
 
-    private static final String PATH = "/database-action";
+    private static final String PATH = "/database-action-wear";
     private static final String ACTION_KEY = "action-key";
     private static final String MAKE_GROUP_KEY = "make-group-key";
     private static final String DELETE_ALL_GROUPS_KEY = "delete-all-groups-key";
