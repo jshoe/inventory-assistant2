@@ -18,6 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/help_msg"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/nfc_pic"
         android:layout_above="@+id/skipScan"
         android:layout_centerHorizontal="true" />

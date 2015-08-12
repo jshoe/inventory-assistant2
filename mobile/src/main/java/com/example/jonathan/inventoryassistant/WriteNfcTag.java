@@ -60,21 +60,21 @@ public class WriteNfcTag extends Activity {
         groupName = getIntent().getStringExtra("groupName");
         itemName = getIntent().getExtras().getString("itemName", "");
         textToWrite = getIntent().getStringExtra("textToWrite");
+        setTitle("Write Data to Tag");
         confirmTitle(textToWrite);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mNfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
                 getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP), 0);
         IntentFilter discovery=new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
         mWriteTagFilters = new IntentFilter[] { discovery };
-        setTitle("Write Data to Tag");
     }
 
     public void confirmTitle(String textToWrite) {
         if (!textToWrite.contains("---")) {
+            setTitle("Group Tag: " + groupName);
             setContentView(R.layout.activity_write_nfc_group_tag);
             TextView t = (TextView) findViewById(R.id.help_msg);
-            setTitle("Set a Group Tag");
-            t.setText("You can attach an NFC tag to a container (such as a backpack) to count for all the items in the group. When the tag is scanned, all the items in the group will be checked off.");
+            t.setText("You can attach a tag to a container (e.g. backpack) to count for all the items in the Group. When the tag is scanned, all the Group's Items will be checked off. Now hold your phone to the tag!");
             t.setTextSize(21);
         }
     }
