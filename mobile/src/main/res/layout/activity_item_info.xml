@@ -34,7 +34,7 @@
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         android:elevation="30dp"
-        android:onClick=""
+        android:onClick="renameItemDialog"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:layout_alignParentBottom="true"
@@ -53,6 +53,6 @@
         android:background="@drawable/round_button_red"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:onClick="startScan"
+        android:onClick="deleteItem"
         android:layout_toEndOf="@+id/make_new" />
 </RelativeLayout>

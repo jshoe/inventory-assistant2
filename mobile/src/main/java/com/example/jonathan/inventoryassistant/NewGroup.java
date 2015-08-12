@@ -117,14 +117,14 @@ public class NewGroup extends Activity {
             PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
             PendingResult<DataApi.DataItemResult> pendingResult =
                     Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
-            startAddingItems();
+            backToGroupList();
             //finishCreation();
         }
     }
 
-    public void startAddingItems() {
+    public void backToGroupList() {
         Intent i = new Intent();
-        i.setClass(this, ItemList.class);
+        i.setClass(this, GroupList.class);
         i.putExtra("groupName", groupName);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
@@ -138,7 +138,7 @@ public class NewGroup extends Activity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        startAddingItems();
+                        backToGroupList();
                     }
                 });
         AlertDialog alert = builder.create();
