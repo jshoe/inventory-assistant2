@@ -46,6 +46,7 @@ public class ItemListWear extends Activity {
     private static final String UNCHECK_ITEM = "uncheck-item";
     private static final String UPDATE_LIST = "update-list";
     private static final String ITEM_NAME_KEY = "item-name";
+    private static final String MAKE_ITEM_KEY = "make-item-key";
 
     private static final String PATH = "/database-action-mobile";
     private static final String CHECK_KEY = "check-key";
@@ -53,7 +54,6 @@ public class ItemListWear extends Activity {
     private static final String DELETE_ITEM_KEY = "delete-item-key";
     private static final String GROUP_NAME_KEY = "group-name";
     private static final String DATE_KEY = "date-key";
-    private static final String MAKE_GROUP_KEY = "make-group-key";
 
     private static final String DONE_KEY = "done-key";
 
@@ -137,7 +137,7 @@ public class ItemListWear extends Activity {
 
     private void sendMakeItemToMobile(String groupName, String itemName) {
         PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
-        putDataMapReq.getDataMap().putString(ACTION_KEY, MAKE_GROUP_KEY);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, MAKE_ITEM_KEY);
         putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
         putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
