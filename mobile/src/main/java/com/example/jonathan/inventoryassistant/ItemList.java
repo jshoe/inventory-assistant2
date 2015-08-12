@@ -51,6 +51,8 @@ public class ItemList extends Activity {
 
     private static final String COPY_KEY = "copy-key";
     private static final String NEW_GROUP_NAME_KEY = "new-group-name";
+    private static final String NEW_ITEM_NAME_KEY = "new-item-name";
+    private static final String RENAME_ITEM_KEY = "rename-item-key";
 
     ItemReaderDbHelper itemReaderDbHelper;
     String groupName = "";
@@ -325,6 +327,7 @@ public class ItemList extends Activity {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String newName = input.getEditableText().toString();
                 itemReaderDbHelper.renameItem(groupName, oldName, newName);
+                sendRenameItemToWear(groupName, oldName, newName);
                 makeItemList();
             }
         });
@@ -338,6 +341,17 @@ public class ItemList extends Activity {
         AlertDialog alertDialog = alert.create();
         alertDialog.show();
         return false;
+    }
+
+    private void sendRenameItemToWear(String groupName, String oldItemName, String newItemName) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, RENAME_ITEM_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, oldItemName);
+        putDataMapReq.getDataMap().putString(NEW_ITEM_NAME_KEY, newItemName);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     private void makeItemList() {

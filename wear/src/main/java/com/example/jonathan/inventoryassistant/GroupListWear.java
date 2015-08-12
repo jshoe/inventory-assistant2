@@ -44,6 +44,7 @@ public class GroupListWear extends Activity {
     private static final String GROUP_NAME_KEY = "group-name";
     private static final String MAKE_GROUP_KEY = "make-group-key";
 
+
     private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
 
     private final int REQ_CODE_SPEECH_INPUT = 0;

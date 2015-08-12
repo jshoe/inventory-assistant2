@@ -38,6 +38,9 @@ public class WearListenerService extends WearableListenerService {
     private static final String DONE_KEY = "done-key";
     private static final String COPY_KEY = "copy-key";
     private static final String NEW_GROUP_NAME_KEY = "new-group-name";
+    private static final String NEW_ITEM_NAME_KEY = "new-item-name";
+    private static final String RENAME_ITEM_KEY = "rename-item-key";
+    private static final String RENAME_GROUP_KEY = "rename-group-key";
 
     private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
     private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
@@ -69,7 +72,7 @@ public class WearListenerService extends WearableListenerService {
             if (item.getUri().getPath().compareTo(PATH) == 0) {
                 DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
                 String key = dataMap.getString(ACTION_KEY);
-                String checkString, dateString;
+                String checkString, dateString, newGroupName, newItemName;
                 switch (key) {
                     case MAKE_GROUP_KEY:
                         Log.d("DATA", "MAKE_GROUP_KEY RECEIVED");
@@ -145,9 +148,25 @@ public class WearListenerService extends WearableListenerService {
                         Log.d("DATA", "COPY_KEY RECEIVED");
                         groupName = dataMap.getString(GROUP_NAME_KEY);
                         itemName = dataMap.getString(ITEM_NAME_KEY);
-                        String newGroupName = dataMap.getString(NEW_GROUP_NAME_KEY);
+                        newGroupName = dataMap.getString(NEW_GROUP_NAME_KEY);
                         itemReaderDbHelper.copyItem(groupName, newGroupName, itemName);
                         updateItemList();
+                        break;
+                    case RENAME_ITEM_KEY:
+                        Log.d("DATA", "RENAME_ITEM_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        itemName = dataMap.getString(ITEM_NAME_KEY);
+                        newItemName = dataMap.getString(NEW_ITEM_NAME_KEY);
+                        itemReaderDbHelper.renameItem(groupName, itemName, newItemName);
+                        updateItemList();
+                        break;
+                    case RENAME_GROUP_KEY:
+                        Log.d("DATA", "RENAME_GROUP_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        newGroupName = dataMap.getString(NEW_GROUP_NAME_KEY);
+                        groupReaderDbHelper.renameGroup(groupName, newGroupName);
+                        itemReaderDbHelper.renameGroup(groupName, newGroupName);
+                        updateGroupList();
                         break;
                     case DONE_KEY:
                         groupName = dataMap.getString(GROUP_NAME_KEY);
