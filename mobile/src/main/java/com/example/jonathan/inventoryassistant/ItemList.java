@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -318,7 +319,19 @@ public class ItemList extends Activity {
         });
         builder.show();
         makeItemList();
-        Toast.makeText(getApplicationContext(), "Copied item successfully!", Toast.LENGTH_SHORT).show();
+        showCustomToast("Copied item successfully!");
+    }
+
+    public void showCustomToast(String text) {
+        final Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        t.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                t.cancel();
+            }
+        }, 1000);
     }
 
     private void sendCopyItemToWear(String oldGroupName, String newGroupName, String itemName) {
@@ -400,7 +413,7 @@ public class ItemList extends Activity {
                 // argument position gives the index of item which is clicked
                 public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
                     String selectedItem = itemArray.get(position);
-                    Toast.makeText(getApplicationContext(), "Long press entries for options", Toast.LENGTH_SHORT).show();
+                    showCustomToast("Long press entries for options");
                     //Toast.makeText(getApplicationContext(), "Item Selected : " + selectedItem, Toast.LENGTH_SHORT).show();
                     showItemView(selectedItem);
                 }

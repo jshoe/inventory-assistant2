@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -117,6 +118,18 @@ public class ItemInfo extends Activity {
         return true;
     }
 
+    public void showCustomToast(String text) {
+        final Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        t.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                t.cancel();
+            }
+        }, 1000);
+    }
+
     public void showOnMap(Integer position) {
         String latFront = "latitude";
         String lonFront = "longitude";
@@ -148,7 +161,7 @@ public class ItemInfo extends Activity {
         Log.d("showOnMap", "Value of lon from database manually is: " + longitude.toString());
 
         if (latitude == 0f && longitude == 0f) {
-            Toast.makeText(getApplicationContext(), "Entry has no location logged", Toast.LENGTH_SHORT).show();
+            showCustomToast("Entry has no location logged");
         } else {
             lat = Double.parseDouble(latitude.toString());
             lon = Double.parseDouble(longitude.toString());

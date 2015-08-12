@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,6 +75,18 @@ public class NewGroup extends Activity {
                 .build();
 
         mGoogleApiClient.connect();
+    }
+
+    public void showCustomToast(String text) {
+        final Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        t.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                t.cancel();
+            }
+        }, 1000);
     }
 
     @Override

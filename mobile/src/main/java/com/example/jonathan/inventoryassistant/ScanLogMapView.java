@@ -179,6 +179,18 @@ public class ScanLogMapView extends FragmentActivity implements
         startActivity(i);
     }
 
+    public void showCustomToast(String text) {
+        final Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        t.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                t.cancel();
+            }
+        }, 1000);
+    }
+
     public void formatActionBar() {
         setTitle("Scan Location");
         getActionBar().setDisplayShowHomeEnabled(true);

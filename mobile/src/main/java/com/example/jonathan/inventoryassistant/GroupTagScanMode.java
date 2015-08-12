@@ -19,6 +19,7 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -144,7 +145,7 @@ public class GroupTagScanMode extends Activity {
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (mNfcAdapter == null) {
-            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
+            showCustomToast("This device doesn't support NFC.");
         } else {
             if (!mNfcAdapter.isEnabled()) {
                 //mTextView.setText("NFC is disabled.");
@@ -180,6 +181,18 @@ public class GroupTagScanMode extends Activity {
         i.setClass(this, GroupList.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
+    }
+
+    public void showCustomToast(String text) {
+        final Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        t.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                t.cancel();
+            }
+        }, 1000);
     }
 
     @Override
@@ -444,7 +457,7 @@ public class GroupTagScanMode extends Activity {
             String[] parts = NfcTag.split(" --- ");
             NfcTag = parts[1];
         }
-        Toast.makeText(getApplicationContext(), "Detected " + NfcTag + "!", Toast.LENGTH_SHORT).show();
+        showCustomToast("Detected " + NfcTag + "!");
         int p = getArrayPositionFromTitle(NfcTag);
         if (p != -1) {
             groupList.setItemChecked(p, true);

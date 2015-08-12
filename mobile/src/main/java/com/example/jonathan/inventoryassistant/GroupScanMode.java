@@ -19,6 +19,7 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -147,7 +148,7 @@ public class GroupScanMode extends Activity {
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (mNfcAdapter == null) {
-            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
+            showCustomToast("This device doesn't support NFC.");
         } else {
             if (!mNfcAdapter.isEnabled()) {
                 //mTextView.setText("NFC is disabled.");
@@ -443,6 +444,18 @@ public class GroupScanMode extends Activity {
         cursor.close();
     }
 
+    public void showCustomToast(String text) {
+        final Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        t.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                t.cancel();
+            }
+        }, 1000);
+    }
+
     public void checkOffItemNfc(String NfcTag) {
         String itemName = "";
         String groupName = "";
@@ -459,11 +472,11 @@ public class GroupScanMode extends Activity {
                 }
                 return;
             }
-            Toast.makeText(getApplicationContext(), "Checking off all items!", Toast.LENGTH_SHORT).show();
+            showCustomToast("Checking off all items!");
         }
 
         if (!itemName.equals("")) {
-            Toast.makeText(getApplicationContext(), "Detected " + itemName + "!", Toast.LENGTH_SHORT).show();
+            showCustomToast("Detected " + itemName + "!");
             int p = getArrayPositionFromTitle(itemName);
             if (p != -1) {
                 itemList.setItemChecked(p, true);
@@ -471,7 +484,7 @@ public class GroupScanMode extends Activity {
             sendCheckToWear(groupName, NfcTag);
         }
         else {
-            Toast.makeText(getApplicationContext(), "Item " + itemName + "is not in this group!", Toast.LENGTH_SHORT).show();
+            showCustomToast("Item " + itemName + "is not in this group!");
         }
     }
 
