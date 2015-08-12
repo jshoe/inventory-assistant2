@@ -138,7 +138,7 @@ public class GroupList extends Activity {
         if (v.getId() == R.id.groupList) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
             menu.setHeaderTitle("Group: " + groupArray.get(info.position));
-            String[] menuItems = {"Rename", "Delete"};
+            String[] menuItems = {"Rename", "Delete", "Add Tag for the Whole Group"};
             for (int i = 0; i < menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);
             }
@@ -149,7 +149,7 @@ public class GroupList extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         int menuItemIndex = item.getItemId();
-        String[] menuItems = {"Rename", "Delete"};
+        String[] menuItems = {"Rename", "Delete", "Add Tag for the Whole Group"};
         String optionSelected = menuItems[menuItemIndex];
         String entrySelected = groupArray.get(info.position);
         switch (optionSelected) {
@@ -161,10 +161,22 @@ public class GroupList extends Activity {
                 itemReaderDbHelper.deleteItemsInGroup(entrySelected);
                 makeGroupList();
                 break;
+            case "Add Tag for the Whole Group":
+                makeGroupTag(entrySelected);
+                break;
             default:
                 return true;
         }
         return true;
+    }
+
+    public void makeGroupTag(String groupName) {
+        Intent i = new Intent();
+        i.setClass(this, WriteNfcTag.class);
+        i.putExtra("groupName", groupName);
+        i.putExtra("textToWrite", groupName);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     public boolean renameGroupDialog(final String oldName) {
@@ -303,7 +315,7 @@ public class GroupList extends Activity {
             groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 // argument position gives the index of item which is clicked
                 public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-                    Toast.makeText(getApplicationContext(), "Long press for options", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Long press entries for options", Toast.LENGTH_SHORT).show();
                     String selectedGroup = groupArray.get(position);
                     showItemList(selectedGroup);
                 }

@@ -16,24 +16,23 @@
     <ImageView
         android:id="@+id/nfc_pic"
         android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:layout_marginTop="78dp"
+        android:layout_below="@+id/help_msg"
         android:src="@drawable/nfc_pic"
-        android:layout_below="@+id/help_msg" />
+        android:layout_above="@+id/skipScan"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Skip"
+        android:text="Cancel"
         android:id="@+id/skipScan"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
-        android:background="@drawable/round_button_yellow"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:background="@drawable/round_button_red"
         android:onClick="skipScan"
         android:elevation="30dp"
-        android:layout_toEndOf="@+id/make_new" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

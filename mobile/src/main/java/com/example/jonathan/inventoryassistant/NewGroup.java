@@ -117,7 +117,8 @@ public class NewGroup extends Activity {
             PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
             PendingResult<DataApi.DataItemResult> pendingResult =
                     Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
-            finishCreation();
+            startAddingItems();
+            //finishCreation();
         }
     }
 

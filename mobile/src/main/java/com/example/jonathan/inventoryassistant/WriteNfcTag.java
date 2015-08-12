@@ -58,7 +58,7 @@ public class WriteNfcTag extends Activity {
         getActionBar().setHomeAsUpIndicator(upArrow);
 
         groupName = getIntent().getStringExtra("groupName");
-        itemName = getIntent().getStringExtra("itemName");
+        itemName = getIntent().getExtras().getString("itemName", "");
         textToWrite = getIntent().getStringExtra("textToWrite");
         confirmTitle(textToWrite);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -71,9 +71,11 @@ public class WriteNfcTag extends Activity {
 
     public void confirmTitle(String textToWrite) {
         if (!textToWrite.contains("---")) {
+            setContentView(R.layout.activity_write_nfc_group_tag);
             TextView t = (TextView) findViewById(R.id.help_msg);
             setTitle("Set a Group Tag");
-            t.setText("Attach a tag to a container such as a backpack to count for all items in the group!");
+            t.setText("You can attach an NFC tag to a container (such as a backpack) to count for all the items in the group. When the tag is scanned, all the items in the group will be checked off.");
+            t.setTextSize(21);
         }
     }
 
@@ -187,14 +189,21 @@ public class WriteNfcTag extends Activity {
 
                 ndef.writeNdefMessage(message);
                 if(writeProtect)  ndef.makeReadOnly();
-                ItemReaderDbHelper itemReaderDbHelper = new ItemReaderDbHelper(this);
-                Log.d("writeTag", "Things we're writing are: " + groupName + ", " + itemName + ", " + textToWrite);
-                itemReaderDbHelper.updateNfcTag(groupName, itemName, textToWrite);
-                mess = "Tag written successfully!";
-                Intent i = new Intent(this, ItemList.class);
-                i.putExtra("groupName", groupName);
+
+                Intent i;
+                if (!itemName.equals("")) {
+                    ItemReaderDbHelper itemReaderDbHelper = new ItemReaderDbHelper(this);
+                    Log.d("writeTag", "Things we're writing are: " + groupName + ", " + itemName + ", " + textToWrite);
+                    itemReaderDbHelper.updateNfcTag(groupName, itemName, textToWrite);
+                    mess = "Tag written successfully!";
+                    i = new Intent(this, GroupList.class);
+                } else {
+                    mess = "Tag written successfully!";
+                    i = new Intent(this, ItemList.class);
+                    i.putExtra("groupName", groupName);
+                }
                 startActivity(i);
-                return new WriteResponse(1,mess);
+                return new WriteResponse(1, mess);
             } else {
                 NdefFormatable format = NdefFormatable.get(tag);
                 if (format != null) {
