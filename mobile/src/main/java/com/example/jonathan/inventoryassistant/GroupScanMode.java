@@ -459,6 +459,7 @@ public class GroupScanMode extends Activity {
                 }
                 return;
             }
+            Toast.makeText(getApplicationContext(), "Checking off all items!", Toast.LENGTH_SHORT).show();
         }
 
         if (!itemName.equals("")) {

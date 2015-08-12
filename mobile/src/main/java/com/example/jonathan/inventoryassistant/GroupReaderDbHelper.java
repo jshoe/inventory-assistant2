@@ -86,6 +86,6 @@ public class GroupReaderDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("update " + GroupEntry.TABLE_NAME +
                         " set " + GroupEntry.NFC_TAG + "='" + tag + "'" +
-                        " where" + GroupEntry.GROUP_NAME + "='" + groupName + "'");
+                        " where " + GroupEntry.GROUP_NAME + "='" + groupName + "'");
     }
 }

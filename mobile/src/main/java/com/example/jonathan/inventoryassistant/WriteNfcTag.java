@@ -191,6 +191,7 @@ public class WriteNfcTag extends Activity {
                 if(writeProtect)  ndef.makeReadOnly();
 
                 Intent i;
+                Log.d("writeTag", "About to write the tag");
                 if (!itemName.equals("")) {
                     ItemReaderDbHelper itemReaderDbHelper = new ItemReaderDbHelper(this);
                     Log.d("writeTag", "Things we're writing are: " + groupName + ", " + itemName + ", " + textToWrite);
@@ -198,12 +199,14 @@ public class WriteNfcTag extends Activity {
                     mess = "Tag written successfully!";
                     i = new Intent(this, GroupList.class);
                 } else {
+                    Log.d("writeTag", "Writing the Group Tag!!");
                     GroupReaderDbHelper groupReaderDbHelper = new GroupReaderDbHelper(this);
                     groupReaderDbHelper.updateNfcTag(groupName, textToWrite);
                     mess = "Tag written successfully!";
                     i = new Intent(this, ItemList.class);
                     i.putExtra("groupName", groupName);
                 }
+                Log.d("writeTag", "Past the SQL block");
                 startActivity(i);
                 return new WriteResponse(1, mess);
             } else {
