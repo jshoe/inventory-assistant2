@@ -18,8 +18,10 @@
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:layout_marginTop="78dp"
         android:src="@drawable/nfc_pic"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@+id/skipScan"
         android:layout_below="@+id/help_msg" />
 
     <Button
