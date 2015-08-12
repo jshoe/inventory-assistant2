@@ -100,9 +100,7 @@ public class ItemListWear extends Activity {
                 .build();
 
         mGoogleApiClient.connect();
-
         makeItemList();
-
         View footerView =  ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.item_list_footer, null, false);
         itemList.addFooterView(footerView);
     }
@@ -145,6 +143,13 @@ public class ItemListWear extends Activity {
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult =
                 Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
+    }
+
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.setClass(this, GroupListWear.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     @Override

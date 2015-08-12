@@ -71,6 +71,7 @@ public class GroupList extends Activity {
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         itemReaderDbHelper = new ItemReaderDbHelper(this);
 
+        setTitle("i-Nventory");
         myReceiver = new ReceiveMessages();
 
 
