@@ -11,7 +11,7 @@ import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.os.Handler;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -81,7 +81,7 @@ public class GroupList extends Activity {
         Intent intent = new Intent(this, MobileListenerService.class);
         startService(intent);
 
-        Toast.makeText(getApplicationContext(), "Long press entries for options", Toast.LENGTH_SHORT).show();
+        showCustomToast("Long press entries for options");
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -327,7 +327,7 @@ public class GroupList extends Activity {
             groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 // argument position gives the index of item which is clicked
                 public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-                    Toast.makeText(getApplicationContext(), "Long press entries for options", Toast.LENGTH_SHORT).show();
+                    showCustomToast("Long press entries for options");
                     String selectedGroup = groupArray.get(position);
                     showItemList(selectedGroup);
                 }
@@ -343,6 +343,18 @@ public class GroupList extends Activity {
 
             registerForContextMenu(groupList);
         }
+    }
+
+    public void showCustomToast(String text) {
+        final Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        t.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                t.cancel();
+            }
+        }, 1000);
     }
 
     public class ReceiveMessages extends BroadcastReceiver {
