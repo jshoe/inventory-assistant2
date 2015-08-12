@@ -105,7 +105,7 @@ public class ItemListWear extends Activity {
         itemList.addFooterView(footerView);
     }
 
-    public void makeNewGroupSpeech(View view) {
+    public void makeNewItemSpeech(View view) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -319,7 +319,6 @@ public class ItemListWear extends Activity {
         setTitle("Group: " + groupName);
         Cursor cursor = itemReaderDbHelper.getAllItemsInGroup(groupName);
         cursor.moveToPosition(-1);
-        Button doneButton = (Button) findViewById(R.id.done);
         itemList = (ListView) findViewById(R.id.itemList);
         itemList.setChoiceMode(itemList.CHOICE_MODE_MULTIPLE);
         itemArray = new ArrayList<>();
