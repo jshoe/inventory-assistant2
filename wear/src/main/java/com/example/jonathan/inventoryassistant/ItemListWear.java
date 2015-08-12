@@ -92,10 +92,14 @@ public class ItemListWear extends Activity {
                 .build();
 
         mGoogleApiClient.connect();
-
         makeItemList();
+    }
 
-
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.setClass(this, GroupListWear.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 
     @Override
