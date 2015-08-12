@@ -1,6 +1,8 @@
 package com.example.jonathan.inventoryassistant;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
@@ -12,14 +14,41 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.Wearable;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class ItemInfo extends Activity {
+    private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
+    private static final String UPDATE_KEY = "update-key";
+    private static final String CHECK_ITEM = "check-item";
+    private static final String UNCHECK_ITEM = "uncheck-item";
+    private static final String UPDATE_LIST = "update-list";
+
+    private static final String PATH = "/database-action-wear";
+    private static final String ACTION_KEY = "action-key";
+    private static final String DELETE_ITEM_KEY = "delete-item-key";
+    private static final String ITEM_NAME_KEY = "item-name";
+    private static final String GROUP_NAME_KEY = "group-name";
+
+    private static final String COPY_KEY = "copy-key";
+    private static final String NEW_GROUP_NAME_KEY = "new-group-name";
+    private static final String NEW_ITEM_NAME_KEY = "new-item-name";
+    private static final String RENAME_ITEM_KEY = "rename-item-key";
+
+    GoogleApiClient mGoogleApiClient;
 
     String groupName = "";
     String itemName = "";
@@ -30,6 +59,27 @@ public class ItemInfo extends Activity {
         super.onCreate(savedInstanceState);
 
         itemReaderDbHelper = new ItemReaderDbHelper(this);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle connectionHint) {
+                        // Now you can use the Data Layer API
+                    }
+                    @Override
+                    public void onConnectionSuspended(int cause) {
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult result) {
+                    }
+                })
+                        // Request access only to the Wearable API
+                .addApi(Wearable.API)
+                .build();
+
+        mGoogleApiClient.connect();
 
         setContentView(R.layout.activity_item_info);
         groupName = getIntent().getStringExtra("groupName");
@@ -117,6 +167,51 @@ public class ItemInfo extends Activity {
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         }
+    }
+
+    public void deleteItem(View view) {
+        itemReaderDbHelper.deleteItem(groupName, itemName);
+        onBackPressed();
+    }
+
+    public void renameItemDialog(View view) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(ItemInfo.this);
+        alert.setTitle("Enter a new name:");
+
+        final EditText input = new EditText(ItemInfo.this);
+        final String oldName = itemName;
+        input.setText(oldName);
+        alert.setView(input);
+
+        alert.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String newName = input.getEditableText().toString();
+                itemReaderDbHelper.renameItem(groupName, oldName, newName);
+                sendRenameItemToWear(groupName, oldName, newName);
+                itemName = newName;
+                setTitle("Item: " + itemName);
+            }
+        });
+
+        alert.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alert.create();
+        alertDialog.show();
+    }
+
+    private void sendRenameItemToWear(String groupName, String oldItemName, String newItemName) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, RENAME_ITEM_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, oldItemName);
+        putDataMapReq.getDataMap().putString(NEW_ITEM_NAME_KEY, newItemName);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     @Override
