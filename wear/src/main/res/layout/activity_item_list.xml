@@ -27,23 +27,7 @@
         android:gravity="center"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_above="@+id/done"
         android:textSize="15sp"
         android:layout_below="@+id/header" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Done"
-        android:id="@+id/done"
-        android:background="@drawable/round_button_green"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
-        android:onClick="finishScan"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        />
 
 </RelativeLayout>
