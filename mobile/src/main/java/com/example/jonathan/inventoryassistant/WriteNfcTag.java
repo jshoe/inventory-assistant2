@@ -198,6 +198,8 @@ public class WriteNfcTag extends Activity {
                     mess = "Tag written successfully!";
                     i = new Intent(this, GroupList.class);
                 } else {
+                    GroupReaderDbHelper groupReaderDbHelper = new GroupReaderDbHelper(this);
+                    groupReaderDbHelper.updateNfcTag(groupName, textToWrite);
                     mess = "Tag written successfully!";
                     i = new Intent(this, ItemList.class);
                     i.putExtra("groupName", groupName);

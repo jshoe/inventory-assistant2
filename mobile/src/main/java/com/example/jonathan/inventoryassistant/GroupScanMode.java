@@ -68,6 +68,7 @@ public class GroupScanMode extends Activity {
     private static final String DONE_KEY = "done-key";
 
     ItemReaderDbHelper itemReaderDbHelper;
+    GroupReaderDbHelper groupReaderDbHelper;
     String groupName = "";
     String itemName;
     ArrayList<String> itemArray;
@@ -92,6 +93,7 @@ public class GroupScanMode extends Activity {
         groupName = getIntent().getStringExtra("groupName");
         itemName = getIntent().getStringExtra("itemName");
         itemReaderDbHelper = new ItemReaderDbHelper(this);
+        groupReaderDbHelper = new GroupReaderDbHelper(this);
 
         getActionBar().setDisplayShowHomeEnabled(true);
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -443,11 +445,22 @@ public class GroupScanMode extends Activity {
 
     public void checkOffItemNfc(String NfcTag) {
         String itemName = "";
+        String groupName = "";
         if (NfcTag.contains(" --- ")) {
             /*String[] parts = NfcTag.split(" --- ");
             NfcTag = parts[1];*/
             itemName = compareTagToEachItemInGroup(NfcTag);
+        } else if (NfcTag.contains(this.groupName)) {
+            Cursor cursor = groupReaderDbHelper.getGroup(this.groupName);
+            cursor.moveToFirst();
+            if (cursor.getString(cursor.getColumnIndexOrThrow(GroupReaderContract.GroupEntry.NFC_TAG)).equals(NfcTag)) {
+                for (int i = 0; i < itemArray.size(); i++ ) {
+                    checkOffItem(itemArray.get(i));
+                }
+                return;
+            }
         }
+
         if (!itemName.equals("")) {
             Toast.makeText(getApplicationContext(), "Detected " + itemName + "!", Toast.LENGTH_SHORT).show();
             int p = getArrayPositionFromTitle(itemName);

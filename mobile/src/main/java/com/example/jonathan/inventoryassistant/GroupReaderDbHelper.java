@@ -15,7 +15,7 @@ import static com.example.jonathan.inventoryassistant.GroupReaderContract.GroupE
  */
 
 public class GroupReaderDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "GroupReader.db";
 
     public GroupReaderDbHelper(Context context) {
@@ -50,6 +50,11 @@ public class GroupReaderDbHelper extends SQLiteOpenHelper {
                 values);
     }
 
+    public Cursor getGroup(String groupName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("select * from " + GroupEntry.TABLE_NAME + " where " + GroupEntry.GROUP_NAME + "='" + groupName + "'", null);
+    }
+
     public Cursor getAllGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -75,5 +80,12 @@ public class GroupReaderDbHelper extends SQLiteOpenHelper {
     public void deleteAllGroups() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from " + GroupEntry.TABLE_NAME);
+    }
+
+    public void updateNfcTag(String groupName, String tag) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("update " + GroupEntry.TABLE_NAME +
+                        " set " + GroupEntry.NFC_TAG + "='" + tag + "'" +
+                        " where" + GroupEntry.GROUP_NAME + "='" + groupName + "'");
     }
 }
