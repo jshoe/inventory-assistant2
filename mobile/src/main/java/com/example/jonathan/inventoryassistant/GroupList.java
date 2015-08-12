@@ -348,7 +348,6 @@ public class GroupList extends Activity {
     }
 
     public class ReceiveMessages extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
