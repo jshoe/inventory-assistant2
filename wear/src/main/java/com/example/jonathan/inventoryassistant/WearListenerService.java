@@ -36,6 +36,8 @@ public class WearListenerService extends WearableListenerService {
     private static final String UNCHECK_ITEM = "uncheck-item";
     private static final String UPDATE_LIST = "update-list";
     private static final String DONE_KEY = "done-key";
+    private static final String COPY_KEY = "copy-key";
+    private static final String NEW_GROUP_NAME_KEY = "new-group-name";
 
     private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
     private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
@@ -138,6 +140,14 @@ public class WearListenerService extends WearableListenerService {
                         } catch (Exception e) {
                             System.out.println(e);
                         }
+                        break;
+                    case COPY_KEY:
+                        Log.d("DATA", "COPY_KEY RECEIVED");
+                        groupName = dataMap.getString(GROUP_NAME_KEY);
+                        itemName = dataMap.getString(ITEM_NAME_KEY);
+                        String newGroupName = dataMap.getString(NEW_GROUP_NAME_KEY);
+                        itemReaderDbHelper.copyItem(groupName, newGroupName, itemName);
+                        updateItemList();
                         break;
                     case DONE_KEY:
                         groupName = dataMap.getString(GROUP_NAME_KEY);

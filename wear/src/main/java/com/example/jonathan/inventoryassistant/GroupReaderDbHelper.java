@@ -11,9 +11,10 @@ import static com.example.jonathan.inventoryassistant.GroupReaderContract.GroupE
 /**
  * Created by randyramadhana on 7/31/15.
  */
+
 public class GroupReaderDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "GroupReader2.db";
+    public static final int DATABASE_VERSION = 2;
+    public static final String DATABASE_NAME = "GroupReader.db";
 
     public GroupReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -52,6 +53,15 @@ public class GroupReaderDbHelper extends SQLiteOpenHelper {
 
         return db.rawQuery("select * from " + GroupEntry.TABLE_NAME, null);
 
+    }
+
+    public void renameGroup(String oldGroupName, String newGroupName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("update " + GroupEntry.TABLE_NAME +
+                        " set " + GroupEntry.GROUP_NAME + "='" + newGroupName + "'" +
+                        " where " + GroupEntry.GROUP_NAME + "='" + oldGroupName + "'"
+        );
     }
 
     public void deleteGroup(String groupName) {

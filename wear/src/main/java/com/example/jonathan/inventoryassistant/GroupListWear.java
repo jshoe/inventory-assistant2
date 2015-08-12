@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class GroupListWear extends Activity {
     private static final String ACTION_KEY = "action-key";
     private static final String DELETE_GROUP_KEY = "delete-group-key";
     private static final String GROUP_NAME_KEY = "group-name";
+    private static final String MAKE_GROUP_KEY = "make-group-key";
 
     private static final String UPDATE_GROUP_LIST = "com.example.jonathan.inventoryassistant.update-group-list";
 
@@ -143,7 +145,7 @@ public class GroupListWear extends Activity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                getString(R.string.speech_prompt));
+                getString(R.string.speech_group_prompt));
         try {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
@@ -161,10 +163,20 @@ public class GroupListWear extends Activity {
                     RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
             groupReaderDbHelper.insertGroup(spokenText);
+            sendMakeGroupToMobile(spokenText);
             makeGroupList();
             // Do something with spokenText
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void sendMakeGroupToMobile(String groupName) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, MAKE_GROUP_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     private void makeGroupList() {

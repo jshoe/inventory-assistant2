@@ -49,6 +49,9 @@ public class ItemList extends Activity {
     private static final String ITEM_NAME_KEY = "item-name";
     private static final String GROUP_NAME_KEY = "group-name";
 
+    private static final String COPY_KEY = "copy-key";
+    private static final String NEW_GROUP_NAME_KEY = "new-group-name";
+
     ItemReaderDbHelper itemReaderDbHelper;
     String groupName = "";
 
@@ -291,11 +294,23 @@ public class ItemList extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 String targetGroup = groups[which];
                 itemReaderDbHelper.copyItem(groupName, targetGroup, itemName);
+                sendCopyItemToWear(groupName, targetGroup, itemName);
             }
         });
         builder.show();
         makeItemList();
         Toast.makeText(getApplicationContext(), "Copied item successfully!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void sendCopyItemToWear(String oldGroupName, String newGroupName, String itemName) {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
+        putDataMapReq.getDataMap().putString(ACTION_KEY, COPY_KEY);
+        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, oldGroupName);
+        putDataMapReq.getDataMap().putString(ITEM_NAME_KEY, itemName);
+        putDataMapReq.getDataMap().putString(NEW_GROUP_NAME_KEY, newGroupName);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult =
+                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     public boolean renameItemDialog(final String oldName) {
