@@ -225,6 +225,10 @@ public class ItemInfo extends Activity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.action_help:
+                Intent intent = new Intent(this, Help.class);
+                this.startActivity(intent);
+                break;
         }
 
         //noinspection SimplifiableIfStatement

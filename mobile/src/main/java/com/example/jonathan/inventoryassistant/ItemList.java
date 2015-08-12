@@ -110,6 +110,7 @@ public class ItemList extends Activity {
         itemList.addFooterView(footerView);
     }
 
+
     @Override
     public void onResume()
     {  // After a pause OR at startup
@@ -177,13 +178,17 @@ public class ItemList extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Intent intent;
         switch (id) {
             case android.R.id.home:
-                Intent intent = new Intent(this, GroupList.class);
+                intent = new Intent(this, GroupList.class);
                 startActivity(intent);
                 finish();
                 return true;
+            case R.id.action_help:
+                intent = new Intent(this, Help.class);
+                this.startActivity(intent);
+                break;
         }
 
         //noinspection SimplifiableIfStatement

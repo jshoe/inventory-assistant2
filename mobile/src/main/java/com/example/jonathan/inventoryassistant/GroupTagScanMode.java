@@ -297,17 +297,16 @@ public class GroupTagScanMode extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch(item.getItemId()) {
+            case R.id.action_help:
+                Intent intent = new Intent(this, Help.class);
+                this.startActivity(intent);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
-        //noinspection SimplifiableIfStatement
-        /** if (id == R.id.action_settings) {
-         return true;
-         } */
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void makeGroupList() {
