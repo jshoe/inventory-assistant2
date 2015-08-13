@@ -101,7 +101,7 @@ public class ItemInfo extends Activity {
     public void formatActionBar() {
         setTitle("Item: " + itemName);
         getActionBar().setDisplayShowHomeEnabled(true);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setLogo(R.drawable.action_bar_logo);
         getActionBar().setDisplayUseLogoEnabled(true);
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);

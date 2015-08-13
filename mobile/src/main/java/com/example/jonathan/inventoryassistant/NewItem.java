@@ -40,7 +40,7 @@ public class NewItem extends Activity {
         setContentView(R.layout.activity_new_item);
 
         getActionBar().setDisplayShowHomeEnabled(true);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setLogo(R.drawable.action_bar_logo);
         getActionBar().setDisplayUseLogoEnabled(true);
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);

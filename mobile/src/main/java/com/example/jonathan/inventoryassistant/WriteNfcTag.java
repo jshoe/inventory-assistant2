@@ -45,6 +45,7 @@ public class WriteNfcTag extends Activity {
     String groupName;
     String itemName;
     String textToWrite;
+    boolean workingWithGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class WriteNfcTag extends Activity {
         context = getApplicationContext();
 
         getActionBar().setDisplayShowHomeEnabled(true);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setLogo(R.drawable.action_bar_logo);
         getActionBar().setDisplayUseLogoEnabled(true);
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
@@ -73,6 +74,7 @@ public class WriteNfcTag extends Activity {
     }
 
     public void confirmTitle(String textToWrite) {
+        workingWithGroup = true;
         if (!textToWrite.contains("---")) {
             setTitle("Group Tag: " + groupName);
             setContentView(R.layout.activity_write_nfc_group_tag);
@@ -92,7 +94,7 @@ public class WriteNfcTag extends Activity {
     @Override
     public void onBackPressed() {
         Intent i = new Intent();
-        if (!textToWrite.contains("---")) {
+        if (workingWithGroup) {
             i.setClass(this, GroupList.class);
         } else {
             i.setClass(this, ItemList.class);
@@ -184,7 +186,7 @@ public class WriteNfcTag extends Activity {
 
     public void skipScan(View view) {
         Intent i = new Intent();
-        if (!textToWrite.contains("---")) {
+        if (workingWithGroup) {
             i.setClass(this, GroupList.class);
         } else {
             i.setClass(this, ItemList.class);

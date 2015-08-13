@@ -21,7 +21,7 @@
         <activity
             android:name=".WriteNfcTag"
             android:label="@string/title_activity_nfc_write_test"
-            android:parentActivityName=".ItemList" >
+            android:parentActivityName=".GroupList" >
         </activity>
 
         <service android:name=".MobileListenerService" >
