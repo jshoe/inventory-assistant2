@@ -2,6 +2,8 @@ package com.example.jonathan.inventoryassistant;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.security.acl.Group;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -90,8 +92,12 @@ public class WriteNfcTag extends Activity {
     @Override
     public void onBackPressed() {
         Intent i = new Intent();
-        i.setClass(this, ItemList.class);
-        i.putExtra("groupName", groupName);
+        if (!textToWrite.contains("---")) {
+            i.setClass(this, GroupList.class);
+        } else {
+            i.setClass(this, ItemList.class);
+            i.putExtra("groupName", groupName);
+        }
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }
@@ -177,8 +183,14 @@ public class WriteNfcTag extends Activity {
     }
 
     public void skipScan(View view) {
-        Intent i = new Intent(this, ItemList.class);
-        i.putExtra("groupName", groupName);
+        Intent i = new Intent();
+        if (!textToWrite.contains("---")) {
+            i.setClass(this, GroupList.class);
+        } else {
+            i.setClass(this, ItemList.class);
+            i.putExtra("groupName", groupName);
+        }
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }
 
