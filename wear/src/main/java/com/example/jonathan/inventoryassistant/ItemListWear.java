@@ -127,7 +127,8 @@ public class ItemListWear extends Activity {
         if (requestCode == REQ_CODE_SPEECH_INPUT && resultCode == RESULT_OK) {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
-            String spokenText = results.get(0);
+            String str = results.get(0);
+            String spokenText = str.substring(0, 1).toUpperCase() + str.substring(1);
             itemReaderDbHelper.insertItem(groupName, spokenText);
             sendMakeItemToMobile(groupName, spokenText);
             makeItemList();

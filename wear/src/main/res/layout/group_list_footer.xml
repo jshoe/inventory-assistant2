@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
     <ImageButton
         android:id="@+id/add"
-        android:background="@drawable/round_button_blue"
+        android:background="@drawable/round_button_green"
         android:src="@mipmap/white_add"
         android:layout_width="40dp"
         android:layout_height="40dp"
