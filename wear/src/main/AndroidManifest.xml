@@ -9,10 +9,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="i-Nventory"
         android:theme="@android:style/Theme.DeviceDefault" >
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-        </activity>
 
         <service android:name=".WearListenerService" >
             <intent-filter>
@@ -31,10 +27,6 @@
         <activity
             android:name=".ItemListWear"
             android:label="@string/title_activity_scan_in_items" >
-        </activity>
-        <activity
-            android:name=".WelcomeScreenWear"
-            android:label="@string/title_activity_welcome" >
         </activity>
     </application>
 

@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +33,6 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class GroupListWear extends Activity {
 
@@ -106,7 +104,7 @@ public class GroupListWear extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_group_list, menu);
+        getMenuInflater().inflate(R.menu.menu_group_list_wear, menu);
         return true;
     }
 
