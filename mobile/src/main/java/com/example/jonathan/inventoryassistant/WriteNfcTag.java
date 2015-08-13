@@ -32,7 +32,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/** Source attribution: Lots of NFC help from this tutorial:
+/** Source attribution: Some NFC help from this tutorial:
  *  http://tapintonfc.blogspot.com/2012/07/the-above-footage-from-our-nfc-workshop.html
  */
 

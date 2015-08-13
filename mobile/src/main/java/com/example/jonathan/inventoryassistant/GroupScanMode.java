@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-/** Source attribution: Some NFC reading code from this tutorial:
+/** Source attribution: Some NFC help from this tutorial:
  *  http://code.tutsplus.com/tutorials/reading-nfc-tags-with-android--mobile-17278
  */
 
@@ -74,6 +74,7 @@ public class GroupScanMode extends Activity {
     String itemName;
     ArrayList<String> itemArray;
     ListView itemList;
+    AlertDialog startScanAlert;
 
     public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "NfcDemo";
@@ -97,7 +98,6 @@ public class GroupScanMode extends Activity {
         groupReaderDbHelper = new GroupReaderDbHelper(this);
 
         getActionBar().setDisplayShowHomeEnabled(true);
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setLogo(R.drawable.action_bar_logo);
         getActionBar().setDisplayUseLogoEnabled(true);
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
@@ -279,9 +279,9 @@ public class GroupScanMode extends Activity {
                     }
                 });
         builder.setView(image);
-        AlertDialog alert = builder.create();
-        alert.show();
-        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        startScanAlert = builder.create();
+        startScanAlert.show();
+        TextView textView = (TextView) startScanAlert.findViewById(android.R.id.message);
         textView.setTextSize(20);
     }
 
@@ -476,6 +476,7 @@ public class GroupScanMode extends Activity {
         }
 
         if (!itemName.equals("")) {
+            startScanAlert.cancel();
             showCustomToast("Detected " + itemName + "!");
             int p = getArrayPositionFromTitle(itemName);
             if (p != -1) {
