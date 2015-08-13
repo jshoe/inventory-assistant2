@@ -27,8 +27,6 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class ItemInfo extends Activity {
@@ -239,7 +237,7 @@ public class ItemInfo extends Activity {
                 onBackPressed();
                 return true;
             case R.id.action_help:
-                Intent intent = new Intent(this, Help.class);
+                Intent intent = new Intent(this, HelpScreen.class);
                 this.startActivity(intent);
                 break;
         }

@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,11 @@ public class NewGroup extends Activity {
 
         setTitle("New Group");
         Toast.makeText(getApplicationContext(), "Enter a name for your group!", Toast.LENGTH_LONG).show();
+
+        EditText myEditText = ((EditText) findViewById(R.id.groupName));
+        if(myEditText.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
 
         groupReaderDbHelper = new GroupReaderDbHelper(this);
         itemReaderDbHelper = new ItemReaderDbHelper(this);

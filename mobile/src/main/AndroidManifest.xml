@@ -98,7 +98,7 @@
             android:label="@string/title_activity_group_tag_scan_mode" >
         </activity>
         <activity
-            android:name=".Help"
+            android:name=".HelpScreen"
             android:label="@string/title_activity_help" >
         </activity>
     </application>

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -48,6 +49,12 @@ public class NewItem extends Activity {
 
         setTitle("New Item");
         Toast.makeText(getApplicationContext(), "Enter a name for your item!", Toast.LENGTH_LONG).show();
+
+        EditText myEditText = ((EditText) findViewById(R.id.itemName));
+        if(myEditText.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+
         itemReaderDbHelper = new ItemReaderDbHelper(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)

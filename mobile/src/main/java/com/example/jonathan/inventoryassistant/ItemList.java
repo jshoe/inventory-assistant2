@@ -187,7 +187,7 @@ public class ItemList extends Activity {
                 finish();
                 return true;
             case R.id.action_help:
-                intent = new Intent(this, Help.class);
+                intent = new Intent(this, HelpScreen.class);
                 this.startActivity(intent);
                 break;
         }
