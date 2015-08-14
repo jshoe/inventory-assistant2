@@ -72,8 +72,8 @@ public class WriteNfcTag extends Activity {
     }
 
     public void confirmTitle(String textToWrite) {
-        workingWithGroup = true;
         if (!textToWrite.contains("---")) {
+            workingWithGroup = true;
             setTitle("Group Tag: " + groupName);
             setContentView(R.layout.activity_write_nfc_group_tag);
             TextView t = (TextView) findViewById(R.id.help_msg);
