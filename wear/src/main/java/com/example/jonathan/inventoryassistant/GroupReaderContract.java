@@ -14,7 +14,6 @@ public class GroupReaderContract {
         public static final String GROUP_NAME = "groupName";
 
         private static final String TEXT_TYPE = " TEXT";
-        private static final String COMMA_SEP = ",";
         protected static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + GroupEntry.TABLE_NAME + " (" +
                         GroupEntry._ID + " INTEGER PRIMARY KEY, " +

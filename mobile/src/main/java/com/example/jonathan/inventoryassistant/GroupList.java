@@ -259,32 +259,6 @@ public class GroupList extends Activity {
         startActivity(i);
     }
 
-    public void deleteEntryDialog(final String groupName) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String msg = "Delete the " + groupName + " group?";
-        builder.setPositiveButton("Confirm",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        groupReaderDbHelper.deleteGroup(groupName);
-                        itemReaderDbHelper.deleteItemsInGroup(groupName);
-                        sendDeleteGroupToWear(groupName);
-                        makeGroupList();
-                    }
-                });
-        builder.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        builder.setMessage(msg);
-        builder.setCancelable(true);
-        AlertDialog alert = builder.create();
-        alert.show();
-        TextView textView = (TextView) alert.findViewById(android.R.id.message);
-        textView.setTextSize(20);
-    }
-
     private void sendDeleteGroupToWear(String groupName) {
         PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
         putDataMapReq.getDataMap().putString(ACTION_KEY, DELETE_GROUP_KEY);

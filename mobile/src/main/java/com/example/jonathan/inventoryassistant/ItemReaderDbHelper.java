@@ -1,6 +1,5 @@
 package com.example.jonathan.inventoryassistant;
 
-import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -94,12 +93,6 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         return db.rawQuery("select * from " + ItemEntry.TABLE_NAME +
                 " where " + ItemEntry.GROUP_NAME + " = ? and " + ItemEntry.ITEM_NAME + " = ?",
                 new String[] {groupName, itemName});
-    }
-
-    public Cursor getAllItems() {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        return db.rawQuery("select * from " + ItemEntry.TABLE_NAME, null);
     }
 
     public Cursor getAllItemsInGroup(String groupName) {

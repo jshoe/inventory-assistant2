@@ -83,18 +83,6 @@ public class NewGroup extends Activity {
         mGoogleApiClient.connect();
     }
 
-    public void showCustomToast(String text) {
-        final Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
-        t.show();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                t.cancel();
-            }
-        }, 1000);
-    }
-
     @Override
     public void onBackPressed() {
         Intent i = new Intent();
@@ -137,7 +125,6 @@ public class NewGroup extends Activity {
             PendingResult<DataApi.DataItemResult> pendingResult =
                     Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
             backToGroupList();
-            //finishCreation();
         }
     }
 
@@ -148,33 +135,4 @@ public class NewGroup extends Activity {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }
-
-    public void finishCreation() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Now it's time to add items to track!");
-        builder.setCancelable(true);
-        builder.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        backToGroupList();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-        TextView textView = (TextView) alert.findViewById(android.R.id.message);
-        textView.setTextSize(22);
-    }
-
-    public void deleteAllGroups(View view) {
-        groupReaderDbHelper.deleteAllGroups();
-        itemReaderDbHelper.deleteAllItems();
-        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
-        putDataMapReq.getDataMap().putString(ACTION_KEY, DELETE_ALL_GROUPS_KEY);
-        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
-        PendingResult<DataApi.DataItemResult> pendingResult =
-                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
-    }
-
-
 }

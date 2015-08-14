@@ -2,8 +2,6 @@ package com.example.jonathan.inventoryassistant;
 
 import android.provider.BaseColumns;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by randyramadhana on 7/31/15.
  */

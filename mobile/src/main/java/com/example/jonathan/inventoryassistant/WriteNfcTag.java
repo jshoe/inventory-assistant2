@@ -2,12 +2,10 @@ package com.example.jonathan.inventoryassistant;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.security.acl.Group;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -102,18 +100,6 @@ public class WriteNfcTag extends Activity {
         }
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
-    }
-
-    public void showCustomToast(String text) {
-        final Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
-        t.show();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                t.cancel();
-            }
-        }, 1000);
     }
 
     @Override

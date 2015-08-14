@@ -40,8 +40,6 @@ public class ItemList extends Activity {
 
     private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
     private static final String UPDATE_KEY = "update-key";
-    private static final String CHECK_ITEM = "check-item";
-    private static final String UNCHECK_ITEM = "uncheck-item";
     private static final String UPDATE_LIST = "update-list";
 
     private static final String PATH = "/database-action-wear";

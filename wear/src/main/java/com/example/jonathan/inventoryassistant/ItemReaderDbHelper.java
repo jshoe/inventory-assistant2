@@ -192,30 +192,6 @@ public class ItemReaderDbHelper extends SQLiteOpenHelper {
         );
     }
 
-    public void insertLatestLatitude(String groupName, String itemName, float lat) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        updateLatitudeHistory(groupName, itemName);
-
-        db.execSQL("update " + ItemEntry.TABLE_NAME +
-                        " set " + ItemEntry.LAT1 + "=" + lat +
-                        " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
-                        " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
-        );
-    }
-
-    public void insertLatestLongitude(String groupName, String itemName, float lon) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        updateLongitudeHistory(groupName, itemName);
-
-        db.execSQL("update " + ItemEntry.TABLE_NAME +
-                        " set " + ItemEntry.LON1 + "=" + lon +
-                        " where " + ItemEntry.GROUP_NAME + " ='" + groupName + "'" +
-                        " and " + ItemEntry.ITEM_NAME + " ='" + itemName + "'"
-        );
-    }
-
     public void updateDateCheckedItem(String groupName, String itemName, Date utilDateChecked) {
         SQLiteDatabase db = this.getWritableDatabase();
 

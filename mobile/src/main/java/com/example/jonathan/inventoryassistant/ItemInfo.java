@@ -30,20 +30,10 @@ import com.google.android.gms.wearable.Wearable;
 import java.util.ArrayList;
 
 public class ItemInfo extends Activity {
-    private static final String UPDATE_ITEM_LIST = "com.example.joanathan.inventoryassistant.update-item-list";
-    private static final String UPDATE_KEY = "update-key";
-    private static final String CHECK_ITEM = "check-item";
-    private static final String UNCHECK_ITEM = "uncheck-item";
-    private static final String UPDATE_LIST = "update-list";
-
     private static final String PATH = "/database-action-wear";
     private static final String ACTION_KEY = "action-key";
-    private static final String DELETE_ITEM_KEY = "delete-item-key";
     private static final String ITEM_NAME_KEY = "item-name";
     private static final String GROUP_NAME_KEY = "group-name";
-
-    private static final String COPY_KEY = "copy-key";
-    private static final String NEW_GROUP_NAME_KEY = "new-group-name";
     private static final String NEW_ITEM_NAME_KEY = "new-item-name";
     private static final String RENAME_ITEM_KEY = "rename-item-key";
 

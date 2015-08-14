@@ -86,18 +86,6 @@ public class NewItem extends Activity {
         return true;
     }
 
-    public void showCustomToast(String text) {
-        final Toast t = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
-        t.show();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                t.cancel();
-            }
-        }, 1000);
-    }
-
     @Override
     public void onBackPressed() {
         Intent i = new Intent();
@@ -130,19 +118,6 @@ public class NewItem extends Activity {
             i.putExtra("textToWrite", textToWrite);
             startActivity(i);
         }
-    }
-
-    public void deleteAllItemsInGroup(View view) {
-        Log.d("ClICK", "DELETE ALL ITEMS IN TEST GROUP");
-        itemReaderDbHelper.deleteItemsInGroup("TestGroup");
-
-        String groupName = getIntent().getStringExtra("groupName");
-        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(PATH);
-        putDataMapReq.getDataMap().putString(ACTION_KEY, DELETE_ALL_ITEMS_IN_GROUP_KEY);
-        putDataMapReq.getDataMap().putString(GROUP_NAME_KEY, groupName);
-        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
-        PendingResult<DataApi.DataItemResult> pendingResult =
-                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
     }
 
     @Override

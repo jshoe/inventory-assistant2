@@ -62,7 +62,6 @@ public class GroupScanMode extends Activity {
     private static final String PATH = "/database-action-wear";
     private static final String ACTION_KEY = "action-key";
     private static final String CHECK_KEY = "check-key";
-    private static final String DATE_KEY = "date-key";
     private static final String GROUP_NAME_KEY = "group-name";
     private static final String ITEM_NAME_KEY = "item-name";
 
