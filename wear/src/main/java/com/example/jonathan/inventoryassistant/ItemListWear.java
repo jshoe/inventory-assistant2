@@ -103,6 +103,7 @@ public class ItemListWear extends Activity {
         makeItemList();
         View footerView =  ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.item_list_footer, null, false);
         itemList.addFooterView(footerView);
+        showScanStartMessage();
     }
 
     public void makeNewItemSpeech(View view) {
@@ -171,6 +172,22 @@ public class ItemListWear extends Activity {
             unregisterReceiver(myReceiver);
             myReceiverIsRegistered = false;
         }
+    }
+
+    public void showScanStartMessage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Scan items in any order. Nearby tags have been auto-detected!\n");
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(20);
     }
 
     @Override
