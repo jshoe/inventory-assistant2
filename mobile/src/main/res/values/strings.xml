@@ -1,34 +1,15 @@
 <resources>
-    <string name="app_name">i-Nventory</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="action_help">Help</string>
-    <string name="explanation">NFC is enabled.</string>
-    <string name="new_group">Make new group:</string>
-    <string name="new_item">Make new item:</string>
     <string name="title_activity_nfc_write_test">NfcWriteTest</string>
     <string name="title_activity_make_new_grp">MakeNewGrp</string>
     <string name="title_activity_grp_list">i-Nventory</string>
     <string name="title_activity_make_item">MakeItem</string>
-    <string name="all_group">All groups:</string>
     <string name="title_activity_item_list">ItemList</string>
     <string name="title_activity_group_check_scan_mode">ScanMode</string>
-    <string name="title_activity_scan_in_item">ScanInItem</string>
-    <string name="grp_name_here">Group name here</string>
-    <string name="item_name">Item Name:</string>
-    <string name="scan_tag">Scan Tag</string>
     <string name="done">Done</string>
-    <string name="next">Next</string>
-    <string name="add_item">  + Add Item  </string>
-    <string name="add_group">+ Add Group</string>
     <string name="title_activity_welcome1">Welcome1</string>
-    <string name="welcome">Welcome to the Inventory Assistant!</string>
-    <string name="welcome1">A more organized life is just a few steps away. Let\'s start scanning in items to track.</string>
-    <string name="start">Start</string>
     <string name="title_activity_item_view">ItemView</string>
-    <string name="title_activity_map_test">MapTest</string>
     <string name="title_activity_group_tag_scan_mode">GroupTagScanMode</string>
     <string name="title_activity_help">Help</string>
-    <string name="action_settings">Settings</string>
 </resources>
 

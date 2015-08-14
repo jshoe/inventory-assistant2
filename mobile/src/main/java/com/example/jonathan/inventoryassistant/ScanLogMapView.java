@@ -29,6 +29,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Source attribution: Lots of help from Google's Maps Android API demo code:
+ *  https://developers.google.com/maps/documentation/android/code-samples
+ */
+
 public class ScanLogMapView extends FragmentActivity implements
         OnMarkerClickListener,
         OnInfoWindowClickListener,
