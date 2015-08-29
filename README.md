@@ -2,8 +2,8 @@
 
 Date updated: August 14, 2015
 
-This is an app that uses NFC technology to help users keep track of their physical belongings!
-<br><br>
+This is an inventory assistant that uses NFC technology to help users keep track of their physical belongings!
+<br>
 ## Features
 - Tag important and valuable items with cheap NFC tags: http://amzn.com/B00DRDZ07A
 - Make groups of items for your trips and add the items into the app
