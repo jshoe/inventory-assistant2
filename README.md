@@ -10,6 +10,7 @@ This is an inventory assistant that uses NFC technology to help users keep track
 - Scan items before moving locations to keep track of them
 - View scan history and location
 - Never lose anything again, anywhere!
+
 ## Details
 - Developed with Android Studio targeting Android Lollipop mobile and smartwatch devices
 - Hackster page: https://www.hackster.io/6860/team-ndroids
